@@ -1,0 +1,8 @@
+#main{
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    width:800px;
+/*    background: url(../img/bg_.gif);*/
+}

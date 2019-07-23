@@ -1,18 +1,100 @@
 <!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>echarts全国热点活跃地区地图代码 </title>
+    <title>欢迎来到安图系统！</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords"
+          content="Trendy Tab Login Form template Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login sign up Responsive web template, SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design"/>
+
+    <!-- Custom Theme files -->
+    <link href="../css/index.css" rel="stylesheet" type="text/css" media="all"/>
+    <!-- //Custom Theme files -->
+    <!-- js -->
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/easyResponsiveTabs.js" type="text/javascript"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- //js -->
 </head>
-<link rel="stylesheet" href="css/echarts.css">
-<body style="background: #000">
+
+<body style="background-color:#000000">
+
+<!-- main -->
+<!--<div style="width: 1000px; height: 450px;">-->
+<div class="main top_slide_wrap" style=" width: 800px; height: 800px;">
+    <div class="login-form" style=" width: 350px; ">//display: block;
+        <div class="sap_tabs w3ls-tabs" style="height: 10px;">
+
+            <div id="horizontalTab">
+
+                <ul class="resp-tabs-list">
+                    <li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>登录</span></li>
+                    <li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><label>/</label><span>注册</span></li>
+                </ul>
+                <div class="clear"></div>
+                <div class="resp-tabs-container">
+                    <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
+                        <div class="login-agileits-top">
+                            <form action="#" method="post">
+                                <p>用户名 </p>
+                                <input type="text" id="login_usr" name="User Name" required=""/>
+                                <p>密码</p>
+                                <input type="password" id="login_pwd" name="Password" required=""/>
+                                <!--                                <input type="checkbox" id="brand" value="">-->
+                                <br/>
+                                <br/>
+                                <!--<label for="brand1"><span></span>记住密码？</label>-->
+                                <input type="submit" id="login_submit" value="登录">
+                            </form>
+                        </div>
+                        <div class="login-agileits-bottom">
+                            <p><a href="#">忘记密码?</a></p>
+                        </div>
+                    </div>
+                    <div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
+                        <div class="login-agileits-top sign-up">
+                            <form action="#" method="post">
+                                <p>用户名 </p>
+                                <input type="text" id="register_usr" name="User Name" required=""/>
+                                <p>邮箱 </p>
+                                <input type="text" id="register_pwd" name=Email" required=""/>
+                                <p>密码</p>
+                                <input type="password" name="Password" placeholder="" required=""/>
+                                <input type="checkbox" id="brand1" value="">
+                                <br/>
+                                <br/>
+                                <!--<label for="brand1"><span></span>记住密码？</label>-->
+                                <input type="submit" id="register_submit" value="注册">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ResponsiveTabs js -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#horizontalTab').easyResponsiveTabs({
+                    type: 'default', //Types: default, vertical, accordion
+                    width: 'auto', //auto or any width like 600px
+                    fit: true   // 100% fit in a container
+                });
+            });
+        </script>
+        <!-- //ResponsiveTabs js -->
+    </div>
+</div>
+
+
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main" style="height:600px"></div>
+<div id="main" class="col-md-4" style="height:780px;width:1000px;"></div>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wvGuSDMA4xjj0t1dPqEtibPvXY5gyN4U"></script>
 <!-- ECharts单文件引入 -->
-<script src="js/echarts.js"></script>
-<script src="js/chinaMap.js"></script>
-<script src="js/BmapLib.js"></script>
-<script src="js/data.js"></script>
+<script src="../js/echarts.js"></script>
+<script src="../js/chinaMap.js"></script>
+<script src="../js/BmapLib.js"></script>
+<script src="../js/data.js"></script>
 <script type="text/javascript">
 
     // 路径配置
@@ -35,14 +117,14 @@
                     'rgba(14, 241, 242, 0.8)',
                     'rgba(37, 140, 249, 0.8)'
                 ],
-                title: {
-                    text: '最高访客量',
-                    subtext: '历史最高访客量：230987643',
-                    x: 'center',
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
+                // title: {
+                //     text: '最高访客量',
+                //     subtext: '历史最高访客量：230987643',
+                //     x: 'center',
+                //     textStyle: {
+                //         color: '#fff'
+                //     }
+                // },
                 legend: {
                     orient: 'vertical',
                     x: 'left',
@@ -78,7 +160,7 @@
                             data: (function () {
                                 var data = [];
                                 var len = 3000;
-                                var geoCoord
+                                var geoCoord;
                                 while (len--) {
                                     geoCoord = placeList[len % placeList.length].geoCoord;
                                     var x = geoCoord[0] + Math.random() * 1 - 0.5;
@@ -185,4 +267,7 @@
 
 </script>
 
+<script src="../js/ajax/login_ajax.js"></script>
+
 </body>
+</html>
