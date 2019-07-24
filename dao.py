@@ -18,10 +18,11 @@ class dao(object):
     def get_cursor(self):
         return self.conn.cursor()
 
-    def query(self, sql):
+    def execute(self, sql):
         cursor = self.get_cursor()
         try:
             cursor.execute(sql, None)
+            self.conn.commit()
             result = cursor.fetchall()
         finally:
             cursor.close()
