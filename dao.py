@@ -12,7 +12,6 @@ class dao(object):
             passwd=passwd,
             db=db,
             charset=charset
-            # cursorclass=pymysql.cursors.DictCursor
         )
 
     def get_cursor(self):
@@ -27,19 +26,6 @@ class dao(object):
         finally:
             cursor.close()
         return result
-
-    # def execute(self, sql, param=None):
-    #     cursor = self.get_cursor()
-    #     try:
-    #         cursor.execute(sql, param)
-    #         self.conn.commit()
-    #         affected_row = cursor.rowcount
-    #     except Exception, e:
-    #         print e
-    #         return 0
-    #     finally:
-    #         cursor.close()
-    #     return affected_row
 
     def close(self):
         try:

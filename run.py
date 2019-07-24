@@ -15,19 +15,17 @@ def index():
     return app.send_static_file('html/index.html')
 
 
+@app.route("/html/<htmlName>", methods=['get'])
+def html(htmlName):
+    return app.send_static_file('html/' + htmlName)
+
+
 @app.route('/register_ajax', methods=["post"])
 def register_ajax():
     usr = str(request.form["usr"])
     pwd = str(request.form["pwd"])
     email = str(request.form["email"])
-
-    # usr = "1"
-    # pwd = "1"
-    # email = "1"
-    # print("SELECT	COUNT( * ) FROM	sys_accounts WHERE	user_name = '" + usr + "';")
-
     isUsrIn = dao.execute("SELECT	COUNT( * ) FROM	sys_accounts WHERE	user_name = '" + usr + "';")[0][0]
-    print(isUsrIn)
     if isUsrIn > 0:
         response = {
             "status": "N",
@@ -36,13 +34,32 @@ def register_ajax():
     else:
         a = dao.execute(
             "INSERT INTO sys_accounts ( user_name, `password`, email ) VALUES ( '" + usr + "', '" + pwd + "', '" + email + "' );")
-        print(
-            "INSERT INTO sys_accounts ( user_name, `password`, email ) VALUES ( '" + usr + "', '" + pwd + "', '" + email + "' );")
         response = {
             "status": "Y",
-            "message": "注册成功"
+            "message": "注册成功",
         }
 
+    return jsonify(response), 200
+
+
+@app.route('/login_ajax', methods=['post'])
+def login_ajax():
+    usr = str(request.form["usr"])
+    pwd = str(request.form["pwd"])
+
+    check = dao.execute(
+        "SELECT COUNT(*) FROM `sys_accounts` WHERE user_name = '" + usr + "' AND `password` = '" + pwd + "'")[0][0]
+    print("SELECT COUNT(*) FROM `sys_accounts` WHERE user_name = '" + usr + "' AND `password` = '" + pwd + "'")
+    if check == 1:
+        response = {
+            "status": "Y",
+            "message": "登陆成功",
+        }
+    elif check == 0:
+        response = {
+            "status": "N",
+            "message": "请检查用户名和密码",
+        }
     return jsonify(response), 200
 
 

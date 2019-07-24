@@ -28,7 +28,7 @@ $("#register_submit").click(function () {
             console.log(data);
 
             if (data.status === "Y") {
-                self.location.href = ""
+                self.location.href = "html/main.html"
             } else {
                 alert("用户已存在!")
             }
@@ -38,6 +38,4 @@ $("#register_submit").click(function () {
             console.log("Register Ajax Error")
         }
     });
-
-
 });
