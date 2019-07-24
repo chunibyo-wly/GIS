@@ -19,3 +19,20 @@ response
     "message": "注册成功"
 }
 ```
+
+2. login_ajax
+```
+request
+{
+    "usr": "123",
+    "pwd": "123",
+}
+```
+
+```
+response
+{
+    "status": "N",
+    "message": "请检查用户名和密码",
+}
+```
