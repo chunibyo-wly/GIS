@@ -28,7 +28,7 @@ $("#register_submit").click(function () {
             console.log(data);
 
             if (data.status === "Y") {
-                self.location.href = "html/main.html"
+                self.location.href = "html/map.html"
             } else {
                 alert("用户已存在!")
             }

@@ -24,7 +24,7 @@ $("#login_submit").click(function () {
             //请求成功时处理
             console.log(data);
             if (data.status === "Y") {
-                self.location.href = "html/main.html"
+                self.location.href = "html/map.html"
             } else {
                 alert(data.message)
             }
