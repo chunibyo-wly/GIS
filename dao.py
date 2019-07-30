@@ -18,6 +18,7 @@ class dao(object):
         return self.conn.cursor()
 
     def execute(self, sql):
+        self.conn.ping(reconnect=True)
         cursor = self.get_cursor()
         try:
             cursor.execute(sql, None)

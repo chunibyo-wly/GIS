@@ -83,6 +83,33 @@ def get_usrid_ajax():
     }), 200
 
 
+@app.route('/get_messageRecords_ajax', methods=['post'])
+def get_messageRecords_ajax():
+    p1_id = request.form["p1_id"]
+    p2_id = request.form["p2_id"]
+    result = dao.execute(
+        "SELECT message_content, message_from from ( SELECT message_content, message_from, message_time FROM message_record WHERE (message_from = " + p1_id + " AND message_to = " + p2_id + ") OR (message_from = " + p2_id + " AND message_to = " + p1_id + ") ORDER BY message_time DESC LIMIT 10) temp ORDER BY temp.message_time;")
+    response = {"data": []}
+    for i in range(len(result)):
+        response["data"].append({
+            "message_from": result[i][1],
+            "message_content": result[i][0],
+        })
+    return make_response(response), 200
+
+
+@app.route('/send_message', methods=['post'])
+def send_message():
+    content = request.form['content']
+    message_from = request.form['message_from']
+    message_to = request.form['message_to']
+    dao.execute(
+        "INSERT INTO message_record ( message_content, message_from, message_to ) VALUES ( '" + content + "', " + message_from + ", " + message_to + " );")
+    return jsonify({
+        "status": "Y"
+    }), 200
+
+
 @app.route('/set_cookie', methods=['get'])
 def set_cookie():
     response = {
