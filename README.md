@@ -36,3 +36,18 @@ response
     "message": "请检查用户名和密码",
 }
 ```
+
+3. get_usrid_ajax
+```angular2
+request
+{
+    
+}
+```
+
+```
+response
+{
+    "id": "15",
+}
+```
