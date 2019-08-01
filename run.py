@@ -54,7 +54,6 @@ def login_ajax():
 
     check = dao.execute(
         "SELECT COUNT(*) FROM `sys_accounts` WHERE user_name = '" + usr + "' AND `password` = '" + pwd + "'")[0][0]
-    print("SELECT COUNT(*) FROM `sys_accounts` WHERE user_name = '" + usr + "' AND `password` = '" + pwd + "'")
 
     if check == 1:
         response = {
@@ -110,6 +109,34 @@ def send_message():
     }), 200
 
 
+@app.route('/complete_information', methods=['post'])
+def complete_information():
+    id = request.form['id']
+    type = request.form['type']
+
+    dao.execute("INSERT INTO identity (id, role) VALUES (" + id + ", '" + type + "');")
+
+    name = request.form['name']
+    city = request.form['city']
+    date_time = request.form['date_time']
+    id_card = request.form['id_card']
+    address = request.form['address']
+
+    dao.execute(
+        "INSERT INTO user_basicInformation ( id, user_basicInformation.`name`, city, birthtime, IDcard, address ) VALUES ( " + id + ", '" + name + "', '" + city + "', '" + date_time + "', '" + id_card + "', '" + address + "' );")
+
+    if type == "user_police":
+        police_id = request.form['police_id']
+        police_station = request.form['police_station']
+        police_stationName = request.form['police_stationName']
+        dao.execute(
+            "INSERT INTO user_police ( id, police_id, police_station, police_stationName ) VALUES ( " + id + ", '" + police_id + "', '" + police_station + "', '" + police_stationName + "' );")
+
+    return jsonify({
+        "status": "Y",
+    }), 200
+
+
 @app.route('/set_cookie', methods=['get'])
 def set_cookie():
     response = {
@@ -118,13 +145,13 @@ def set_cookie():
     }
     response = make_response(response)
     response.set_cookie('Name', 'Hyman')
-    print(response)
+    # print(response)
     return response
 
 
 @app.route('/get_cookie')
 def get_cookie():
-    print(request.cookies)
+    # print(request.cookies)
     return name
 
 

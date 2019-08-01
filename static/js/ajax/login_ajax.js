@@ -29,7 +29,8 @@ $("#login_submit").click(function () {
             //请求成功时处理
             console.log(data);
             if (data.status === "Y") {
-                self.location.href = "/html/blank.html";
+                // self.location.href = "/html/blank.html";
+                self.location.href = "http://www.cpd.com.cn/";
             } else {
                 alert(data.message)
             }

@@ -33,7 +33,7 @@ $("#register_submit").click(function () {
             console.log(data);
 
             if (data.status === "Y") {
-                self.location.href = "/html/blank.html";
+                self.location.href = "/html/form.html";
             } else {
                 alert("用户已存在!")
             }
