@@ -131,3 +131,53 @@ response
     "status": "Y",
 }
 ```
+
+7. get_user
+```angular2
+request
+{
+
+}
+```
+
+```
+response
+{
+    "id": 16,
+    "user_name": "许梦子",
+    "role": user_police
+}
+```
+
+8. get_information
+```angular2
+request
+{
+
+}
+```
+
+```
+{
+    "id": id,
+    "type": user_general,
+    "name": 许梦子,
+    "city": 武汉,
+    "date_time": "2019-08-01",
+    "id_card": "4210021793907011513",
+    "address": "湖北武汉洪山区鲁磨路",
+}
+
+{
+    "id": id,
+    "type": user_police,
+    "name": 许梦子,
+    "city": 武汉,
+    "date_time": "2019-08-01",
+    "id_card": "4210021793907011513",
+    "address": "湖北武汉洪山区鲁磨路",
+    "police_id": "000000000",
+    "police_station": "洪山分局",
+    "police_stationName": "地大派出所"
+}
+```

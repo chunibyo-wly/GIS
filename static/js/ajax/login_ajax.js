@@ -30,7 +30,7 @@ $("#login_submit").click(function () {
             console.log(data);
             if (data.status === "Y") {
                 // self.location.href = "/html/blank.html";
-                self.location.href = "http://www.cpd.com.cn/";
+                self.location.href = "/html/profile.html";
             } else {
                 alert(data.message)
             }
