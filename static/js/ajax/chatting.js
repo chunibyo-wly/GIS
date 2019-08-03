@@ -60,7 +60,9 @@ flush = function () {
             })
         }
     });
-    setTimeout("flush()", 5000);
+    if ($('.modal').css('display') !== 'none') {
+        setTimeout("flush()", 5000);
+    }
 };
 
 $('#send').click(function () {

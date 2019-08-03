@@ -94,6 +94,9 @@ def get_messageRecords_ajax():
         p2_id + " AND message_to = " + p1_id +
         ") ORDER BY message_time DESC LIMIT 10) temp ORDER BY temp.message_time;"
     )
+
+    dao.execute("DELETE FROM unread_message_record WHERE message_to = " + p1_id + ";")
+
     response = {"data": []}
     for i in range(len(result)):
         response["data"].append({
@@ -108,9 +111,7 @@ def send_message():
     content = request.form['content']
     message_from = request.form['message_from']
     message_to = request.form['message_to']
-    dao.execute(
-        "INSERT INTO message_record ( message_content, message_from, message_to ) VALUES ( '"
-        + content + "', " + message_from + ", " + message_to + " );")
+    dao.execute("CALL sp_insert_readmessage ( '" + content + "', " + message_from + ", " + message_to + " )")
     return jsonify({"status": "Y"}), 200
 
 
@@ -178,6 +179,28 @@ def get_information():
         "police_stationName": result[0][8],
         "role": result[0][11],
     }), 200
+
+
+@app.route('/get_unread_message', methods=['get'])
+def get_unread_message():
+    id = str(request.cookies.get('id'))
+    unread_number = dao.execute("SELECT COUNT(*) FROM unread_message_record WHERE message_to = " + id + ";")[0][0]
+    # unread_preson_number = \
+    #     dao.execute("SELECT count(DISTINCT message_from) FROM unread_message_record WHERE message_to = " + id + ";")[0][
+    #         0]
+    unread_content_result = dao.execute(
+        "SELECT message_record.message_from, message_record.message_content FROM message_record WHERE message_record.message_id in (SELECT DISTINCT unread_message_record.message_id FROM unread_message_record  ) and message_to = " + id + " ORDER BY message_time DESC LIMIT 1")
+    response = {
+        "unread_number": unread_number,
+        # "unread_preson_number": unread_preson_number,
+        "unread_content": []
+    }
+    for i in unread_content_result:
+        response["unread_content"].append({
+            "message_from": i[0],
+            "message_content": i[1]
+        })
+    return jsonify(response), 200
 
 
 # @app.route('/set_cookie', methods=['get'])

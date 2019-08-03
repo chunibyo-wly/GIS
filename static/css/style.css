@@ -460,7 +460,7 @@ span#logo h1 {
     border: none;
     outline: none;
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 21%;
 }
 
@@ -468,7 +468,7 @@ span#logo h1 {
     float: right;
     background: #4D70A7;
     width: 20%;
-    height: 60px;
+    height: 126px;
     padding: 15px 15px 69px 17px;
     border: 1px solid #C6CCD6;
     position: absolute;
