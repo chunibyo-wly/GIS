@@ -1,3 +1,4 @@
+#!./venv/bin/python
 # -*- coding: utf-8 -*-
 
 from flask import Flask, jsonify, request, make_response
@@ -35,7 +36,7 @@ def register_ajax():
         }
         response = make_response(response)
     else:
-        a = dao.execute(
+        dao.execute(
             "INSERT INTO sys_accounts ( user_name, `password`, email ) VALUES ( '"
             + usr + "', '" + pwd + "', '" + email + "' );")
         response = {
@@ -95,7 +96,8 @@ def get_messageRecords_ajax():
         ") ORDER BY message_time DESC LIMIT 10) temp ORDER BY temp.message_time;"
     )
 
-    dao.execute("DELETE FROM unread_message_record WHERE message_to = " + p1_id + ";")
+    dao.execute("DELETE FROM unread_message_record WHERE message_to = " +
+                p1_id + ";")
 
     response = {"data": []}
     for i in range(len(result)):
@@ -111,7 +113,8 @@ def send_message():
     content = request.form['content']
     message_from = request.form['message_from']
     message_to = request.form['message_to']
-    dao.execute("CALL sp_insert_readmessage ( '" + content + "', " + message_from + ", " + message_to + " )")
+    dao.execute("CALL sp_insert_readmessage ( '" + content + "', " +
+                message_from + ", " + message_to + " )")
     return jsonify({"status": "Y"}), 200
 
 
@@ -184,12 +187,15 @@ def get_information():
 @app.route('/get_unread_message', methods=['get'])
 def get_unread_message():
     id = str(request.cookies.get('id'))
-    unread_number = dao.execute("SELECT COUNT(*) FROM unread_message_record WHERE message_to = " + id + ";")[0][0]
+    unread_number = dao.execute(
+        "SELECT COUNT(*) FROM unread_message_record WHERE message_to = " + id +
+        ";")[0][0]
     # unread_preson_number = \
     #     dao.execute("SELECT count(DISTINCT message_from) FROM unread_message_record WHERE message_to = " + id + ";")[0][
     #         0]
     unread_content_result = dao.execute(
-        "SELECT message_record.message_from, message_record.message_content FROM message_record WHERE message_record.message_id in (SELECT DISTINCT unread_message_record.message_id FROM unread_message_record  ) and message_to = " + id + " ORDER BY message_time DESC LIMIT 1")
+        "SELECT message_record.message_from, message_record.message_content FROM message_record WHERE message_record.message_id in (SELECT DISTINCT unread_message_record.message_id FROM unread_message_record  ) and message_to = "
+        + id + " ORDER BY message_time DESC LIMIT 1")
     response = {
         "unread_number": unread_number,
         # "unread_preson_number": unread_preson_number,
