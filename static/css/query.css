@@ -1,0 +1,15 @@
+#menu {
+    /*text-align: center;*/
+    /*width: 100%;*/
+    /*padding: 5px 10px;*/
+    font-size: 14px;
+    font-family: "微软雅黑";
+    /*left: 10px;*/
+    /*float: left;*/
+}
+.ToolLib{
+    float: left;
+}
+#mapCon{
+    margin-top:100px;
+}

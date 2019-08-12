@@ -1,0 +1,1022 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content=""/>
+    <script type="application/x-javascript">
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css'/>
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel='stylesheet' type='text/css'/>
+    <!-- Graph CSS -->
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <!-- jQuery -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet'
+          type='text/css'>
+    <!-- lined-icons -->
+    <link rel="stylesheet" href="../css/icon-font.min.css" type='text/css'/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <!-- /js -->
+    <script src="../js/jquery.min.js"></script>
+    <!-- //js-->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .newsCenterPanel {
+            width: 100%;
+            height: 793px;
+            background: #fff;
+            overflow: hidden;
+            *padding-bottom: 50px
+        }
+
+        .newsCenterPanel .title {
+            position: relative;
+            width: 410px;
+            height: 85px;
+            line-height: 85px;
+            margin: 35px auto 30px auto;
+            font-size: 50px;
+            font-weight: normal;
+            padding-top: 15px
+        }
+
+        .newsCenterPanel .title a {
+            display: block;
+            width: 100%;
+            color: #2e2e30;
+            text-align: center;
+        }
+
+        .newsCenterPanel_inner {
+            width: 1200px;
+            margin: 0 auto
+        }
+
+        .newsCenterPanel_inner .newContentBox {
+            float: left;
+            width: 550px;
+            height: 138px;
+            text-align: left;
+            vertical-align: top;
+            position: relative
+        }
+
+        .newsCenterPanel_inner .newContentBox.odd {
+            margin-right: 100px
+        }
+
+        .newsCenterPanel_inner .newContentBox a {
+            cursor: pointer
+        }
+
+        .newsCenterPanel_inner .newContentBox .newTitle {
+            float: left;
+            line-height: 44px;
+            height: 50px;
+            font-size: 16px;
+            color: #333;
+            width: 400px;
+            white-space: nowrap;
+            word-break: normal;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .newsCenterPanel_inner .newContentBox a:hover .newTitleIcon {
+            background-color: #4a68ec
+        }
+
+        .newsCenterPanel_inner .newContentBox .newTitleIcon {
+            width: 19px;
+            height: 19px;
+            background: url(../images/plus.png) center no-repeat;
+            background-color: #a6a6a6;
+            position: absolute;
+            right: 0;
+            top: 14px
+        }
+
+        .newsCenterPanel_inner .newContentBox .border {
+            position: absolute;
+            left: 87px;
+            top: 44px;
+            width: 21px;
+            border-top: 1px solid #4a68ec
+        }
+
+        .newsCenterPanel_inner .newContentBox .newContent {
+            float: left;
+            height: 50px;
+            width: 464px;
+            font-size: 14px;
+            line-height: 28px;
+            color: #b0b0b0;
+            margin-bottom: 50px;
+            overflow: hidden;
+            word-wrap: break-word;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+        }
+
+        .newContentBox .time {
+            width: 54px;
+            height: 54px;
+            border: 1px solid #4a68ec;
+            background: #fff;
+            text-align: center;
+            margin-right: 30px;
+            margin-top: 14px;
+            float: left
+        }
+
+        .newContentBox .time .day {
+            font-size: 20px;
+            color: #4c67e8;
+            padding: 6px 0 0 0
+        }
+
+        .newContentBox .time .ym {
+            font-size: 12px;
+            color: #b3b9f5
+        }
+
+        .newContentBox a:hover .time {
+            background: #4a68ec
+        }
+
+        .newContentBox a:hover .day {
+            color: #fff
+        }
+
+        .newContentBox a:hover .ym {
+            color: #b5bcf3
+        }
+
+        p.day {
+            margin: 0;
+        }
+    </style>
+    <style>
+        @font-face {
+            font-family: 'iconfont';
+            /* project id 1331180 */
+            src: url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.eot');
+            src: url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.eot?#iefix') format('embedded-opentype'),
+            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.woff2') format('woff2'),
+            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.woff') format('woff'),
+            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.ttf') format('truetype'),
+            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.svg#iconfont') format('svg');
+        }
+
+        .iconfont {
+            font-family: "iconfont", serif !important;
+            font-size: 16px;
+            font-style: normal;
+            -webkit-font-smoothing: antialiased;
+            -webkit-text-stroke-width: 0.2px;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+
+    <style>
+        .pag {
+            font-family: 'Open Sans', 'Helvetica', sans-serif;
+        }
+
+        .pag .description {
+            width: 500px;
+            height: auto;
+            padding: 25px;
+            margin: 50px auto 0;
+            background-color: #f2f2f2;
+            box-shadow: 0 5px 20px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .pag .description .sidenote {
+            display: block;
+            font-size: 11px;
+            padding-bottom: 5px;
+        }
+
+        .pag .description .sidenote.red {
+            color: red;
+        }
+
+        .pag .description .sidenote.green {
+            color: green;
+        }
+
+        .pag .page-numbers {
+            overflow: hidden;
+            display: flex;
+            width: 290px;
+            height: 80px;
+            margin: 60px auto 0;
+            text-align: center;
+        }
+
+        .pag .page-numbers li {
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            font-size: 32px;
+        }
+
+        .pag .page-numbers li:not(:first-child) {
+            margin-left: -10px;
+        }
+
+        .pag .page-numbers li:before {
+            content: attr(data-page);
+            position: absolute;
+            top: 30%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .pag .page-numbers li svg {
+            width: 80px;
+            height: 80px;
+        }
+
+        .pag .page-numbers.list-1 li svg circle {
+            transition: all ease 0.5s;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 220;
+        }
+
+        .pag .page-numbers.list-1 li.active svg circle {
+            transition-delay: 0.5s;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 0;
+        }
+
+        .pag .page-numbers.list-2 li svg circle {
+            transition: all ease 0.5s;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 220;
+        }
+
+        .pag .page-numbers.list-2 li:not(.active) svg circle {
+            transition-delay: 0.2s;
+        }
+
+        .pag .page-numbers.list-2 li.active svg circle {
+            transition-delay: 0.2s;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 0;
+        }
+
+        .pag .page-numbers.list-3 li svg circle {
+            transition: all ease 0.5s;
+            stroke-dasharray: 220;
+            stroke-dashoffset: 110;
+        }
+
+        .pag .page-numbers.list-3 li.active svg circle {
+            stroke-dashoffset: -110;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<div class="page-container">
+    <!--/content-inner-->
+    <div class="left-content">
+        <div class="inner-content">
+            <!-- header-starts -->
+
+            <div class="header-section">
+                <!--menu-right-->
+                <div class="top_menu">
+                    <div class="main-search">
+                        <form method=get action="http://www.google.com/search">
+                            <input type=hidden name=domains value="http://www.baidu.com">
+                            <input type=hidden name=sitesearch value="http://www.baidu.com">
+                            <input type="text" name=q value="站内搜索" onFocus="this.value = '';"
+                                   onBlur="if (this.value === '') {this.value = 'Search';}"
+                                   class="text"/>
+                            <input type="submit" value=""/>
+                        </form>
+                        <form method=get action="http://www.google.com/search" target="_blank">
+                            <input type="text" name=q value="bing搜索" onFocus="this.value = '';"
+                                   onBlur="if (this.value === '') {this.value = 'Search';}"
+                                   class="text"/>
+                            <input type="submit" value=""/>
+                        </form>
+                        <div class="close"><img src="../images/cross.png" alt=""/></div>
+                    </div>
+                    <div class="srch">
+                        <button></button>
+                    </div>
+                    <script type="text/javascript">
+                        $('.main-search').hide();
+                        $('button').click(function () {
+                                $('.main-search').show();
+                                $('.main-search text').focus();
+                            }
+                        );
+                        $('.close').click(function () {
+                            $('.main-search').hide();
+                        });
+                    </script>
+                    <!--/profile_details-->
+                    <div class="profile_details_left">
+                        <ul class="nofitications-dropdown">
+                            <li class="dropdown note dra-down">
+                                <div id="dd" class="wrapper-dropdown-3" tabindex="1">
+                                    <span>中文</span>
+                                    <ul class="dropdown">
+                                        <li><a class="deutsch">中文</a></li>
+                                        <li><a class="english">英语</a></li>
+                                    </ul>
+                                </div>
+                                <script type="text/javascript">
+                                    function DropDown(el) {
+                                        this.dd = el;
+                                        this.placeholder = this.dd.children('span');
+                                        this.opts = this.dd.find('ul.dropdown > li');
+                                        this.val = '';
+                                        this.index = -1;
+                                        this.initEvents();
+                                    }
+
+                                    DropDown.prototype = {
+                                        initEvents: function () {
+                                            var obj = this;
+
+                                            obj.dd.on('click', function (event) {
+                                                $(this).toggleClass('active');
+                                                return false;
+                                            });
+
+                                            obj.opts.on('click', function () {
+                                                var opt = $(this);
+                                                obj.val = opt.text();
+                                                obj.index = opt.index();
+                                                obj.placeholder.text(obj.val);
+                                            });
+                                        },
+                                        getValue: function () {
+                                            return this.val;
+                                        },
+                                        getIndex: function () {
+                                            return this.index;
+                                        }
+                                    };
+
+                                    $(function () {
+
+                                        var dd = new DropDown($('#dd'));
+
+                                        $(document).click(function () {
+                                            // all dropdowns
+                                            $('.wrapper-dropdown-3').removeClass('active');
+                                        });
+
+                                    });
+                                </script>
+
+                            </li>
+
+                            <li class="dropdown note">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                        class="fa fa-envelope-o"></i> <span class="badge">3</span></a>
+
+                                <ul class="dropdown-menu two first">
+                                    <li>
+                                        <div class="notification_header">
+                                            <h3>You have 3 new messages </h3>
+                                        </div>
+                                    </li>
+                                    <li><a href="#">
+                                        <div class="user_img"><img src="../images/1.jpg" alt=""></div>
+                                        <div class="notification_desc">
+                                            <p>Lorem ipsum dolor sit amet</p>
+                                            <p><span>1 hour ago</span></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </a></li>
+                                    <li class="odd"><a href="#">
+                                        <div class="user_img"><img src="../images/in.jpg" alt=""></div>
+                                        <div class="notification_desc">
+                                            <p>Lorem ipsum dolor sit amet </p>
+                                            <p><span>1 hour ago</span></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </a></li>
+                                    <li><a href="#">
+                                        <div class="user_img"><img src="../images/in1.jpg" alt=""></div>
+                                        <div class="notification_desc">
+                                            <p>Lorem ipsum dolor sit amet </p>
+                                            <p><span>1 hour ago</span></p>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </a></li>
+                                    <li>
+                                        <div class="notification_bottom">
+                                            <a href="#">See all messages</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown note">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="badge">5</span>
+                                </a>
+
+                                <ul class="dropdown-menu two">
+                                    <li>
+                                        <div class="notification_header">
+                                            <h3>You have 5 new notification</h3>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown note">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                                        class="fa fa-tasks"></i> <span class="badge blue1">9</span></a>
+                                <ul class="dropdown-menu two">
+                                    <li>
+                                        <div class="notification_header">
+                                            <h3>You have 9 pending task</h3>
+                                        </div>
+                                    </li>
+                                    <li><a href="#">
+                                        <div class="task-info">
+                                            <span class="task-desc">Database update</span><span
+                                                class="percentage">40%</span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="progress progress-striped active">
+                                            <div class="bar yellow" style="width:40%;"></div>
+                                        </div>
+                                    </a></li>
+                                    <li><a href="#">
+                                        <div class="task-info">
+                                            <span class="task-desc">Dashboard done</span><span
+                                                class="percentage">90%</span>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="progress progress-striped active">
+                                            <div class="bar green" style="width:90%;"></div>
+                                        </div>
+                                    </a></li>
+                                    <li><a href="#">
+                                        <div class="task-info">
+                                            <span class="task-desc">Mobile App</span><span
+                                                class="percentage">33%</span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="progress progress-striped active">
+                                            <div class="bar red" style="width: 33%;"></div>
+                                        </div>
+                                    </a></li>
+                                    <li><a href="#">
+                                        <div class="task-info">
+                                            <span class="task-desc">Issues fixed</span><span
+                                                class="percentage">80%</span>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="progress progress-striped active">
+                                            <div class="bar  blue" style="width: 80%;"></div>
+                                        </div>
+                                    </a></li>
+                                    <li>
+                                        <div class="notification_bottom">
+                                            <a href="#">See all pending task</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <div class="clearfix"></div>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--//profile_details-->
+                </div>
+                <!--//menu-right-->
+                <div class="clearfix"></div>
+            </div>
+            <!-- //header-ends -->
+
+            <!--outter-wp-->
+            <div class="outter-wp">
+                <!--sub-heard-part-->
+                <div class="sub-heard-part">
+                    <ol class="breadcrumb m-b-0">
+                        <li><a href="index.html">主页</a></li>
+                        <li class="active">天网恢恢</li>
+                        <li class="active">案情管理</li>
+                    </ol>
+                </div>
+                <!--//sub-heard-part-->
+                <div class="newsCenterPanel">
+                    <div class="title">
+                        <a href="#" target="_self">案情管理</a>
+                    </div>
+                    <div class="newsCenterPanel_inner">
+
+                        <!--                        <div class="newContentBox odd">-->
+                        <!--                            <a hidefocus="true" href="#">-->
+                        <!--                                <div class="time">-->
+                        <!--                                    <p class="day">2</p>-->
+                        <!--                                    <p class="ym">2019-1</p>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="newTitle">[精]科技网新产品“科技商城”正式上线</div>-->
+
+                        <!--                                <div class="newTitleIcon"></div>-->
+                        <!--                                <div class="border"></div>-->
+                        <!--                                <div class="newContent">-->
+                        <!--                                    1月2日，科技网新产品“科技商城”正式上线，商家企业将能通过新产品科技商城享受更优质的在线商城建设服务，轻松打造属于自己的在线商城-->
+                        <!--                                </div>-->
+                        <!--                            </a>-->
+
+                        <!--                        </div>-->
+
+                        <!--                        <div class="newContentBox even">-->
+                        <!--                            <a hidefocus="true" href="#">-->
+                        <!--                                <div class="time">-->
+                        <!--                                    <p class="day">29</p>-->
+                        <!--                                    <p class="ym">2018-12</p>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="newTitle">[精]科技网助力2018广州互联网+新经济发展论坛</div>-->
+
+                        <!--                                <div class="newTitleIcon"></div>-->
+                        <!--                                <div class="border"></div>-->
+                        <!--                                <div class="newContent">-->
+                        <!--                                    12月27日，2018广州互联网+新经济发展论坛在广州阳光酒店隆重举行，科技网作为此次论坛技术支持单位，也受邀参会共探未来共赢之路……-->
+                        <!--                                </div>-->
+                        <!--                            </a>-->
+
+                        <!--                        </div>-->
+
+                        <!--                        <div class="newContentBox odd">-->
+                        <!--                            <input type="checkbox" class="newTitleIcon">-->
+                        <!--                            <a hidefocus="true" href="#">-->
+                        <!--                                <div class="time">-->
+                        <!--                                    <p class="day">8</p>-->
+                        <!--                                    <p class="ym">2019-1</p>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="newTitle">20190109功能更新（1月第二周）</div>-->
+
+                        <!--                                &lt;!&ndash;                                <div class="newTitleIcon"></div>&ndash;&gt;-->
+                        <!--                                <div class="border"></div>-->
+                        <!--                                <div class="newContent">-->
+                        <!--                                    手机码验证防刷、作品分享-->
+                        <!--                                </div>-->
+                        <!--                            </a>-->
+
+                        <!--                        </div>-->
+
+                        <!--                        <div class="newContentBox even">-->
+                        <!--                            <a hidefocus="true" href="#">-->
+                        <!--                                <div class="time">-->
+                        <!--                                    <p class="day">8</p>-->
+                        <!--                                    <p class="ym">2019-1</p>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="newTitle">你还在烦恼如何制作电子邀请函吗？快看这里</div>-->
+
+                        <!--                                <div class="newTitleIcon"></div>-->
+                        <!--                                <div class="border"></div>-->
+                        <!--                                <div class="newContent">-->
+                        <!--                                    将近年尾，很多公司企业都会准备举行一些大型活动，例如年会、颁奖会等等，来激励员工一年的辛苦劳动。邀请员工出席这些大型活动，得先要准备好一个电子邀请函，那么我们又该怎样去制作电子邀请函呢？-->
+                        <!--                                </div>-->
+                        <!--                            </a>-->
+
+                        <!--                        </div>-->
+
+                        <!--                        <div class="newContentBox odd">-->
+                        <!--                            <a hidefocus="true" href="#">-->
+                        <!--                                <div class="time">-->
+                        <!--                                    <p class="day">7</p>-->
+                        <!--                                    <p class="ym">2019-1</p>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="newTitle">你是否缺少一款好用的H5制作软件？</div>-->
+
+                        <!--                                <div class="newTitleIcon"></div>-->
+                        <!--                                <div class="border"></div>-->
+                        <!--                                <div class="newContent">-->
+                        <!--                                    又进入了一年的尾声，不管是企业、公司还是商家，都可能会举办很多活动，在这种情况下，不管是做H5邀请函、H5传单等，都需要用到H5制作软件。而我们烦恼的是，如何才能够找到一款好用的制作软件来做H5呢？-->
+                        <!--                                </div>-->
+                        <!--                            </a>-->
+
+                        <!--                        </div>-->
+
+                        <!--                        <div class="newContentBox even">-->
+                        <!--                            <a hidefocus="true" href="#">-->
+                        <!--                                <div class="time">-->
+                        <!--                                    <p class="day">4</p>-->
+                        <!--                                    <p class="ym">2019-1</p>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="newTitle">H5页面设计风格大盘点！</div>-->
+
+                        <!--                                <div class="newTitleIcon"></div>-->
+                        <!--                                <div class="border"></div>-->
+                        <!--                                <div class="newContent">-->
+                        <!--                                    H5页面发展到现在，已经不像几年前那样稀有了，甚至可以说是遍地都是。只有好的H5页面才能够达到宣传推广的效果。但是设计有限，灵感缺乏该怎么办呢？下面小编来给大家盘点几个H5页面设计风格！-->
+                        <!--                                </div>-->
+                        <!--                            </a>-->
+
+                        <!--                        </div>-->
+
+                        <!--                        <div class="newContentBox odd">-->
+                        <!--                            <a hidefocus="true" href="#">-->
+                        <!--                                <div class="time">-->
+                        <!--                                    <p class="day">3</p>-->
+                        <!--                                    <p class="ym">2019-1</p>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="newTitle">H5场景制作原来可以有这么多风格！</div>-->
+
+                        <!--                                <div class="newTitleIcon"></div>-->
+                        <!--                                <div class="border"></div>-->
+                        <!--                                <div class="newContent">-->
+                        <!--                                    H5场景制作是当下比较热门的页面制作方式，然而还是有很多人对这种制作方式不太了解。今天小编就跟大家分享下H5场景制作的5种风格，看看你心仪哪种。-->
+                        <!--                                </div>-->
+                        <!--                            </a>-->
+
+                        <!--                        </div>-->
+
+                        <!--                        <div class="newContentBox even">-->
+                        <!--                            <a hidefocus="true" href="#">-->
+                        <!--                                <div class="time">-->
+                        <!--                                    <p class="day">2</p>-->
+                        <!--                                    <p class="ym">2019-1</p>-->
+                        <!--                                </div>-->
+                        <!--                                <div class="newTitle">3步制作一款酷炫的年会邀请函</div>-->
+
+                        <!--                                <div class="newTitleIcon"></div>-->
+                        <!--                                <div class="border"></div>-->
+                        <!--                                <div class="newContent">-->
+                        <!--                                    2018年已经余额不足，各家企业也在开始筹备年会的相关事宜，全体员工齐聚一起，回顾过去，展望未来。年会通知，你还在使用通讯工具进行单调、乏味的文字通知形式吗？使用更潮流的通知方式——酷炫的H5年会邀请函，年会的喜庆气息会更浓厚，对于企业文化的发展也更有利。-->
+                        <!--                                </div>-->
+                        <!--                            </a>-->
+
+                        <!--                        </div>-->
+
+                    </div>
+                    <div class="col-md-1 col-md-offset-9">
+                        <button class="btn btn-primary btn-lg btn-block delete">删除</button>
+                    </div>
+                </div>
+
+                <div class="pag">
+                    <ol class="page-numbers list-3">
+                        <li class="active" data-page="1">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="40" cy="40" r="35" stroke="#00BDFF" stroke-width="10"/>
+                            </svg>
+                        </li>
+                        <li data-page="2">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="40" cy="40" r="35" stroke="#00BDFF" stroke-width="10"/>
+                            </svg>
+                        </li>
+                        <li data-page="3">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="40" cy="40" r="35" stroke="#00BDFF" stroke-width="10"/>
+                            </svg>
+                        </li>
+                        <li data-page="4">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="40" cy="40" r="35" stroke="#00BDFF" stroke-width="10"/>
+                            </svg>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <!--//outer-wp-->
+        </div>
+    </div>
+    <!--//content-inner-->
+    <!--/sidebar-menu-->
+    <div class="sidebar-menu">
+        <header class="logo">
+            <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="index.html"> <span
+                id="logo">
+                        <h1>Augment</h1>
+                    </span></a>
+        </header>
+        <div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
+        <!--/down-->
+        <div class="down">
+            <a href="profile.html"><img src="../images/admin.jpg" alt=""></a>
+            <a href="profile.html"><span class="name-caret">Jasmin Leo</span></a>
+            <p>System Administrator in Company</p>
+            <ul>
+                <li><a class="tooltips" href="profile.html"><span>Profile</span><i class="lnr lnr-user"></i></a>
+                </li>
+                <li><a class="tooltips" href="index.html"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
+                <li><a class="tooltips" href="index.html"><span>Log out</span><i
+                        class="lnr lnr-power-switch"></i></a>
+                </li>
+            </ul>
+        </div>
+        <!--//down-->
+        <div class="menu">
+            <ul id="menu">
+                <li>
+                    <a class="disabled">
+                        <!--                        <i class="lnr lnr-envelope"></i>-->
+                        <i class="iconfont">&#xe72f;</i>
+                        <span>案情在线</span>
+                        <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="iconfont">&#xe610;</i>
+                        <span>今日任务</span>
+                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
+                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="iconfont">&#xe6af;</i>
+                        <span>安图热搜</span>
+                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
+                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="iconfont">&#xe613;</i>
+                        <span>往期案情</span>
+                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
+                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="iconfont">&#xe7a6;</i>
+                        <span>人脸搜索</span>
+                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
+                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="disabled">
+                        <i class="iconfont">&#xe633;</i>
+                        <span>分析预警</span>
+                        <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="iconfont">&#xe654;</i>
+                        <span>危险分析</span>
+                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
+                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="iconfont">&#xe79e;</i>
+                        <span>案情分析</span>
+                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
+                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="iconfont">&#xe628;</i>
+                        <span>案情预警</span>
+                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                    </a>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
+                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<script>
+    var toggle = true;
+
+    $(".sidebar-icon").click(function () {
+        if (toggle) {
+            $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+            $("#menu span").css({
+                "position": "absolute"
+            });
+        } else {
+            $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+            setTimeout(function () {
+                $("#menu span").css({
+                    "position": "relative"
+                });
+            }, 400);
+        }
+
+        toggle = !toggle;
+    });
+</script>
+<!--js -->
+<script src="../js/templates/jquery.nicescroll.js"></script>
+<script src="../js/templates/scripts.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="../js/bootstrap.min.js"></script>
+
+<script src="../js/common/getuser.js"></script>
+
+<script src="../js/common/bar.js"></script>
+
+<script>
+    const list1Pages = document.querySelectorAll('.list-1 li[data-page]');
+    const list2Pages = document.querySelectorAll('.list-2 li[data-page]');
+    const list3Pages = document.querySelectorAll('.list-3 li[data-page]');
+
+    handlePagination = (pages, target) => {
+        pages.forEach(number => {
+            number.classList.toggle('active', number === target);
+        });
+    };
+
+    list1Pages.forEach(number => {
+        number.addEventListener('click', e => {
+            handlePagination(list1Pages, e.target);
+        });
+    });
+    list2Pages.forEach(number => {
+        number.addEventListener('click', e => {
+            handlePagination(list2Pages, e.target);
+        });
+    });
+    list3Pages.forEach(number => {
+        number.addEventListener('click', e => {
+            handlePagination(list3Pages, e.target);
+        });
+    });
+</script>
+
+<script>
+    page = function (num) {
+        let data = {"num": num};
+        $.ajax({
+            url: "http://127.0.0.1:5000/get_case",    //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: false,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: data,
+            type: "post",   //请求方式,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function (data) {
+                //请求成功时处理
+                $(".newsCenterPanel_inner").empty();
+                for (let i = 1; i <= 8; ++i) {
+                    if (i % 2 === 1) {
+                        $(".newsCenterPanel_inner").append("" +
+                            "                        <div class=\"newContentBox odd\">\n" +
+                            "                            <a hidefocus=\"true\" href=\"#\">\n" +
+                            "                                <div class=\"time\">\n" +
+                            "                                    <p class=\"day\">" + i.toString() + "</p>\n" +
+                            "                                    <p class=\"ym\">" + data.data[i - 1].inform_time + "</p>\n" +
+                            "                                </div>\n" +
+                            "                                <div class=\"newTitle\">" + data.data[i - 1].case_name + "</div>\n" +
+                            "\n" +
+                            "                                <input type=\"checkbox\" class=\"newTitleIcon\" case_id='" + data.data[i - 1].case_id + "' >\n" +
+                            "                                <div class=\"border\"></div>\n" +
+                            "                                <div class=\"newContent\">\n" +
+                            "                                    " + "(" + data.data[i - 1].case_id + ")" + data.data[i - 1].case_position + "\n" +
+                            "                                </div>\n" +
+                            "                            </a>\n" +
+                            "\n" +
+                            "                        </div>");
+                    } else {
+                        $(".newsCenterPanel_inner").append("" +
+                            "                        <div class=\"newContentBox even\">\n" +
+                            "                            <a hidefocus=\"true\" href=\"#\">\n" +
+                            "                                <div class=\"time\">\n" +
+                            "                                    <p class=\"day\">" + i + "</p>\n" +
+                            "                                    <p class=\"ym\">2018-12</p>\n" +
+                            "                                </div>\n" +
+                            "                                <div class=\"newTitle\">" + data.data[i - 1].case_name + "</div>\n" +
+                            "\n" +
+                            "                                <input type=\"checkbox\" class=\"newTitleIcon\" case_id='" + data.data[i - 1].case_id + "' >\n" +
+                            "                                <div class=\"border\"></div>\n" +
+                            "                                <div class=\"newContent\">\n" +
+                            "                                    " + "(" + data.data[i - 1].case_id + ")" + data.data[i - 1].case_position + "\n" +
+                            "                                </div>\n" +
+                            "                            </a>\n" +
+                            "\n" +
+                            "                        </div>");
+                    }
+                }
+            }
+        });
+    };
+
+    delete_case = function (data) {
+        $.ajax({
+            url: "http://127.0.0.1:5000/delete_case",    //请求的url地址
+            // dataType: "json",   //返回格式为json
+            async: false,//请求是否异步，默认为异步，这也是ajax重要特性
+            data: data,
+            type: "post",   //请求方式,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function () {
+                //请求成功时处理
+            }
+        });
+    };
+
+    page(1);
+    $('ol>li').click(function () {
+        n = parseInt($(this).attr('data-page'));
+        page(n)
+    });
+
+    $('.delete').click(function () {
+        case_id = [];
+        $("input[type='checkbox']:checked").each(function () {
+            case_id.push($(this).attr('case_id'));
+        });
+        delete_case({"case_id": case_id});
+        self.location.href = ""
+    })
+
+</script>
+
+</body>
+
+</html>

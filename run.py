@@ -1,9 +1,10 @@
 #!./venv/bin/python
 # -*- coding: utf-8 -*-
 
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, jsonify, request, make_response, json
 from flask_cors import CORS
-from dao import dao
+from tools.dao import dao
+import random, requests, math
 
 app = Flask(__name__, static_url_path='')
 CORS(app, supports_credentials=True)
@@ -13,7 +14,7 @@ dao = dao('49.234.3.188', 3306, 'root', '123456', 'gis')
 
 @app.route('/')
 def index():
-    return app.send_static_file('html/index.html')
+    return app.send_static_file('html/welcome.html')
 
 
 @app.route("/html/<htmlName>", methods=['get'])
@@ -190,6 +191,7 @@ def get_unread_message():
     unread_number = dao.execute(
         "SELECT COUNT(*) FROM unread_message_record WHERE message_to = " + id +
         ";")[0][0]
+
     # unread_preson_number = \
     #     dao.execute("SELECT count(DISTINCT message_from) FROM unread_message_record WHERE message_to = " + id + ";")[0][
     #         0]
@@ -207,6 +209,134 @@ def get_unread_message():
             "message_content": i[1]
         })
     return jsonify(response), 200
+
+
+@app.route('/get_case', methods=['post'])
+def get_case():
+    number = int(request.form['num'])
+    result = dao.execute(
+        "SELECT case_id, case_name, DATE_FORMAT(inform_time, '%Y-%m') as inform_time, case_position FROM `case` ORDER BY  case_id DESC;")
+    response = {
+        "data": []
+    }
+    begin = (number - 1) * 8
+    end = number * 8 - 1
+    for i in range(begin, min(end + 1, begin + len(result))):
+        response["data"].append({
+            "case_id": result[i][0],
+            "case_name": result[i][1],
+            "inform_time": result[i][2],
+            "case_position": result[i][3]
+        })
+    return jsonify(response)
+
+
+@app.route('/delete_case', methods=['post'])
+def delete_case():
+    case_id = request.form.getlist('case_id[]')
+    for i in case_id:
+        dao.execute("DELETE FROM `case` WHERE case_id = " + i + ";")
+    return jsonify({"status": "Y"}), 200
+
+
+@app.route('/insert_case', methods=['post'])
+def insert_case():
+    case_type = request.form['case_type']
+    case_position = request.form['case_position']
+    case_lat = request.form['case_lat']
+    case_lon = request.form['case_lon']
+    inform_time = request.form['inform_time']
+    case_description = request.form['case_description']
+
+    print(
+        "INSERT INTO `case` (case_type, case_position, case_lon, case_lat,case_description,inform_time) VALUES ('" + case_type + "', '" + case_position + "', " + case_lon + ", " + case_lat + ",'" + case_description + "','" + inform_time + "')")
+    dao.execute(
+        "INSERT INTO `case` (case_type, case_position, case_lon, case_lat,case_description,inform_time) VALUES ('" + case_type + "', '" + case_position + "', " + case_lon + ", " + case_lat + ",'" + case_description + "','" + inform_time + "')")
+    return jsonify({"status": "Y"}), 200
+
+
+@app.route('/get_wuhan', methods=['get'])
+def get_wuhan():
+    result = dao.execute("SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case` ;")
+    response = []
+    random_list = list(range(6000))
+    random.shuffle(random_list)
+    for i in random_list[:499]:
+        response.append({
+            "case_id": result[i][0],
+            "case_name": result[i][1],
+            "case_type": result[i][2],
+            "time": result[i][13],
+            "case_position": result[i][6],
+            "case_description": result[i][9],
+            "case_status": result[i][10],
+            "X": float(result[i][11]),
+            "Y": float(result[i][12]),
+            "lng": float(result[i][7]),
+            "lat": float(result[i][8]),
+        })
+    return jsonify(response), 200
+
+
+@app.route('/driving', methods=['POST'])
+def driving():
+    key = 'dddd10e80880227d5396a1cb3b23582c'
+    api = 'https://restapi.amap.com/v3/direction/driving'
+    origin = str(request.form["origin"])
+    destination = str(request.form["destination"])
+    extensions = 'all'
+    data = {
+        'key': key,
+        'origin': origin,
+        'destination': destination,
+        'extensions': extensions,
+        'strategy': 10
+    }
+    r = requests.get(api, params=data)
+    data = json.loads(r.text)
+    if data['status'] != '1':
+        response = {
+            'status': 'N',
+            'message': 'error'
+        }
+    else:
+        path_count = int(data['count'])
+        paths = data['route']['paths']
+        values = []
+        for i in range(path_count):
+            roads = []
+            path = paths[i]
+            distance = path['distance']
+            duration = path['duration']
+            strategy = path['strategy']
+            restriction = path['restriction']
+            traffic_lights = path['traffic_lights']
+            steps = path['steps']
+            for step in steps:
+                polyline = step['polyline']
+                for ss in polyline.split(';'):
+                    earth_rad = 6378137.0
+                    sss = ss.split(',')
+                    sss[0] = float(sss[0]) * math.pi / 180 * earth_rad
+                    tmp = float(sss[1]) * math.pi / 180
+                    sss[1] = earth_rad / 2 * math.log((1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+                    roads.append(sss)
+            value = {
+                'distance': distance,
+                'duration': duration,
+                'strategy': strategy,
+                'restriction': restriction,
+                'traffic_lights': traffic_lights,
+                'roads': roads
+            }
+            values.append(value)
+        response = {
+            'status': 'Y',
+            'message': 'Success',
+            'value': values
+        }
+    response = make_response(response)
+    return response, 200
 
 
 # @app.route('/set_cookie', methods=['get'])

@@ -1,17 +1,17 @@
-from dao import dao
-import pandas, csv, random
+from tools.dao import dao
+import csv, random
 dao = dao('49.234.3.188', 3306, 'root', '123456', 'gis')
 
 
 def insert(a, b, c, d):
     dao.execute(
-        "INSERT INTO `case` (case_type, case_position, case_lat, case_lon) VALUES ('"
+        "INSERT INTO `case` (case_type, case_position, case_lon, case_lat) VALUES ('"
         + a + "', '" + b + "', " + str(c) + ", " + str(d) + ")")
     pass
 
 
 if __name__ == "__main__":
-    with open('hubei_wuhan_hongshan_POIs.csv') as csv_file:
+    with open('../hubei_wuhan_hongshan_POIs.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:

@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <Document>
+        <name>antu_data</name>
+        <atom:author>
+            <atom:name>antu</atom:name>
+        </atom:author>
+        <Folder>
+	
+<Placemark>
+	<Point>
+		<coordinates>114.2478297,30.5554393</coordinates>
+	</Point>
+</Placemark>
+
+<Placemark>
+	<Point>
+		<coordinates>114.42453,30.607512</coordinates>
+	</Point>
+</Placemark>
+
+<Placemark>
+	<Point>
+		<coordinates>114.31573,30.556978</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.30176,30.59279</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.26511,30.631327</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.906618,30.44610894</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.98214,30.10088</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3162001,30.58108413</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.34314,30.580563</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.28504,30.57511</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.281,30.568417</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.30176,30.59279</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.30176,30.59279</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.33415,30.591654</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.85983,30.191936</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.31573,30.556978</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.906618,30.44610894</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.28769,30.572565</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.28339,30.566767</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.22807,30.559277</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.2974,30.594437</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.24667,30.619873</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.31573,30.556978</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.30176,30.59279</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3034093,30.59938506</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.288994,30.576744</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.288994,30.576744</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3104401,30.60583397</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.84033,30.775202</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.26558,30.547016</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.28339,30.566767</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.38752,30.630537</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.29441,30.574085</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.266235,30.567627</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.30176,30.59279</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.26364,30.52074</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.30308,30.597963</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.38626,30.637268</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3162001,30.58108413</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.21954,30.55198</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3045,30.551874</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.2838,30.56827</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.30176,30.59279</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.30176,30.59279</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.2613709,30.62514759</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.22807,30.559277</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.2974,30.594437</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.22928,30.579288</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.37745,30.876223</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.24667,30.619873</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.2613709,30.62514759</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.28832,30.60196</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.8713,30.64679</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.6320089,30.83599681</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.15457,30.93089</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3818,30.621574</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.299995,30.590532</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.29914,30.54944</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.27593,30.583237</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3151316,30.64253532</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3235784,30.53442711</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.6289986,30.02015494</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.6289986,30.02015494</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.6289986,30.02015494</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.37209,30.529064</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.37209,30.529064</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.37209,30.529064</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.961624,30.176208</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.961624,30.176208</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.26041,30.571905</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32274,30.526684</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32274,30.526684</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3137445,30.55694799</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.01289,33.580883</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.27165,30.547527</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.21954,30.55198</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.31731,30.550783</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.430466,30.878206</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.15457,30.93089</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3253,30.573849</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.0286999,30.65411538</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.308975,30.53285</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.308975,30.53285</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.308975,30.53285</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.308975,30.53285</coordinates>
+	</Point>
+</Placemark>
+
+
+<Placemark>
+	<Point>
+		<coordinates>114.27607,30.584293</coordinates>
+	</Point>
+</Placemark>
+
+<Placemark>
+	<Point>
+		<coordinates>114.27593,30.583237</coordinates>
+	</Point>
+</Placemark>
+
+<Placemark>
+	<Point>
+		<coordinates>114.27935,30.480001</coordinates>
+	</Point>
+</Placemark>
+
+<Placemark>
+	<Point>
+		<coordinates>114.27165,30.547527</coordinates>
+	</Point>
+</Placemark>
+
+<Placemark>
+	<Point>
+		<coordinates>114.27488,30.566435</coordinates>
+	</Point>
+</Placemark>
+
+<Placemark>
+	<Point>
+		<coordinates>114.27158,30.54118</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.2864466,30.4870704</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3248122,30.35450863</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32274,30.526684</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32723,30.375715</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32723,30.375715</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32723,30.375715</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32274,30.526684</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32274,30.526684</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32679,30.353891</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32679,30.353891</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32943,30.517632</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32943,30.517632</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32723,30.375715</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32723,30.375715</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.32723,30.375715</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.345894,30.501379</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.34304,30.477842</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.34965,30.511904</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.34438,30.353933</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.364778,30.51813684</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3644629,30.4801596</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3644629,30.4801596</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3644629,30.4801596</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3855597,30.34252915</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.3855597,30.34252915</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.38585,30.501345</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.38585,30.501345</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.38585,30.501345</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.4063169,30.51813424</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<Point>
+		<coordinates>114.4063169,30.51813424</coordinates>
+	</Point>
+</Placemark>
+
+
+
+</Folder>
+    </Document>
+</kml>

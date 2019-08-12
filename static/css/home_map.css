@@ -1,0 +1,144 @@
+.radius-box {
+    width: 200px;
+    position: fixed;
+    top: 35%;
+    left: 38%;
+    display: none;
+}
+/*---------------------*/
+#menu {
+    width: 100%;
+    height: 20px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-family: "微软雅黑";
+    left: 10px;
+    text-align: center;
+}
+
+#mapCon {
+    width: 100%;
+    height: 95%;
+    position: absolute;
+}
+
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    border-width: 20px;
+    bottom: 25px;
+    left: -67px;
+}
+
+.ol-popup:after,
+.ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
+
+.ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+
+.ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
+
+.ol-popup-closer:after {
+    content: "✖";
+}
+
+#popup-content {
+    font-size: 20px;
+    font-family: "微软雅黑";
+}
+
+#popup-content .markerInfo {
+    font-weight: bold;
+}
+
+/* 自定义当前位置样式 */
+
+.ol-zoom-extent {
+    left: 0;
+    bottom: 170px;
+    right: auto;
+    top: auto;
+}
+
+.ol-scale-line {
+    left: 50px;
+    bottom: 175px;
+    right: auto;
+    top: auto;
+}
+
+/*=S 自定义鹰眼样式 */
+
+.ol-custom-overviewmap,
+.ol-custom-overviewmap.ol-uncollapsible {
+    /*bottom: auto;
+    left: auto;*/
+    left: 0;
+    bottom: 0;
+    right: auto;
+    top: auto;
+    /* 右侧显示 */
+    /*right: 0;*/
+    /* 顶部显示 */
+    /*top: 0;*/
+}
+
+/* 鹰眼控件展开时控件外框的样式 */
+
+.ol-custom-overviewmap:not(.ol-collapsed) {
+    border: 1px solid black;
+}
+
+/* 鹰眼控件中地图容器样式 */
+
+.ol-custom-overviewmap .ol-overviewmap-map {
+    border: none;
+    width: 300px;
+}
+
+/* 鹰眼控件中显示当前窗口中主图区域的边框 */
+
+.ol-custom-overviewmap .ol-overviewmap-box {
+    border: 2px solid red;
+}
+
+/* 鹰眼控件展开时其控件按钮图标的样式 */
+
+.ol-custom-overviewmap:not(.ol-collapsed) button {
+    bottom: auto;
+    left: auto;
+    right: 1px;
+    top: 1px;
+}
+
+/*=E 自定义鹰眼样式 */
+/*---------------------*/
