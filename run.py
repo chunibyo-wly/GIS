@@ -80,6 +80,16 @@ def login_ajax():
     return response
 
 
+@app.route('/logout', methods=['get'])
+def logout():
+    response = make_response({
+        "status": "Y",
+        "message": "退出成功",
+    })
+    response.delete_cookie("id")
+    return response, 200
+
+
 @app.route('/get_usrid_ajax', methods=['get'])
 def get_usrid_ajax():
     id = request.cookies.get('id')

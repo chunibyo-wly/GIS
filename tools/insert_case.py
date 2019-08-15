@@ -11,7 +11,7 @@ def insert(a, b, c, d):
 
 
 if __name__ == "__main__":
-    with open('../hubei_wuhan_hongshan_POIs.csv') as csv_file:
+    with open('hubei_wuhan_hongshan_POIs.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:

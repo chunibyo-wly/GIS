@@ -2352,21 +2352,28 @@ ol.breadcrumb.m-b-0 li a:hover {
     margin: 3px 0;
 }
 
-#os-Other-lbl {
-    border-left: #ea4c89 solid 1.4em;
-    padding-left: 0.5em;
-    font-size: 1em;
-    color: #777;
-    font-family: 'Roboto', sans-serif;
-}
+/*#os-Other-lbl {*/
+/*    border-left: #ea4c89 solid 1.4em;*/
+/*    padding-left: 0.5em;*/
+/*    font-size: 1em;*/
+/*    color: #777;*/
+/*    font-family: 'Roboto', sans-serif;*/
+/*}*/
 
-#os-Mac-lbl {
+/*#os-Mac-lbl {*/
+/*    border-left: #002561 solid 1.4em;*/
+/*    padding-left: 0.5em;*/
+/*    font-size: 1em;*/
+/*    color: #777;*/
+/*    font-family: 'Roboto', sans-serif;*/
+/*}*/
+
+.os {
     border-left: #002561 solid 1.4em;
     padding-left: 0.5em;
     font-size: 1em;
     color: #777;
     font-family: 'Roboto', sans-serif;
-    padding-left: .5em;
 }
 
 .grid-graph span {
