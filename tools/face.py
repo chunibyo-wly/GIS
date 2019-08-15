@@ -23,13 +23,28 @@ def get_facetoken(img_url):
     return post(url, data)["faces"][0]["face_token"]
 
 
-def search():
+def getJSON(url):
+    with open(url) as f:
+        return json.load(f)
+
+
+def updateJSON(data):
+    with open("./suspects.json", "r+") as f:
+        f.seek(0)  # rewind
+        json.dump(data, f)
+        f.truncate()
+
+
+def search(img_url):
     url = "https://api-cn.faceplusplus.com/facepp/v3/search"
     data = {
         "api_key": "GWqaAqG0MfSfEfTiVKu0taglGeaXWasF",
         "api_secret": "QCIdvQUzMN1ElGJVxDjH96Qgws7rgK4o",
-        # "image_base64": getBase64("faceset/5.png"),
+        "image_base64": getBase64(img_url),
+        "outer_id": "antu",
+        "return_result_count": 4
     }
+    return post(url, data)
 
 
 def getfacesets():
@@ -37,9 +52,21 @@ def getfacesets():
     data = {
         "api_key": "GWqaAqG0MfSfEfTiVKu0taglGeaXWasF",
         "api_secret": "QCIdvQUzMN1ElGJVxDjH96Qgws7rgK4o",
+        "start": 1
     }
     r = post(url, data)
     print(r)
+
+
+def getfaceset():
+    url = "https://api-cn.faceplusplus.com/facepp/v3/faceset/getdetail"
+    data = {
+        "api_key": "GWqaAqG0MfSfEfTiVKu0taglGeaXWasF",
+        "api_secret": "QCIdvQUzMN1ElGJVxDjH96Qgws7rgK4o",
+        "outer_id": "antu"
+    }
+    r = post(url, data)
+    print(r["face_count"])
 
 
 def createfacesets():
@@ -54,19 +81,41 @@ def createfacesets():
     print(post(url, data))
 
 
-def addface(img_url):
+def addface(face_token):
     url = " https://api-cn.faceplusplus.com/facepp/v3/faceset/addface"
     data = {
         "api_key": "GWqaAqG0MfSfEfTiVKu0taglGeaXWasF",
         "api_secret": "QCIdvQUzMN1ElGJVxDjH96Qgws7rgK4o",
         "outer_id": "antu",
-        "face_tokens": get_facetoken(img_url)
+        "face_tokens": face_token
     }
-    print(post(url, data))
+    r = post(url, data)
+    if "error_message" in r:
+        print(r["error_message"])
+    else:
+        print(r["face_count"])
+
+
+def removeAllFace():
+    url = "https://api-cn.faceplusplus.com/facepp/v3/faceset/removeface"
+    data = {
+        "api_key": "GWqaAqG0MfSfEfTiVKu0taglGeaXWasF",
+        "api_secret": "QCIdvQUzMN1ElGJVxDjH96Qgws7rgK4o",
+        "outer_id": "antu",
+        "face_tokens": "RemoveAllFaceTokens"
+    }
+    post(url, data)
 
 
 if __name__ == "__main__":
-    # createfacesets()
-    getfacesets()
-    # get_facetoken("./faceset/5.png")
-    # addface("./faceset/5.png")
+    data = getJSON("./suspects.json")
+    print(data)
+    # for i in range(len(data)):
+    #     token = get_facetoken(data[i]["img_url"])
+    #     data[i]["token"] = token
+    #     addface(token)
+
+    # updateJSON(data)
+    # getfaceset()
+    result = search("./faceset/8.jpg")
+    print(result["results"][0]["face_token"])

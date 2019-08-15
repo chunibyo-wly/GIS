@@ -6,6 +6,9 @@ from flask_cors import CORS
 from tools.dao import dao
 import random, requests, math
 
+from tools.base64toimg import getImg
+import tools.face as fa
+
 app = Flask(__name__, static_url_path='')
 CORS(app, supports_credentials=True)
 
@@ -347,6 +350,33 @@ def driving():
         }
     response = make_response(response)
     return response, 200
+
+
+@app.route('/face', methods=['post'])
+def face():
+    token2url = {}
+    data = fa.getJSON("./tools/suspects.json")
+
+    for i in data:
+        token2url[i["token"]] = i["img_url"]
+
+    base64_data = request.form['base64_data']
+    getImg(base64_data, "tempFile.png")
+    results = fa.search("./tempFile.png")
+    # print(results["results"][0]["face_token"])
+
+    for i in results["results"]:
+        print(i["face_token"], token2url[i["face_token"]])
+
+    return jsonify({
+        "status": "Y",
+        "img_url": [
+            token2url[results["results"][0]["face_token"]],
+            token2url[results["results"][1]["face_token"]],
+            token2url[results["results"][2]["face_token"]],
+            token2url[results["results"][3]["face_token"]]
+        ]
+    }), 200
 
 
 # @app.route('/set_cookie', methods=['get'])
