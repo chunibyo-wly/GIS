@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Profile</title>
+    <title>个人主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content=""/>
@@ -37,14 +37,13 @@
 
     <style>
         @font-face {
-            font-family: 'iconfont';
-            /* project id 1331180 */
-            src: url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.eot');
-            src: url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.eot?#iefix') format('embedded-opentype'),
-            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.woff2') format('woff2'),
-            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.woff') format('woff'),
-            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.ttf') format('truetype'),
-            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.svg#iconfont') format('svg');
+            font-family: 'iconfont';  /* project id 1331180 */
+            src: url('//at.alicdn.com/t/font_1331180_9r9zljro799.eot');
+            src: url('//at.alicdn.com/t/font_1331180_9r9zljro799.eot?#iefix') format('embedded-opentype'),
+            url('//at.alicdn.com/t/font_1331180_9r9zljro799.woff2') format('woff2'),
+            url('//at.alicdn.com/t/font_1331180_9r9zljro799.woff') format('woff'),
+            url('//at.alicdn.com/t/font_1331180_9r9zljro799.ttf') format('truetype'),
+            url('//at.alicdn.com/t/font_1331180_9r9zljro799.svg#iconfont') format('svg');
         }
 
         .iconfont {
@@ -70,19 +69,19 @@
                 <!--menu-right-->
                 <div class="top_menu">
                     <div class="main-search">
-                        <form method=get action="http://www.google.com/search">
-                            <input type=hidden name=domains value="http://www.baidu.com">
-                            <input type=hidden name=sitesearch value="http://www.baidu.com">
+                        <form action="searchInsite.html" target="_blank">
                             <input type="text" name=q value="站内搜索" onFocus="this.value = '';"
-                                   onBlur="if (this.value === '') {this.value = 'Search';}"
+                                   onBlur="if (this.value === '') {this.value = '站内搜索';}"
                                    class="text"/>
-                            <input type="submit" value=""/>
+                            <input type="submit" value=""
+                                   onclick="setTimeout(function () {$('input[value=\'站内搜索\']').val('站内搜索');}, 1000);"/>
                         </form>
-                        <form method=get action="http://www.google.com/search" target="_blank">
-                            <input type="text" name=q value="bing搜索" onFocus="this.value = '';"
-                                   onBlur="if (this.value === '') {this.value = 'Search';}"
+                        <form action="http://www.baidu.com/s" target="_blank">
+                            <input type="text" name="wd" value="Baidu搜索" onFocus="this.value = '';"
+                                   onBlur="if (this.value === '') {this.value = 'Baidu搜索';}"
                                    class="text"/>
-                            <input type="submit" value=""/>
+                            <input type="submit" value=""
+                                   onclick="setTimeout(function () {$('input[value=\'Baidu搜索\']').val('Baidu搜索');}, 1000);"/>
                         </form>
                         <div class="close"><img src="../images/cross.png" alt=""/></div>
                     </div>
@@ -268,7 +267,7 @@
                                     </a></li>
                                     <li>
                                         <div class="notification_bottom">
-                                            <a href="#">See all pending task</a>
+                                            <a href="TodayTask.html">查看所有任务</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -331,6 +330,178 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="widget-one" style="width: 1550px;">
+                            <div class="col-md-6 weather-grids widget-shadow">
+                                <!--                                <div class="header-top weather">-->
+                                <!--                                    <figure class="icons">-->
+                                <!--                                        <canvas id="clear-day" width="64" height="64"></canvas>-->
+                                <!--                                    </figure>-->
+                                <!--                                    <h4 class="weather">天气</h4>-->
+                                <!--                                    <ul class="cen">-->
+                                <!--                                        <li><p>°C</p></li>-->
+                                <!--                                        <li><p class="cen">°F</p></li>-->
+                                <!--                                    </ul>-->
+                                <!--                                    <div class="clearfix"></div>-->
+                                <!--                                </div>-->
+                                <div class="header-bottom">
+                                    <div class="header-bottom1">
+                                        <div class="header-head">
+                                            <h4>晴</h4>
+                                            <figure class="icons">
+                                                <canvas id="partly-cloudy-day" width="64" height="64"></canvas>
+                                            </figure>
+                                            <h6>28°</h6>
+                                            <div class="bottom-head">
+                                                <p>Monday</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="header-bottom1 header-bottom2">
+                                        <div class="header-head">
+                                            <h4>多云</h4>
+                                            <figure class="icons">
+                                                <canvas id="cloudy" width="64" height="64"></canvas>
+                                            </figure>
+                                            <h6>37°</h6>
+                                            <div class="bottom-head">
+                                                <p>Tuesday</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="header-bottom1">
+                                        <div class="header-head">
+                                            <h4>小雨</h4>
+                                            <figure class="icons">
+                                                <canvas id="rain" width="64" height="64"></canvas>
+                                            </figure>
+                                            <h6>28°</h6>
+                                            <div class="bottom-head">
+                                                <p>Wednesday</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="header-bottom1 header-bottom2">
+                                        <div class="header-head">
+                                            <h4>晴</h4>
+                                            <figure class="icons">
+                                                <canvas id="clear-day" width="64" height="64"></canvas>
+                                            </figure>
+                                            <h6>36°</h6>
+                                            <div class="bottom-head">
+                                                <p>Thursday</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <script>
+                                    // var icons = new Skycons({"color": "#fff"}),
+                                    //     list = [
+                                    //         "clear-day"
+                                    //     ],
+                                    //     i;
+                                    //
+                                    // for (i = list.length; i--;)
+                                    //     icons.set(list[i], list[i]);
+                                    //
+                                    // icons.play();
+                                </script>
+                                <script>
+                                    var icons = new Skycons({"color": "#00C6D7"}),
+                                        list = [
+                                            "clear-night", "partly-cloudy-day",
+                                            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+                                            "fog", "clear-day"
+                                        ],
+                                        i;
+
+                                    for (i = list.length; i--;)
+                                        icons.set(list[i], list[i]);
+
+                                    icons.play();
+                                </script>
+                            </div>
+
+                            <!--                    <div class="col-md-6 weather-grids weather-right widget-shadow">-->
+                            <!--                        <div class="header-top weather2">-->
+                            <!--                            <h3>Member Stats </h3>-->
+                            <!--                        </div>-->
+                            <!--                        <div class="circle-charts">-->
+                            <!--                            <ul>-->
+                            <!--                                <li>-->
+                            <!--                                    <div class="demo-1" data-percent="65">-->
+                            <!--                                        <div style="width: 115px; height: 115px;">-->
+                            <!--                                            <div class="ab"-->
+                            <!--                                                 style="position: relative; text-align: center; width: 115px; height: 115px; border-radius: 100%;background-image: linear-gradient(324deg, transparent 50%, #002561 50%), linear-gradient(90deg, #002561 50%, transparent 50%); background-color: rgb(239, 239, 239);">-->
+                            <!--                                                <div class="cir"-->
+                            <!--                                                     style="position: relative; top: 4px; left: 4px; text-align: center; width: 107px; height: 107px; border-radius: 100%; background-color: rgb(255, 255, 255);">-->
+                            <!--                                                    <span class="perc"-->
+                            <!--                                                          style="display: block; width: 115px; height: 115px; line-height: 115px; vertical-align: middle; font-size: 15px; font-weight: normal; color:rgba(0, 198, 215, 0.92);">65%</span>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                    <p>Active</p></li>-->
+                            <!--                                <li>-->
+                            <!--                                    <div class="demo-2" data-percent="55">-->
+                            <!--                                        <div style="width: 115px; height: 115px;">-->
+                            <!--                                            <div class="ab"-->
+                            <!--                                                 style="position: relative; text-align: center; width: 115px; height: 115px; border-radius: 100%;background-image: linear-gradient(288deg, transparent 50%, #ea4c89 50%), linear-gradient(90deg, #ea4c89 50%, transparent 50%); background-color: rgb(239, 239, 239);">-->
+                            <!--                                                <div class="cir"-->
+                            <!--                                                     style="position: relative; top: 4px; left: 4px; text-align: center; width: 107px; height: 107px; border-radius: 100%; background-color: rgb(255, 255, 255);">-->
+                            <!--                                                    <span class="perc"-->
+                            <!--                                                          style="display: block; width: 115px; height: 115px; line-height: 115px; vertical-align: middle; font-size: 15px; font-weight: normal; color:rgba(0, 198, 215, 0.92);">55%</span>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                    <p>Inactive</p></li>-->
+                            <!--                                <li>-->
+                            <!--                                    <div class="demo-3" data-percent="85">-->
+                            <!--                                        <div style="width: 115px; height: 115px;">-->
+                            <!--                                            <div class="ab"-->
+                            <!--                                                 style="position: relative; text-align: center; width: 115px; height: 115px; border-radius: 100%;background-image: linear-gradient(396deg, transparent 50%, #00c6d7 50%), linear-gradient(90deg, rgb(0, 198, 215) 50%, transparent 50%); background-color: rgb(239, 239, 239);">-->
+                            <!--                                                <div class="cir"-->
+                            <!--                                                     style="position: relative; top: 4px; left: 4px; text-align: center; width: 107px; height: 107px; border-radius: 100%; background-color: rgb(255, 255, 255);">-->
+                            <!--                                                    <span class="perc"-->
+                            <!--                                                          style="display: block; width: 115px; height: 115px; line-height: 115px; vertical-align: middle; font-size: 15px; font-weight: normal; color:rgba(0, 198, 215, 0.92);">85%</span>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                    <p>Sleeping</p></li>-->
+                            <!--                            </ul>-->
+                            <!--                        </div>-->
+                            <!--                        <script>-->
+                            <!--                            $('.demo-1').percentcircle();-->
+                            <!--                            $('.demo-2').percentcircle({-->
+                            <!--                                animate: true,-->
+                            <!--                                diameter: 100,-->
+                            <!--                                guage: 3,-->
+                            <!--                                coverBg: '#fff',-->
+                            <!--                                bgColor: '#efefef',-->
+                            <!--                                fillColor: '#052963',-->
+                            <!--                                percentSize: '15px',-->
+                            <!--                                percentWeight: 'normal'-->
+                            <!--                            });-->
+
+                            <!--                            $('.demo-3').percentcircle({-->
+                            <!--                                animate: true,-->
+                            <!--                                diameter: 100,-->
+                            <!--                                guage: 3,-->
+                            <!--                                coverBg: '#fff',-->
+                            <!--                                bgColor: '#efefef',-->
+                            <!--                                fillColor: '#052963',-->
+                            <!--                                percentSize: '15px',-->
+                            <!--                                percentWeight: 'normal'-->
+                            <!--                            });-->
+                            <!--                        </script>-->
+                            <!--                    </div>-->
+                            <div class="clearfix"></div>
+                        </div>
                     </div>
 
                     <!--/map-->
@@ -351,373 +522,179 @@
 
                         </div>
                         <!--//map-->
+
                     </div>
                     <div class="clearfix"></div>
+
+
+                    <!--//profile-inner-->
+                    <!--//profile-->
                 </div>
-
-
-                <div class="widget-one">
-                    <div class="col-md-6 weather-grids widget-shadow">
-                        <div class="header-top weather">
-                            <figure class="icons">
-                                <canvas id="clear-day" width="64" height="64"></canvas>
-                            </figure>
-                            <h4 class="weather">Weather</h4>
-                            <ul class="cen">
-                                <li><p>°C</p></li>
-                                <li><p class="cen">°F</p></li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="header-bottom">
-                            <div class="header-bottom1">
-                                <div class="header-head">
-                                    <h4>Sunny</h4>
-                                    <figure class="icons">
-                                        <canvas id="partly-cloudy-day" width="64" height="64"></canvas>
-                                    </figure>
-                                    <h6>20°</h6>
-                                    <div class="bottom-head">
-                                        <p>Monday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="header-bottom1 header-bottom2">
-                                <div class="header-head">
-                                    <h4>Cloudy</h4>
-                                    <figure class="icons">
-                                        <canvas id="cloudy" width="64" height="64"></canvas>
-                                    </figure>
-                                    <h6>37°</h6>
-                                    <div class="bottom-head">
-                                        <p>Tuesday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="header-bottom1">
-                                <div class="header-head">
-                                    <h4>Rainy</h4>
-                                    <figure class="icons">
-                                        <canvas id="rain" width="64" height="64"></canvas>
-                                    </figure>
-                                    <h6>18°</h6>
-                                    <div class="bottom-head">
-                                        <p>Wednesday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="header-bottom1 header-bottom2">
-                                <div class="header-head">
-                                    <h4>Snowy</h4>
-                                    <figure class="icons">
-                                        <canvas id="snow" width="64" height="64"></canvas>
-                                    </figure>
-                                    <h6>-2°</h6>
-                                    <div class="bottom-head">
-                                        <p>Thursday</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <script>
-                            var icons = new Skycons({"color": "#fff"}),
-                                list = [
-                                    "clear-day"
-                                ],
-                                i;
-
-                            for (i = list.length; i--;)
-                                icons.set(list[i], list[i]);
-
-                            icons.play();
-                        </script>
-                        <script>
-                            var icons = new Skycons({"color": "#00C6D7"}),
-                                list = [
-                                    "clear-night", "partly-cloudy-day",
-                                    "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-                                    "fog"
-                                ],
-                                i;
-
-                            for (i = list.length; i--;)
-                                icons.set(list[i], list[i]);
-
-                            icons.play();
-                        </script>
-                    </div>
-                    <div class="col-md-6 weather-grids weather-right widget-shadow">
-                        <div class="header-top weather2">
-                            <h3>Member Stats </h3>
-                        </div>
-                        <div class="circle-charts">
-                            <ul>
-                                <li>
-                                    <div class="demo-1" data-percent="65">
-                                        <div style="width: 115px; height: 115px;">
-                                            <div class="ab"
-                                                 style="position: relative; text-align: center; width: 115px; height: 115px; border-radius: 100%;background-image: linear-gradient(324deg, transparent 50%, #002561 50%), linear-gradient(90deg, #002561 50%, transparent 50%); background-color: rgb(239, 239, 239);">
-                                                <div class="cir"
-                                                     style="position: relative; top: 4px; left: 4px; text-align: center; width: 107px; height: 107px; border-radius: 100%; background-color: rgb(255, 255, 255);">
-                                                    <span class="perc"
-                                                          style="display: block; width: 115px; height: 115px; line-height: 115px; vertical-align: middle; font-size: 15px; font-weight: normal; color:rgba(0, 198, 215, 0.92);">65%</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p>Active</p></li>
-                                <li>
-                                    <div class="demo-2" data-percent="55">
-                                        <div style="width: 115px; height: 115px;">
-                                            <div class="ab"
-                                                 style="position: relative; text-align: center; width: 115px; height: 115px; border-radius: 100%;background-image: linear-gradient(288deg, transparent 50%, #ea4c89 50%), linear-gradient(90deg, #ea4c89 50%, transparent 50%); background-color: rgb(239, 239, 239);">
-                                                <div class="cir"
-                                                     style="position: relative; top: 4px; left: 4px; text-align: center; width: 107px; height: 107px; border-radius: 100%; background-color: rgb(255, 255, 255);">
-                                                    <span class="perc"
-                                                          style="display: block; width: 115px; height: 115px; line-height: 115px; vertical-align: middle; font-size: 15px; font-weight: normal; color:rgba(0, 198, 215, 0.92);">55%</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p>Inactive</p></li>
-                                <li>
-                                    <div class="demo-3" data-percent="85">
-                                        <div style="width: 115px; height: 115px;">
-                                            <div class="ab"
-                                                 style="position: relative; text-align: center; width: 115px; height: 115px; border-radius: 100%;background-image: linear-gradient(396deg, transparent 50%, #00c6d7 50%), linear-gradient(90deg, rgb(0, 198, 215) 50%, transparent 50%); background-color: rgb(239, 239, 239);">
-                                                <div class="cir"
-                                                     style="position: relative; top: 4px; left: 4px; text-align: center; width: 107px; height: 107px; border-radius: 100%; background-color: rgb(255, 255, 255);">
-                                                    <span class="perc"
-                                                          style="display: block; width: 115px; height: 115px; line-height: 115px; vertical-align: middle; font-size: 15px; font-weight: normal; color:rgba(0, 198, 215, 0.92);">85%</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p>Sleeping</p></li>
-                            </ul>
-                        </div>
-                        <script>
-                            $('.demo-1').percentcircle();
-                            $('.demo-2').percentcircle({
-                                animate: true,
-                                diameter: 100,
-                                guage: 3,
-                                coverBg: '#fff',
-                                bgColor: '#efefef',
-                                fillColor: '#052963',
-                                percentSize: '15px',
-                                percentWeight: 'normal'
-                            });
-
-                            $('.demo-3').percentcircle({
-                                animate: true,
-                                diameter: 100,
-                                guage: 3,
-                                coverBg: '#fff',
-                                bgColor: '#efefef',
-                                fillColor: '#052963',
-                                percentSize: '15px',
-                                percentWeight: 'normal'
-                            });
-                        </script>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-
-                <!--//profile-inner-->
-                <!--//profile-->
+                <!--//outer-wp-->
             </div>
-            <!--//outer-wp-->
         </div>
-    </div>
-    <!--//content-inner-->
-    <!--/sidebar-menu-->
-    <div class="sidebar-menu">
-        <header class="logo">
-            <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="index.html"> <span
-                id="logo">
-                        <h1>Augment</h1>
+        <!--//content-inner-->
+        <!--/sidebar-menu-->
+        <div class="sidebar-menu">
+            <header class="logo">
+                <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="index.html"> <span
+                    id="logo">
+                        <h1>安图Online</h1>
                     </span></a>
-        </header>
-        <div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
-        <!--/down-->
-        <div class="down">
-            <a href="profile.html"><img src="../images/admin.jpg" alt=""></a>
-            <a href="profile.html"><span class="name-caret">Jasmin Leo</span></a>
-            <p>System Administrator in Company</p>
-            <ul>
-                <li><a class="tooltips" href="profile.html"><span>Profile</span><i class="lnr lnr-user"></i></a>
-                </li>
-                <li><a class="tooltips" href="index.html"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
-                <li><a class="tooltips" href="#"><span>Log out</span><i
-                        class="lnr lnr-power-switch"></i></a>
-                </li>
-            </ul>
+            </header>
+            <div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
+            <!--/down-->
+            <div class="down">
+                <a href="profile.html"><img src="../images/admin.jpg" alt=""></a>
+                <a href="profile.html"><span class="name-caret">Jasmin Leo</span></a>
+                <p>System Administrator in Company</p>
+                <ul>
+                    <li><a class="tooltips" href="profile.html"><span>Profile</span><i class="lnr lnr-user"></i></a>
+                    </li>
+                    <li><a class="tooltips" href="index.html"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
+                    <li><a class="tooltips" href="#"><span>Log out</span><i
+                            class="lnr lnr-power-switch"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <!--//down-->
+            <div class="menu">
+                <ul id="menu">
+                    <li>
+                        <a class="disabled">
+                            <!--                        <i class="lnr lnr-envelope"></i>-->
+                            <i class="iconfont">&#xe72f;</i>
+                            <span>案情在线</span>
+                            <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="TodayTask.html" target="_self">
+                            <i class="iconfont">&#xe610;</i>
+                            <span>今日任务</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="iconfont">&#xe6af;</i>
+                            <span>安图焦点</span>
+                            <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                        </a>
+                        <ul>
+                            <li><a href="news.html" target="_self"><i class="iconfont">&#xe615;</i>&nbsp;&nbsp;实事热搜</a>
+                            </li>
+                            <li><a href="http://www.legalinfo.gov.cn/" target="_blank"><i class="iconfont">&#xe7a1;</i>&nbsp;&nbsp;普法栏目</a>
+                            </li>
+                            <!--                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="map_queryPath.html" target="_self">
+                            <i class="iconfont">&#xe613;</i>
+                            <span>天网恢恢</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="face.html" target="_self">
+                            <i class="iconfont">&#xe7a6;</i>
+                            <span>人脸搜索</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" target="_self">
+                            <i class="iconfont">&#xe628;</i>
+                            <span>辅助功能</span>
+                            <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                        </a>
+                        <ul>
+                            <li><a href="map_layer_explore.html" target="_self"><i class="iconfont">&#xe848;</i>&nbsp;&nbsp;图层探查</a>
+                            </li>
+                            <li><a href="map_layer_choose.html" target="_self"><i class="iconfont">&#xe66f;</i>&nbsp;&nbsp;图层选择</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="disabled">
+                            <i class="iconfont">&#xe633;</i>
+                            <span>分析预警</span>
+                            <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="map_dangerAnalysis.html" target="_self">
+                            <i class="iconfont">&#xe654;</i>
+                            <span>危险分析</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="iconfont">&#xe79e;</i>
+                            <span>案情分析</span>
+                            <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
+                        </a>
+                        <ul>
+                            <li><a href="analyse.html" target="_self"><i class="iconfont">&#xe619;</i>&nbsp;&nbsp;案情统计图</a>
+                            </li>
+                            <li><a href="map_heatmap.html" target="_self"><i class="iconfont">&#xe6be;</i>&nbsp;&nbsp;案情热力图</a>
+                            </li>
+                            <li><a href="map_case_effect.html" target="_self"><i class="iconfont">&#xe626;</i>&nbsp;&nbsp;案情影响图</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="map_dangerAnalysis.html" target="_self">
+                            <i class="iconfont">&#xe628;</i>
+                            <span>治安预警</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
-        <!--//down-->
-        <div class="menu">
-            <ul id="menu">
-                <li>
-                    <a class="disabled">
-                        <!--                        <i class="lnr lnr-envelope"></i>-->
-                        <i class="iconfont">&#xe72f;</i>
-                        <span>案情在线</span>
-                        <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe610;</i>
-                        <span>今日任务</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe6af;</i>
-                        <span>安图焦点</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="news.html"><i class="fa fa-inbox"></i>&nbsp;&nbsp;实事热搜</a></li>
-                        <li><a href="http://www.legalinfo.gov.cn/" target="_blank"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;安全提示</a>
-                        </li>
-                        <!--                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>-->
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe613;</i>
-                        <span>天网恢恢</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="upload_case.html"><i class="fa fa-inbox"></i>&nbsp;&nbsp;案件上传</a></li>
-                        <li><a href="show_case.html"><i class="fa fa-pencil-square-o"></i> 案件展示</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe7a6;</i>
-                        <span>人脸搜索</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe628;</i>
-                        <span>辅助功能</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a class="disabled">
-                        <i class="iconfont">&#xe633;</i>
-                        <span>分析预警</span>
-                        <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe654;</i>
-                        <span>危险分析</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="map_query.html"><i class="fa fa-inbox"></i>查询</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe79e;</i>
-                        <span>案情分析</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe628;</i>
-                        <span>案情预警</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-            </ul>
-        </div>
+        <div class="clearfix"></div>
     </div>
-    <div class="clearfix"></div>
-</div>
-<script>
-    var toggle = true;
+    <script>
+        var toggle = true;
 
-    $(".sidebar-icon").click(function () {
-        if (toggle) {
-            $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
-            $("#menu span").css({
-                "position": "absolute"
-            });
-        } else {
-            $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
-            setTimeout(function () {
+        $(".sidebar-icon").click(function () {
+            if (toggle) {
+                $(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
                 $("#menu span").css({
-                    "position": "relative"
+                    "position": "absolute"
                 });
-            }, 400);
-        }
+            } else {
+                $(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+                setTimeout(function () {
+                    $("#menu span").css({
+                        "position": "relative"
+                    });
+                }, 400);
+            }
 
-        toggle = !toggle;
-    });
-</script>
-<!--js -->
-<script src="../js/templates/jquery.nicescroll.js"></script>
-<script src="../js/templates/scripts.js"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="../js/bootstrap.min.js"></script>
+            toggle = !toggle;
+        });
+    </script>
+    <!--js -->
+    <script src="../js/templates/jquery.nicescroll.js"></script>
+    <script src="../js/templates/scripts.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
 
-<script src="../js/common/getuser.js"></script>
-<script src="../js/ajax/get_information.js"></script>
-<script src="../js/common/bar.js"></script>
+    <script src="../js/common/getuser.js"></script>
+    <script src="../js/ajax/get_information.js"></script>
+    <script src="../js/common/bar.js"></script>
 
-<div id="dg" style="z-index: 9999; position: fixed ! important; right: 500px; top: 200px;">
-    <button class="btn btn-info" style="position: absolute; right: 0; top: 0;"></button>
+    <!--    <div id="dg" style="z-index: 9999; position: fixed ! important; right: 500px; top: 200px;">-->
+    <!--        <button class="btn btn-info" style="position: absolute; right: 0; top: 0;"></button>-->
 </div>
 
 </body>

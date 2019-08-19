@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Profile</title>
+    <title>安图</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content=""/>
@@ -29,7 +29,156 @@
     <!-- /js -->
     <script src="../js/jquery.min.js"></script>
     <!-- //js-->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
 
+        ul {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .newsCenterPanel {
+            width: 100%;
+            height: 793px;
+            background: #fff;
+            overflow: hidden;
+            *padding-bottom: 50px
+        }
+
+        .newsCenterPanel .title {
+            position: relative;
+            width: 410px;
+            height: 85px;
+            line-height: 85px;
+            margin: 35px auto 30px auto;
+            font-size: 50px;
+            font-weight: normal;
+            padding-top: 15px
+        }
+
+        .newsCenterPanel .title a {
+            display: block;
+            width: 100%;
+            color: #2e2e30;
+            text-align: center;
+        }
+
+        .newsCenterPanel_inner {
+            width: 1200px;
+            margin: 0 auto
+        }
+
+        .newsCenterPanel_inner .newContentBox {
+            float: left;
+            width: 550px;
+            height: 138px;
+            text-align: left;
+            vertical-align: top;
+            position: relative
+        }
+
+        .newsCenterPanel_inner .newContentBox.odd {
+            margin-right: 100px
+        }
+
+        .newsCenterPanel_inner .newContentBox a {
+            cursor: pointer
+        }
+
+        .newsCenterPanel_inner .newContentBox .newTitle {
+            float: left;
+            line-height: 44px;
+            height: 50px;
+            font-size: 16px;
+            color: #333;
+            width: 400px;
+            white-space: nowrap;
+            word-break: normal;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .newsCenterPanel_inner .newContentBox a:hover .newTitleIcon {
+            background-color: #4a68ec
+        }
+
+        .newsCenterPanel_inner .newContentBox .newTitleIcon {
+            width: 19px;
+            height: 19px;
+            background: url(../images/plus.png) center no-repeat;
+            background-color: #a6a6a6;
+            position: absolute;
+            right: 0;
+            top: 14px
+        }
+
+        .newsCenterPanel_inner .newContentBox .border {
+            position: absolute;
+            left: 87px;
+            top: 44px;
+            width: 21px;
+            border-top: 1px solid #4a68ec
+        }
+
+        .newsCenterPanel_inner .newContentBox .newContent {
+            float: left;
+            height: 50px;
+            width: 464px;
+            font-size: 14px;
+            line-height: 28px;
+            color: #b0b0b0;
+            margin-bottom: 50px;
+            overflow: hidden;
+            word-wrap: break-word;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+        }
+
+        .newContentBox .time {
+            width: 54px;
+            height: 54px;
+            border: 1px solid #4a68ec;
+            background: #fff;
+            text-align: center;
+            margin-right: 30px;
+            margin-top: 14px;
+            float: left
+        }
+
+        .newContentBox .time .day {
+            font-size: 20px;
+            color: #4c67e8;
+            padding: 6px 0 0 0
+        }
+
+        .newContentBox .time .ym {
+            font-size: 12px;
+            color: #b3b9f5
+        }
+
+        .newContentBox a:hover .time {
+            background: #4a68ec
+        }
+
+        .newContentBox a:hover .day {
+            color: #fff
+        }
+
+        .newContentBox a:hover .ym {
+            color: #b5bcf3
+        }
+
+        p.day {
+            margin: 0;
+        }
+    </style>
     <style>
         @font-face {
             font-family: 'iconfont';
@@ -286,13 +435,144 @@
                 <div class="sub-heard-part">
                     <ol class="breadcrumb m-b-0">
                         <li><a href="index.html">主页</a></li>
-                        <li class="active">个人主页</li>
+                        <li class="active">搜索</li>
                     </ol>
                 </div>
                 <!--//sub-heard-part-->
-                <!--/profile-->
-                <iframe src="MAPGISquery.html" scrolling="no" style="border: 0;width: 1600px;height: 750px;"></iframe>
-                <!--//profile-->
+                <div class="newsCenterPanel">
+                    <div class="title">
+                        <a href="#" target="_self">搜索结果</a>
+                    </div>
+                    <div class="newsCenterPanel_inner">
+
+                        <div class="newContentBox odd">
+                            <a hidefocus="true" href="#">
+                                <div class="time">
+                                    <p class="day">2</p>
+                                    <p class="ym">2019-1</p>
+                                </div>
+                                <div class="newTitle">[精]
+                                    <mark>洪山区</mark>
+                                    人民政府
+                                </div>
+
+                                <div class="newTitleIcon"></div>
+                                <div class="border"></div>
+                                <div class="newContent">
+                                    武汉市
+                                    <mark>洪山区</mark>
+                                    人民政府. ... 全市将建成500个“平安校园”示范点洪山走在前列. 置顶 2019-08-02 区融媒体中心 · “兵兵”空降武汉火车站，超燃快闪邀你共赴军运之约.
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="newContentBox even">
+                            <a hidefocus="true" href="#">
+                                <div class="time">
+                                    <p class="day">29</p>
+                                    <p class="ym">2018-12</p>
+                                </div>
+                                <div class="newTitle">[精]湖北省武汉市<mark>洪山区</mark>人民法院最新判决书,裁判文书,案例,民事判决…</div>
+
+                                <div class="newTitleIcon"></div>
+                                <div class="border"></div>
+                                <div class="newContent">
+                                    汇法网收录湖北省武汉市<mark>洪山区</mark>人民法院全部判决书，包括民事判决书和刑事判决书。最新裁判文书每日更新。本站保证全部裁判文书的真实性，中国新 ...
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="newContentBox odd">
+                            <a hidefocus="true" href="#">
+                                <div class="time">
+                                    <p class="day">8</p>
+                                    <p class="ym">2019-1</p>
+                                </div>
+                                <div class="newTitle">武汉市<mark>洪山区</mark>人民法院拍卖公告</div>
+
+                                <div class="newTitleIcon"></div>
+                                <div class="border"></div>
+                                <div class="newContent">
+                                    武汉市<mark>洪山区</mark>人民法院关于武汉市<mark>洪山区</mark>富安街28号南湖名都B区7栋1单元1层... 看样服务：本拍品已委托武汉中利法拍企业服务有限公司在拍卖期间提供信息咨询及 ...
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="newContentBox even">
+                            <a hidefocus="true" href="#">
+                                <div class="time">
+                                    <p class="day">8</p>
+                                    <p class="ym">2019-1</p>
+                                </div>
+                                <div class="newTitle">武漢<mark>洪山区</mark>公安分局街道口警務站：群眾滿意率達99.8%</div>
+
+                                <div class="newTitleIcon"></div>
+                                <div class="border"></div>
+                                <div class="newContent">
+                                    為了守護這裡的平安，武漢<mark>洪山区</mark>公安分局街道口警務站的民警們夙夜不休，奔走在大街小巷打擊犯罪、服務群眾。
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="newContentBox odd">
+                            <a hidefocus="true" href="#">
+                                <div class="time">
+                                    <p class="day">7</p>
+                                    <p class="ym">2019-1</p>
+                                </div>
+                                <div class="newTitle">曝光武漢市<mark>洪山区</mark>迫害大法弟子的一條龍犯罪場所（圖）</div>
+
+                                <div class="newTitleIcon"></div>
+                                <div class="border"></div>
+                                <div class="newContent">
+                                    【明慧网】「六一零」辦公室是一九九九年中共和江澤民為了鎮壓法輪功而專門設立的，凌駕於中國憲法、法律、司法系統之上的特別黨務機構，所有的 ...
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="newContentBox even">
+                            <a hidefocus="true" href="#">
+                                <div class="time">
+                                    <p class="day">4</p>
+                                    <p class="ym">2019-1</p>
+                                </div>
+                                <div class="newTitle">水生态环境犯罪刑事法治体系研究</div>
+
+                                <div class="newTitleIcon"></div>
+                                <div class="border"></div>
+                                <div class="newContent">
+                                    12)参见刘子阳:“部分官员收受好处充当犯罪团伙保护伞”,载《法制日报》2015 年2 ...
+                                    局原副局长赵璋信和原局长赵余库、2004年武汉市<mark>洪山区</mark>环保局原副局长王华楚、 ...
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <div class="newContentBox odd">
+                            <a hidefocus="true" href="#">
+                                <div class="time">
+                                    <p class="day">3</p>
+                                    <p class="ym">2019-1</p>
+                                </div>
+                                <div class="newTitle"><mark>洪山区</mark>检察院从严批捕10名涉恶犯罪嫌疑人</div>
+
+                                <div class="newTitleIcon"></div>
+                                <div class="border"></div>
+                                <div class="newContent">
+                                    <mark>洪山区</mark>检察院从严批捕10名涉恶犯罪嫌疑人. 2018-03-19 15:49:00 | [小 中 大].
+                                    扫黑除恶专项行动以来，洪山政法战线各部门高度重视、迅速行动，组织精兵强将投入 ...
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <!--//outer-wp-->
         </div>
@@ -349,26 +629,25 @@
                 <li>
                     <a href="#">
                         <i class="iconfont">&#xe6af;</i>
-                        <span>安图焦点</span>
+                        <span>搜索</span>
                         <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
                     </a>
                     <ul>
-                        <li><a href="news.html"><i class="fa fa-inbox"></i>&nbsp;&nbsp;实事热搜</a></li>
-                        <li><a href="http://www.legalinfo.gov.cn/" target="_blank"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;安全提示</a>
-                        </li>
-                        <!--                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>-->
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
+                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
                     </ul>
                 </li>
 
                 <li>
                     <a href="#">
                         <i class="iconfont">&#xe613;</i>
-                        <span>天网恢恢</span>
+                        <span>往期案情</span>
                         <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
                     </a>
                     <ul>
-                        <li><a href="upload_case.html"><i class="fa fa-inbox"></i>&nbsp;&nbsp;案件上传</a></li>
-                        <li><a href="show_case.html"><i class="fa fa-pencil-square-o"></i> 案件展示</a></li>
+                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
+                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
                         <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
                     </ul>
                 </li>
@@ -466,8 +745,9 @@
 <script src="../js/bootstrap.min.js"></script>
 
 <script src="../js/common/getuser.js"></script>
-<script src="../js/ajax/get_information.js"></script>
+
 <script src="../js/common/bar.js"></script>
+
 </body>
 
 </html>

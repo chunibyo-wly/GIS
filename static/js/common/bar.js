@@ -34,7 +34,7 @@ $.ajax({
     success: function (a) {
         //请求成功时处理
         console.log(a);
-        $(".dropdown>a>span").text(a.unread_number);
+        $("body > div.page-container > div > div.inner-content > div.header-section > div.top_menu > div.profile_details_left > ul > li:nth-child(3) > a > span").text(a.unread_number);
         $(".notification_header>h3").text("You have " + a.unread_number + " new notification");
         a.unread_content.forEach(function (content) {
             $("ul.dropdown-menu").append("                                    <li><a href=\"#\">\n" +
@@ -45,7 +45,13 @@ $.ajax({
                 "                                        </div>\n" +
                 "                                        <div class=\"clearfix\"></div>\n" +
                 "                                    </a></li>")
-        })
+        });
+
+        if (a.unread_number.toString() === "0") {
+            $("body > div.page-container > div > div.inner-content > div.header-section > div.top_menu > div.profile_details_left > ul > li:nth-child(2) > a > span").hide();
+            $("body > div.page-container > div > div.inner-content > div.header-section > div.top_menu > div.profile_details_left > ul > li:nth-child(3) > a > span").hide();
+        }
+
     }
 });
 

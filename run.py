@@ -354,29 +354,162 @@ def driving():
 
 @app.route('/face', methods=['post'])
 def face():
-    token2url = {}
+    token2index = {}
     data = fa.getJSON("./tools/suspects.json")
 
-    for i in data:
-        token2url[i["token"]] = i["img_url"]
+    for i in range(len(data)):
+        token2index[data[i]["token"]] = i
 
     base64_data = request.form['base64_data']
     getImg(base64_data, "tempFile.png")
-    results = fa.search("./tempFile.png")
-    # print(results["results"][0]["face_token"])
+    results = fa.search("./tempFile.png")["results"]
+    response = []
 
-    for i in results["results"]:
-        print(i["face_token"], token2url[i["face_token"]])
+    for i in results:
+        response.append(data[token2index[i["face_token"]]])
 
-    return jsonify({
-        "status": "Y",
-        "img_url": [
-            token2url[results["results"][0]["face_token"]],
-            token2url[results["results"][1]["face_token"]],
-            token2url[results["results"][2]["face_token"]],
-            token2url[results["results"][3]["face_token"]]
-        ]
-    }), 200
+    return jsonify(response), 200
+
+
+# @app.route('/get_wuhan', methods=['get'])
+# def get_wuhan():
+#     result = dao.execute("SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case` LIMIT 500;")
+#     response = []
+#     # random_list = list(range(6000))
+#     # random.shuffle(random_list)
+#     # for i in random_list[:499]:
+#     for i in range(len(result)):
+#         response.append({
+#             "case_id": result[i][0],
+#             "case_name": result[i][1],
+#             "case_type": result[i][2],
+#             "time": result[i][13],
+#             "case_position": result[i][6],
+#             "case_description": result[i][9],
+#             "case_status": result[i][10],
+#             "X": float(result[i][11]),
+#             "Y": float(result[i][12]),
+#             "lng": float(result[i][7]),
+#             "lat": float(result[i][8]),
+#         })
+#     return jsonify(response), 200
+
+
+@app.route('/get_police', methods=['GET'])
+def get_police():
+    result = dao.execute("select * from `police_station`;")
+    response = []
+    random_list = list(range(900))
+    random.shuffle(random_list)
+    earth_rad = 6378137.0
+    for i in random_list[:300]:
+        tmp = float(result[i][5]) * math.pi / 180
+        response.append({
+            'police_station_id': result[i][0],
+            'id': result[i][1],
+            'name': result[i][2],
+            'address': result[i][3],
+            'lng': float(result[i][4]),
+            'lat': float(result[i][5]),
+            'photos': result[i][6],
+            'tel': result[i][7],
+            'X': float(result[i][4]) * math.pi / 180 * earth_rad,
+            'Y': earth_rad / 2 * math.log((1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+        })
+    return jsonify(response), 200
+
+
+@app.route('/get_path', methods=['POST'])
+def get_path():
+    key = 'dddd10e80880227d5396a1cb3b23582c'
+    api = 'https://restapi.amap.com/v3/direction/'
+    origin = str(request.form["origin"])
+    destination = str(request.form["destination"])
+    mode = str(request.form['mode'])
+    api += mode
+    if mode == 'driving':
+        extensions = 'all'
+        data = {
+            'key': key,
+            'origin': origin,
+            'destination': destination,
+            'extensions': extensions,
+            'strategy': 10
+        }
+    else:
+        data = {
+            'key': key,
+            'origin': origin,
+            'destination': destination,
+        }
+    if mode == 'bicycling':
+        api = 'https://restapi.amap.com/v4/direction/bicycling'
+    r = requests.get(api, params=data)
+    data = json.loads(r.text)
+    if mode != 'bicycling':
+        if data['status'] != '1':
+            response = {
+                'status': 'N',
+                'message': data['info']
+            }
+            response = make_response(response)
+            return response, 200
+    else:
+        if data['errcode'] != 0:
+            response = {
+                'status': 'N',
+                'message': data['errdetail']
+            }
+            response = make_response(response)
+            return response, 200
+
+    # path_count = int(data['count'])
+    if mode == 'bicycling':
+        paths = data['data']['paths']
+    else:
+        paths = data['route']['paths']
+    values = []
+    for i in range(len(paths)):
+        roads = []
+        path = paths[i]
+        distance = path['distance']
+        duration = path['duration']
+        # strategy = path['strategy']
+        # restriction = path['restriction']
+        # traffic_lights = path['traffic_lights']
+        steps = path['steps']
+        for step in steps:
+            polyline = step['polyline']
+            for ss in polyline.split(';'):
+                earth_rad = 6378137.0
+                sss = ss.split(',')
+                sss[0] = float(sss[0]) * math.pi / 180 * earth_rad
+                tmp = float(sss[1]) * math.pi / 180
+                sss[1] = earth_rad / 2 * math.log((1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+                roads.append(sss)
+        if mode == 'driving':
+            value = {
+                'distance': distance,
+                'duration': duration,
+                'strategy': path['strategy'],
+                'restriction': path['restriction'],
+                'traffic_lights': path['traffic_lights'],
+                'roads': roads
+            }
+        else:
+            value = {
+                'distance': distance,
+                'duration': duration,
+                'roads': roads
+            }
+        values.append(value)
+    response = {
+        'status': 'Y',
+        'message': 'Success',
+        'value': values
+    }
+    response = make_response(response)
+    return response, 200
 
 
 # @app.route('/set_cookie', methods=['get'])

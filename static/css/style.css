@@ -3969,10 +3969,10 @@ h3.inner-tittle.t-inner {
     margin: 0 auto;
 }
 
-.weather-grids canvas#clear-day {
-    width: 30px;
-    float: left;
-}
+/*.weather-grids canvas#clear-day {*/
+/*    width: 30px;*/
+/*    float: left;*/
+/*}*/
 
 .header-bottom1 {
     float: left;
@@ -5592,7 +5592,8 @@ figure.effect-oscar h2 {
 }
 
 figure.effect-oscar figcaption::before,
-figure.effect-oscar p {
+figure.effect-oscar table {
+    /*figure.effect-oscar p {*/
     opacity: 0;
     -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
     transition: opacity 0.35s, transform 0.35s;
@@ -5607,7 +5608,8 @@ figure.effect-oscar:hover h4 {
 }
 
 figure.effect-oscar:hover figcaption::before,
-figure.effect-oscar:hover p {
+figure.effect-oscar:hover table {
+    /*figure.effect-oscar:hover p {*/
     opacity: 1;
     -webkit-transform: scale(1);
     transform: scale(1);
@@ -8616,6 +8618,11 @@ footer p a:hover, .footer p a:hover {
     }
 
     canvas#partly-cloudy-day {
+        width: 30px;
+        height: 30px;
+    }
+
+    canvas#clear-day {
         width: 30px;
         height: 30px;
     }

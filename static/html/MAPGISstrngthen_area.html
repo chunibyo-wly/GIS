@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title>图层叠加分析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--导入外部样式表-->
+    <link href="../css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/ol.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <!--必要的脚本引用-->
+    <script src="../js/jquery-1.11.2.min.js" type="text/javascript"></script>
+    <script src="../js/MapGis_ol_product.js" type="text/javascript"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <!--<script src="js/ol-debug.js" type="text/javascript"></script>
+    <script src="js/zondyClient.js" type="text/javascript"></script>-->
+    <script type="text/javascript">
+        /*==========================================底图显示===================================================*/
+        var map, vectorLayer, vectorLayer1;
+        //缓存结果图层的基地址
+        var resultBaseUrl = "gdbp://MapGisLocal/test/sfcls/";
+
+        //地图初始化函数
+
+        function init() {
+
+
+            //地图范围
+            var extent = [12656980.1414, 3512499.6042, 12801879.019, 3648415.2566];
+            //投影坐标系
+            var projection = new ol.proj.Projection({units: ol.proj.Units.METERS, extent: extent});
+            //中心点
+            var center = ol.extent.getCenter(extent);
+            //图层显示名称
+            var name = "MapGIS IGS VecLayer";
+            var name1 = "MapGIS IGS VecLayer1";
+            var name2 = "MapGIS IGS VecLayer2";
+            //要显示的图层的gdbps地址
+            var gdbps = ["gdbp://MapGisLocal/test/sfcls/police1"];
+            var gdbps1 = ["gdbp://MapGisLocal/test/sfcls/case2"];
+            var gdbps2 = ["gdbp://MapGisLocal/test/sfcls/road5"];
+            //创建一个图层
+            vectorLayer = new Zondy.Map.Layer(name, gdbps, {
+                ip: "localhost",
+                port: "6163"
+            });
+            vectorLayer1 = new Zondy.Map.Layer(name1, gdbps1, {
+                ip: "localhost",
+                port: "6163"
+            });
+            vectorLayer2 = new Zondy.Map.Layer(name2, gdbps2, {
+                ip: "localhost",
+                port: "6163"
+            })
+
+            var gaode_map = new ol.layer.Tile({
+                title: "高德地图",
+                source: new ol.source.XYZ({
+                    url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}',
+                    wrapX: false
+                })
+            });
+
+            //创建一个地图容器
+            map = new ol.Map({
+                //目标DIV
+                target: 'mapCon',
+                //添加图层到地图容器中
+                layers: [gaode_map, vectorLayer2, vectorLayer, vectorLayer1],//vectorLayer,vectorLayer1
+                view: new ol.View({
+                    center: center,
+                    projection: 'EPSG:3857', //projection,
+                    zoom: 9
+                }),
+                controls: ol.control.defaults().extend([overviewMapControl])
+                //controls: [new ol.control.MousePosition()]
+            });
+            map.addControl(zoomToExtent);
+            map.addControl(scaleLineControl);
+            map.addControl(mousePositionControl);
+            $('.ol-zoom-in').hide();
+            $('.ol-zoom-out').hide();
+        };
+
+        //实例化鹰眼控件（OverviewMap）,自定义样式的鹰眼控件
+        var overviewMapControl = new ol.control.OverviewMap({
+            //鹰眼控件样式（see in overviewmap-custom.html to see the custom CSS used）
+            className: 'ol-overviewmap ol-custom-overviewmap',
+            //鹰眼中加载同坐标系下不同数据源的图层
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.XYZ({
+                        url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=" +
+                            "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥,
+                        wrapX: false
+                    })
+                }),
+                new ol.layer.Tile({
+                    title: "天地图矢量注记图层",
+                    source: new ol.source.XYZ({
+                        url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" +
+                            "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥
+                    })
+                })
+            ],
+            //鹰眼控件展开时功能按钮上的标识（网页的JS的字符编码）
+            collapseLabel: '\u00BB',
+            //鹰眼控件折叠时功能按钮上的标识（网页的JS的字符编码）
+            label: '\u00AB',
+            //初始为展开显示方式
+            collapsed: false
+
+        });
+        //实例化zoomToExtent控件并加载到地图容器中
+        var zoomToExtent = new ol.control.ZoomToExtent({
+            extent: [12733450, 3569910, 12735844, 3571692],
+            tipLabel: "定位到当前位置",
+            label: "O"
+
+        });
+
+
+        //实例化比例尺控件（ScaleLine）
+        var scaleLineControl = new ol.control.ScaleLine({
+            //设置比例尺单位，degrees、imperial、us、nautical、metric（度量单位）
+            units: "metric"
+        });
+
+
+        //实例化鼠标位置控件（MousePosition）
+        var mousePositionControl = new ol.control.MousePosition({
+            //坐标格式
+            coordinateFormat: ol.coordinate.createStringXY(4),
+            //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
+            projection: 'EPSG:4326',
+            //坐标信息显示样式类名，默认是'ol-mouse-position'
+            className: 'custom-mouse-position',
+            //显示鼠标位置信息的目标容器
+            target: document.getElementById('mouse-position'),
+            //未定义坐标的标记
+            undefinedHTML: '&nbsp;'
+        });
+
+
+        //执行图层叠加分析
+        function transport() {
+            clearA();
+            //显示进度条
+            startPressBar();
+            var resultname = resultBaseUrl + "overLayByLayerAnalysisResultLayer" + getCurentTime();
+            //实例化OverlayByLayer类
+            var overlayParam = new Zondy.Service.OverlayByLayer({
+                ip: "localhost",
+                port: "6163",
+                //设置被叠加图层URL
+                srcInfo1: "gdbp://MapGisLocal/test/sfcls/road5",//"gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界河流",
+                //设置叠加图层URL
+                srcInfo2: "gdbp://MapGisLocal/test/sfcls/police1",//"gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界政区",
+                //设置结果URL
+                desInfo: resultname,
+                //设置结果图层的图形参数信息
+                infoOptType: 2,
+                //求交
+                overType: 1,
+                //允许重算面积
+                isReCalculate: true,
+                //容差半径
+                radius: 0.05
+            });
+            //调用基类的execute方法，执行叠加分析， onSuccess为结果回调函数
+            overlayParam.execute(AnalysisSuccess, "post", false, "json", AnalysisError);
+        }
+
+        function safe_area() {
+            clearA();
+            //显示进度条
+            startPressBar();
+            var resultname = resultBaseUrl + "overLayByLayerAnalysisResultLayer" + getCurentTime();
+            //实例化OverlayByLayer类
+            var overlayParam = new Zondy.Service.OverlayByLayer({
+                ip: "localhost",
+                port: "6163",
+                //设置被叠加图层URL
+                srcInfo1: "gdbp://MapGisLocal/test/sfcls/police1",//"gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界河流",
+                //设置叠加图层URL
+                srcInfo2: "gdbp://MapGisLocal/test/sfcls/police2",//"gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界政区",
+                //设置结果URL
+                desInfo: resultname,
+                //设置结果图层的图形参数信息
+                infoOptType: 2,
+                //求交
+                overType: 1,
+                //允许重算面积
+                isReCalculate: true,
+                //容差半径
+                radius: 0.05
+            });
+            //调用基类的execute方法，执行叠加分析， onSuccess为结果回调函数
+            overlayParam.execute(AnalysisSuccess, "post", false, "json", AnalysisError);
+        }
+
+        function strenghten_area() {
+            clearA();
+            //显示进度条
+            startPressBar();
+            var resultname = resultBaseUrl + "overLayByLayerAnalysisResultLayer" + getCurentTime();
+            //实例化OverlayByLayer类
+            var overlayParam = new Zondy.Service.OverlayByLayer({
+                ip: "localhost",
+                port: "6163",
+                //设置被叠加图层URL
+                srcInfo1: "gdbp://MapGisLocal/test/sfcls/case2",
+                //设置叠加图层URL
+                srcInfo2: "gdbp://MapGisLocal/test/sfcls/police1",
+                //设置结果URL
+                desInfo: resultname,
+                //设置结果图层的图形参数信息
+                infoOptType: 2,
+                //求减
+                overType: 2,
+                //允许重算面积
+                isReCalculate: true,
+                //容差半径
+                radius: 0.05
+            });
+            //调用基类的execute方法，执行叠加分析， onSuccess为结果回调函数
+            overlayParam.execute(AnalysisSuccess, "post", false, "json", AnalysisError);
+        }
+
+        function AnalysisError(e) {
+            //停止进度条
+            stopPressBar();
+        }
+
+        function AnalysisSuccess(data) {
+            //停止进度条
+            stopPressBar();
+            if (data.results) {
+                if (data.results.length != 0) {
+                    var resultLayerUrl = data.results[0].Value;
+                    //将结果图层添加到地图视图中显示
+                    var resultLayer = new Zondy.Map.Layer("MapGIS IGS overLayAnalyResultLayer", [resultBaseUrl + resultLayerUrl], {
+                        ip: "localhost",
+                        port: "6163",
+                        isBaseLayer: false
+                    });
+                    map.removeLayer(vectorLayer);
+                    map.removeLayer(vectorLayer1);
+                    map.addLayer(resultLayer);
+                }
+
+            } else {
+                alert("叠加分析失败，请检查参数！");
+            }
+        }
+
+        function clearA() {
+            stopPressBar(); //停止进度条
+            if (map.getLayers().array_.length > 1) {
+                for (var i = map.getLayers().array_.length - 1; i > 0; i--) {
+                    map.removeLayer(map.getLayers().array_[i]);
+                }
+            } else
+                return;
+        }
+
+        function getCurentTime() {
+            var now = new Date();
+            //获取当前年份
+            var year = now.getFullYear();
+            //获取当前月份
+            var month = now.getMonth() + 1;
+            //获取当前日期
+            var day = now.getDate();
+            //获取当前时刻
+            var hh = now.getHours();
+            //获取当前分钟
+            var mm = now.getMinutes();
+            //获取当前秒钟
+            var ss = now.getSeconds();
+            //将当前的日期拼串
+            var clock = year + "-";
+            if (month < 10)
+                clock += "0";
+            clock += month + "-";
+            if (day < 10)
+                clock += "0";
+            clock += day + "-";
+            if (hh < 10)
+                clock += "0";
+            clock += hh;
+            if (mm < 10) clock += '0';
+            clock += mm;
+            if (ss < 10) clock += '0';
+            clock += ss;
+            return (clock);
+        }
+
+        function stopPressBar() {
+            document.getElementById('preview').style.display = "none";
+        }
+
+        //开始进度条动画
+        function startPressBar() {
+            document.getElementById('preview').style.display = "";
+        }
+
+        function test() {
+            $("mapCon").ol.layer.setVisible(false);
+        }
+
+    </script>
+
+    <style type="text/css">
+
+        #mapCon {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        /* 自定义当前位置样式 */
+
+        .ol-zoom-extent {
+            left: 20px;
+            bottom: 200px;
+            right: auto;
+            top: auto;
+        }
+
+        .ol-scale-line {
+            left: 70px;
+            bottom: 202px;
+            right: auto;
+            top: auto;
+        }
+
+        /*=S 自定义鹰眼样式 */
+
+        .ol-custom-overviewmap,
+        .ol-custom-overviewmap.ol-uncollapsible {
+            left: 20px;
+            bottom: 20px;
+            right: auto;
+            top: auto;
+        }
+
+        /* 鹰眼控件展开时控件外框的样式 */
+
+        .ol-custom-overviewmap:not(.ol-collapsed) {
+            border: 1px solid black;
+        }
+
+        /* 鹰眼控件中地图容器样式 */
+
+        .ol-custom-overviewmap .ol-overviewmap-map {
+            border: none;
+            width: 300px;
+        }
+
+        /* 鹰眼控件中显示当前窗口中主图区域的边框 */
+
+        .ol-custom-overviewmap .ol-overviewmap-box {
+            border: 2px solid red;
+        }
+
+        /* 鹰眼控件展开时其控件按钮图标的样式 */
+
+        .ol-custom-overviewmap:not(.ol-collapsed) button {
+            bottom: auto;
+            left: auto;
+            right: 1px;
+            top: 1px;
+        }
+
+        /*=E 自定义鹰眼样式 */
+
+        #mouse-position {
+            font-size: 20px;
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            z-index: 200;
+            font-weight: bold;
+        }
+
+        .custom-mouse-position {
+            font-size: 20px;
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            z-index: 200;
+            font-weight: bold;
+        }
+
+        #analyse {
+            position: absolute;
+            z-index: 200;
+            top: 0px;
+            left: 50%;
+            transform: translate(-50%, 0%);
+        }
+
+        #preview {
+            z-index: 200;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 400px;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            background-color: #8E92AB;
+            display: none;
+            text-align: center;
+            padding-top: 25px;
+            font-weight: bold
+        }
+
+    </style>
+</head>
+<body onload="init()">
+
+<div id="preview">
+    <!--<img src="images/ing.png" alt='' /><br /><br /><br />-->
+    <!--<span>治安预警分析ing...</span>-->
+</div>
+
+<div id="mapCon">
+    <div class="btn-group" id="analyse">
+        <input type="button" class="btn" value="交通良好区域" style="font-family: '微软雅黑'; font-weight: bold; font-size: 20px;"
+               onclick="transport()"/>
+        <input type="button" class="btn" value="治安较好区域" style="font-family: '微软雅黑'; font-weight: bold; font-size: 20px;"
+               onclick="safe_area()"/>
+        <input type="button" class="btn" value="治安待加强区域"
+               style="font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="strenghten_area()"/>
+        <input type="button" class="btn" value="清除结果" style="font-family: '微软雅黑'; font-weight: bold; font-size: 20px;"
+               onclick="clearA()"/>
+    </div>
+</div>
+
+</body>
+</html>

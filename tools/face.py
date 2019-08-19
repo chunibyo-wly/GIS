@@ -108,14 +108,17 @@ def removeAllFace():
 
 
 if __name__ == "__main__":
-    data = getJSON("./suspects.json")
-    print(data)
-    # for i in range(len(data)):
-    #     token = get_facetoken(data[i]["img_url"])
-    #     data[i]["token"] = token
-    #     addface(token)
-
-    # updateJSON(data)
+    # removeAllFace()
     # getfaceset()
-    result = search("./faceset/8.jpg")
-    print(result["results"][0]["face_token"])
+
+    data = getJSON("./suspects.json")
+    for i in range(len(data)):
+        token = get_facetoken(data[i]["img_url"])
+        data[i]["token"] = token
+        addface(token)
+
+    updateJSON(data)
+    getfaceset()
+
+    # result = search("./faceset/8.jpg")
+    # print(result["results"][0]["face_token"])

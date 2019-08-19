@@ -1,0 +1,228 @@
+input[type=range] {
+    -webkit-appearance: none;
+    width: 300px;
+    border-radius: 10px; /*这个属性设置使填充进度条时的图形为圆角*/
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    height: 15px;
+    border-radius: 10px; /*将轨道设为圆角的*/
+    box-shadow: 0 1px 1px #def3f8, inset 0 .125em .125em #0d1112; /*轨道内置阴影效果*/
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 25px;
+    width: 25px;
+    margin-top: -5px; /*使滑块超出轨道部分的偏移量相等*/
+    background: #ffffff;
+    border-radius: 50%; /*外观设置为圆形*/
+    border: solid 0.125em rgba(205, 224, 230, 0.5); /*设置边框*/
+    box-shadow: 0 .125em .125em #3b4547; /*添加底部阴影*/
+}
+
+/********************测量**********************/
+.tooltip {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    color: white;
+    padding: 4px 8px;
+    opacity: 0.7;
+    white-space: nowrap;
+}
+.tooltip-measure {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.tooltip-static {
+    background-color: #ffcc33;
+    color: black;
+    border: 1px solid white;
+}
+
+.tooltip-measure:before,
+.tooltip-static:before {
+    border-top: 6px solid rgba(0, 0, 0, 0.5);
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    margin-left: -7px;
+    left: 50%;
+}
+
+.tooltip-static:before {
+    border-top-color: #ffcc33;
+}
+
+/***************Popup*************************/
+.ol-popup {
+    position: absolute;
+    background-color: white;
+    -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 45px;
+    left: -50px;
+}
+
+.ol-popup:after, .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
+
+.ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+
+.ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+}
+
+.ol-popup-closer:after {
+    content: "✖";
+}
+
+#popup-content {
+    font-size: 14px;
+    font-family: "微软雅黑";
+}
+
+#popup-content .markerInfo {
+    font-weight: bold;
+}
+
+/*************************************/
+#myModal{
+    z-index: 9999;
+}
+#queryBtn{
+    /*position: fixed;*/
+    /*bottom: 0;*/
+    top: 0;
+    z-index: 10;
+    /*text-align: center;*/
+    /*margin: auto;*/
+    position: absolute;
+    left: 50%;
+    /*top: 50%;*/
+    transform: translate(-50%,0%);
+}
+#mapCon {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+/* 自定义当前位置样式 */
+
+#mouse-position{
+    font-size: 20px;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 10;
+    font-weight: bold;
+}
+
+.ol-zoom-extent {
+    left: 20px;
+    bottom: 200px;
+    right: auto;
+    top: auto;
+}
+
+.ol-scale-line {
+    left: 70px;
+    bottom: 202px;
+    right: auto;
+    top: auto;
+}
+/*=S 自定义鹰眼样式 */
+
+.ol-custom-overviewmap,
+.ol-custom-overviewmap.ol-uncollapsible {
+    left: 20px;
+    bottom: 20px;
+    right: auto;
+    top: auto;
+}
+/* 鹰眼控件展开时控件外框的样式 */
+
+.ol-custom-overviewmap:not(.ol-collapsed) {
+    border: 1px solid black;
+}
+/* 鹰眼控件中地图容器样式 */
+
+.ol-custom-overviewmap .ol-overviewmap-map {
+    border: none;
+    width: 300px;
+}
+/* 鹰眼控件中显示当前窗口中主图区域的边框 */
+
+.ol-custom-overviewmap .ol-overviewmap-box {
+    border: 2px solid red;
+}
+/* 鹰眼控件展开时其控件按钮图标的样式 */
+
+.ol-custom-overviewmap:not(.ol-collapsed) button {
+    bottom: auto;
+    left: auto;
+    right: 1px;
+    top: 1px;
+}
+/*=E 自定义鹰眼样式 */
+
+
+/*.mybtn {*/
+/*    display: inline-block;*/
+/*    padding: 15px 25px;*/
+/*    font-size: 12px;*/
+/*    cursor: pointer;*/
+/*    text-align: center;*/
+/*    text-decoration: none;*/
+/*    outline: none;*/
+/*    color: #fff;*/
+/*    background-color: #4CAF50;*/
+/*    border: none;*/
+/*    border-radius: 15px;*/
+/*    box-shadow: 0 3px #999;*/
+/*}*/
+
+/*.mybtn:hover {background-color: #3e8e41}*/
+
+/*.mybtn:active {*/
+/*    background-color: #3e8e41;*/
+/*    box-shadow: 0 5px #666;*/
+/*    transform: translateY(4px);*/
+/*}*/
