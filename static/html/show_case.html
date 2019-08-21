@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content=""/>
+
     <script type="application/x-javascript">
         addEventListener("load", function () {
             setTimeout(hideURLbar, 0);
@@ -15,8 +16,11 @@
             window.scrollTo(0, 1);
         }
     </script>
-    <!-- Bootstrap Core CSS -->
-    <link href="../css/bootstrap.min.css" rel='stylesheet' type='text/css'/>
+    <!-- /js -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../css/chatting.css">
     <!-- Custom CSS -->
     <link href="../css/style.css" rel='stylesheet' type='text/css'/>
     <!-- Graph CSS -->
@@ -27,8 +31,7 @@
     <!-- lined-icons -->
     <link rel="stylesheet" href="../css/icon-font.min.css" type='text/css'/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <!-- /js -->
-    <script src="../js/jquery.min.js"></script>
+
     <!-- //js-->
     <style>
         * {
@@ -302,9 +305,13 @@
         .pag .page-numbers.list-3 li.active svg circle {
             stroke-dashoffset: -110;
         }
-
     </style>
-
+<!--    <link rel="stylesheet" href="../css/chatting.css">-->
+    <style>
+        ::-webkit-scrollbar {
+            display: none
+        }
+    </style>
 </head>
 
 <body>
@@ -322,14 +329,12 @@
                             <input type=hidden name=domains value="http://www.baidu.com">
                             <input type=hidden name=sitesearch value="http://www.baidu.com">
                             <input type="text" name=q value="站内搜索" onFocus="this.value = '';"
-                                   onBlur="if (this.value === '') {this.value = 'Search';}"
-                                   class="text"/>
+                                   onBlur="if (this.value === '') {this.value = 'Search';}" class="text"/>
                             <input type="submit" value=""/>
                         </form>
                         <form method=get action="http://www.google.com/search" target="_blank">
                             <input type="text" name=q value="bing搜索" onFocus="this.value = '';"
-                                   onBlur="if (this.value === '') {this.value = 'Search';}"
-                                   class="text"/>
+                                   onBlur="if (this.value === '') {this.value = 'Search';}" class="text"/>
                             <input type="submit" value=""/>
                         </form>
                         <div class="close"><img src="../images/cross.png" alt=""/></div>
@@ -340,10 +345,9 @@
                     <script type="text/javascript">
                         $('.main-search').hide();
                         $('button').click(function () {
-                                $('.main-search').show();
-                                $('.main-search text').focus();
-                            }
-                        );
+                            $('.main-search').show();
+                            $('.main-search text').focus();
+                        });
                         $('.close').click(function () {
                             $('.main-search').hide();
                         });
@@ -540,157 +544,15 @@
                     <ol class="breadcrumb m-b-0">
                         <li><a href="index.html">主页</a></li>
                         <li class="active">天网恢恢</li>
-                        <li class="active">案情管理</li>
+                        <li class="active">案情展示</li>
                     </ol>
                 </div>
                 <!--//sub-heard-part-->
                 <div class="newsCenterPanel">
                     <div class="title">
-                        <a href="#" target="_self">案情管理</a>
+                        <a href="#" target="_self">案情展示</a>
                     </div>
-                    <div class="newsCenterPanel_inner">
-
-                        <!--                        <div class="newContentBox odd">-->
-                        <!--                            <a hidefocus="true" href="#">-->
-                        <!--                                <div class="time">-->
-                        <!--                                    <p class="day">2</p>-->
-                        <!--                                    <p class="ym">2019-1</p>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="newTitle">[精]科技网新产品“科技商城”正式上线</div>-->
-
-                        <!--                                <div class="newTitleIcon"></div>-->
-                        <!--                                <div class="border"></div>-->
-                        <!--                                <div class="newContent">-->
-                        <!--                                    1月2日，科技网新产品“科技商城”正式上线，商家企业将能通过新产品科技商城享受更优质的在线商城建设服务，轻松打造属于自己的在线商城-->
-                        <!--                                </div>-->
-                        <!--                            </a>-->
-
-                        <!--                        </div>-->
-
-                        <!--                        <div class="newContentBox even">-->
-                        <!--                            <a hidefocus="true" href="#">-->
-                        <!--                                <div class="time">-->
-                        <!--                                    <p class="day">29</p>-->
-                        <!--                                    <p class="ym">2018-12</p>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="newTitle">[精]科技网助力2018广州互联网+新经济发展论坛</div>-->
-
-                        <!--                                <div class="newTitleIcon"></div>-->
-                        <!--                                <div class="border"></div>-->
-                        <!--                                <div class="newContent">-->
-                        <!--                                    12月27日，2018广州互联网+新经济发展论坛在广州阳光酒店隆重举行，科技网作为此次论坛技术支持单位，也受邀参会共探未来共赢之路……-->
-                        <!--                                </div>-->
-                        <!--                            </a>-->
-
-                        <!--                        </div>-->
-
-                        <!--                        <div class="newContentBox odd">-->
-                        <!--                            <input type="checkbox" class="newTitleIcon">-->
-                        <!--                            <a hidefocus="true" href="#">-->
-                        <!--                                <div class="time">-->
-                        <!--                                    <p class="day">8</p>-->
-                        <!--                                    <p class="ym">2019-1</p>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="newTitle">20190109功能更新（1月第二周）</div>-->
-
-                        <!--                                &lt;!&ndash;                                <div class="newTitleIcon"></div>&ndash;&gt;-->
-                        <!--                                <div class="border"></div>-->
-                        <!--                                <div class="newContent">-->
-                        <!--                                    手机码验证防刷、作品分享-->
-                        <!--                                </div>-->
-                        <!--                            </a>-->
-
-                        <!--                        </div>-->
-
-                        <!--                        <div class="newContentBox even">-->
-                        <!--                            <a hidefocus="true" href="#">-->
-                        <!--                                <div class="time">-->
-                        <!--                                    <p class="day">8</p>-->
-                        <!--                                    <p class="ym">2019-1</p>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="newTitle">你还在烦恼如何制作电子邀请函吗？快看这里</div>-->
-
-                        <!--                                <div class="newTitleIcon"></div>-->
-                        <!--                                <div class="border"></div>-->
-                        <!--                                <div class="newContent">-->
-                        <!--                                    将近年尾，很多公司企业都会准备举行一些大型活动，例如年会、颁奖会等等，来激励员工一年的辛苦劳动。邀请员工出席这些大型活动，得先要准备好一个电子邀请函，那么我们又该怎样去制作电子邀请函呢？-->
-                        <!--                                </div>-->
-                        <!--                            </a>-->
-
-                        <!--                        </div>-->
-
-                        <!--                        <div class="newContentBox odd">-->
-                        <!--                            <a hidefocus="true" href="#">-->
-                        <!--                                <div class="time">-->
-                        <!--                                    <p class="day">7</p>-->
-                        <!--                                    <p class="ym">2019-1</p>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="newTitle">你是否缺少一款好用的H5制作软件？</div>-->
-
-                        <!--                                <div class="newTitleIcon"></div>-->
-                        <!--                                <div class="border"></div>-->
-                        <!--                                <div class="newContent">-->
-                        <!--                                    又进入了一年的尾声，不管是企业、公司还是商家，都可能会举办很多活动，在这种情况下，不管是做H5邀请函、H5传单等，都需要用到H5制作软件。而我们烦恼的是，如何才能够找到一款好用的制作软件来做H5呢？-->
-                        <!--                                </div>-->
-                        <!--                            </a>-->
-
-                        <!--                        </div>-->
-
-                        <!--                        <div class="newContentBox even">-->
-                        <!--                            <a hidefocus="true" href="#">-->
-                        <!--                                <div class="time">-->
-                        <!--                                    <p class="day">4</p>-->
-                        <!--                                    <p class="ym">2019-1</p>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="newTitle">H5页面设计风格大盘点！</div>-->
-
-                        <!--                                <div class="newTitleIcon"></div>-->
-                        <!--                                <div class="border"></div>-->
-                        <!--                                <div class="newContent">-->
-                        <!--                                    H5页面发展到现在，已经不像几年前那样稀有了，甚至可以说是遍地都是。只有好的H5页面才能够达到宣传推广的效果。但是设计有限，灵感缺乏该怎么办呢？下面小编来给大家盘点几个H5页面设计风格！-->
-                        <!--                                </div>-->
-                        <!--                            </a>-->
-
-                        <!--                        </div>-->
-
-                        <!--                        <div class="newContentBox odd">-->
-                        <!--                            <a hidefocus="true" href="#">-->
-                        <!--                                <div class="time">-->
-                        <!--                                    <p class="day">3</p>-->
-                        <!--                                    <p class="ym">2019-1</p>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="newTitle">H5场景制作原来可以有这么多风格！</div>-->
-
-                        <!--                                <div class="newTitleIcon"></div>-->
-                        <!--                                <div class="border"></div>-->
-                        <!--                                <div class="newContent">-->
-                        <!--                                    H5场景制作是当下比较热门的页面制作方式，然而还是有很多人对这种制作方式不太了解。今天小编就跟大家分享下H5场景制作的5种风格，看看你心仪哪种。-->
-                        <!--                                </div>-->
-                        <!--                            </a>-->
-
-                        <!--                        </div>-->
-
-                        <!--                        <div class="newContentBox even">-->
-                        <!--                            <a hidefocus="true" href="#">-->
-                        <!--                                <div class="time">-->
-                        <!--                                    <p class="day">2</p>-->
-                        <!--                                    <p class="ym">2019-1</p>-->
-                        <!--                                </div>-->
-                        <!--                                <div class="newTitle">3步制作一款酷炫的年会邀请函</div>-->
-
-                        <!--                                <div class="newTitleIcon"></div>-->
-                        <!--                                <div class="border"></div>-->
-                        <!--                                <div class="newContent">-->
-                        <!--                                    2018年已经余额不足，各家企业也在开始筹备年会的相关事宜，全体员工齐聚一起，回顾过去，展望未来。年会通知，你还在使用通讯工具进行单调、乏味的文字通知形式吗？使用更潮流的通知方式——酷炫的H5年会邀请函，年会的喜庆气息会更浓厚，对于企业文化的发展也更有利。-->
-                        <!--                                </div>-->
-                        <!--                            </a>-->
-
-                        <!--                        </div>-->
-
-                    </div>
-                    <div class="col-md-1 col-md-offset-9">
-                        <button class="btn btn-primary btn-lg btn-block delete">删除</button>
-                    </div>
+                    <div class="newsCenterPanel_inner"></div>
                 </div>
 
                 <div class="pag">
@@ -865,6 +727,7 @@
     </div>
     <div class="clearfix"></div>
 </div>
+
 <script>
     var toggle = true;
 
@@ -882,7 +745,6 @@
                 });
             }, 400);
         }
-
         toggle = !toggle;
     });
 </script>
@@ -890,15 +752,15 @@
 <script src="../js/templates/jquery.nicescroll.js"></script>
 <script src="../js/templates/scripts.js"></script>
 <!-- Bootstrap Core JavaScript -->
-<script src="../js/bootstrap.min.js"></script>
+
 
 <script src="../js/common/getuser.js"></script>
 
 <script src="../js/common/bar.js"></script>
 
 <script>
-    const list1Pages = document.querySelectorAll('.list-1 li[data-page]');
-    const list2Pages = document.querySelectorAll('.list-2 li[data-page]');
+    // const list1Pages = document.querySelectorAll('.list-1 li[data-page]');
+    // const list2Pages = document.querySelectorAll('.list-2 li[data-page]');
     const list3Pages = document.querySelectorAll('.list-3 li[data-page]');
 
     handlePagination = (pages, target) => {
@@ -907,16 +769,16 @@
         });
     };
 
-    list1Pages.forEach(number => {
-        number.addEventListener('click', e => {
-            handlePagination(list1Pages, e.target);
-        });
-    });
-    list2Pages.forEach(number => {
-        number.addEventListener('click', e => {
-            handlePagination(list2Pages, e.target);
-        });
-    });
+    // list1Pages.forEach(number => {
+    //     number.addEventListener('click', e => {
+    //         handlePagination(list1Pages, e.target);
+    //     });
+    // });
+    // list2Pages.forEach(number => {
+    //     number.addEventListener('click', e => {
+    //         handlePagination(list2Pages, e.target);
+    //     });
+    // });
     list3Pages.forEach(number => {
         number.addEventListener('click', e => {
             handlePagination(list3Pages, e.target);
@@ -926,13 +788,15 @@
 
 <script>
     page = function (num) {
-        let data = {"num": num};
+        let data = {
+            "num": num
+        };
         $.ajax({
-            url: "http://127.0.0.1:5000/get_case",    //请求的url地址
-            dataType: "json",   //返回格式为json
-            async: false,//请求是否异步，默认为异步，这也是ajax重要特性
+            url: "http://127.0.0.1:5000/get_case", //请求的url地址
+            dataType: "json", //返回格式为json
+            async: false, //请求是否异步，默认为异步，这也是ajax重要特性
             data: data,
-            type: "post",   //请求方式,
+            type: "post", //请求方式,
             xhrFields: {
                 withCredentials: true
             },
@@ -944,17 +808,21 @@
                     if (i % 2 === 1) {
                         $(".newsCenterPanel_inner").append("" +
                             "                        <div class=\"newContentBox odd\">\n" +
-                            "                            <a hidefocus=\"true\" href=\"#\">\n" +
+                            "                            <a data-toggle=\"modal\" data-target=\"#chatting\" class='chatting' uid='" + data.data[i - 1].uid + "' hidefocus=\"true\" href=\"#\">\n" +
                             "                                <div class=\"time\">\n" +
-                            "                                    <p class=\"day\">" + i.toString() + "</p>\n" +
-                            "                                    <p class=\"ym\">" + data.data[i - 1].inform_time + "</p>\n" +
+                            "                                    <p class=\"day\">" + i
+                                .toString() + "</p>\n" +
+                            "                                    <p class=\"ym\">" + data.data[
+                            i - 1].inform_time + "</p>\n" +
                             "                                </div>\n" +
-                            "                                <div class=\"newTitle\">" + data.data[i - 1].case_name + "</div>\n" +
+                            "                                <div class=\"newTitle\">" + data
+                                .data[i - 1].case_name + "</div>\n" +
                             "\n" +
-                            "                                <input type=\"checkbox\" class=\"newTitleIcon\" case_id='" + data.data[i - 1].case_id + "' >\n" +
+                            "                                <div class='newTitleIcon'></div>\n" +
                             "                                <div class=\"border\"></div>\n" +
                             "                                <div class=\"newContent\">\n" +
-                            "                                    " + "(" + data.data[i - 1].case_id + ")" + data.data[i - 1].case_position + "\n" +
+                            "                                    " + "(" + data.data[i - 1]
+                                .case_id + ")" + data.data[i - 1].case_position + "\n" +
                             "                                </div>\n" +
                             "                            </a>\n" +
                             "\n" +
@@ -962,17 +830,20 @@
                     } else {
                         $(".newsCenterPanel_inner").append("" +
                             "                        <div class=\"newContentBox even\">\n" +
-                            "                            <a hidefocus=\"true\" href=\"#\">\n" +
+                            "                            <a data-toggle=\"modal\" data-target=\"#chatting\" class='chatting' uid='" + data.data[i - 1].uid + "' hidefocus=\"true\" href=\"#\">\n" +
                             "                                <div class=\"time\">\n" +
-                            "                                    <p class=\"day\">" + i + "</p>\n" +
+                            "                                    <p class=\"day\">" + i +
+                            "</p>\n" +
                             "                                    <p class=\"ym\">2018-12</p>\n" +
                             "                                </div>\n" +
-                            "                                <div class=\"newTitle\">" + data.data[i - 1].case_name + "</div>\n" +
+                            "                                <div class=\"newTitle\">" + data
+                                .data[i - 1].case_name + "</div>\n" +
                             "\n" +
-                            "                                <input type=\"checkbox\" class=\"newTitleIcon\" case_id='" + data.data[i - 1].case_id + "' >\n" +
+                            "                                <div class='newTitleIcon'></div>" +
                             "                                <div class=\"border\"></div>\n" +
                             "                                <div class=\"newContent\">\n" +
-                            "                                    " + "(" + data.data[i - 1].case_id + ")" + data.data[i - 1].case_position + "\n" +
+                            "                                    " + "(" + data.data[i - 1]
+                                .case_id + ")" + data.data[i - 1].case_position + "\n" +
                             "                                </div>\n" +
                             "                            </a>\n" +
                             "\n" +
@@ -985,11 +856,11 @@
 
     delete_case = function (data) {
         $.ajax({
-            url: "http://127.0.0.1:5000/delete_case",    //请求的url地址
+            url: "http://127.0.0.1:5000/delete_case", //请求的url地址
             // dataType: "json",   //返回格式为json
-            async: false,//请求是否异步，默认为异步，这也是ajax重要特性
+            async: false, //请求是否异步，默认为异步，这也是ajax重要特性
             data: data,
-            type: "post",   //请求方式,
+            type: "post", //请求方式,
             xhrFields: {
                 withCredentials: true
             },
@@ -1011,11 +882,18 @@
         $("input[type='checkbox']:checked").each(function () {
             case_id.push($(this).attr('case_id'));
         });
-        delete_case({"case_id": case_id});
+        delete_case({
+            "case_id": case_id
+        });
         self.location.href = ""
-    })
+    });
 
 </script>
+
+<div id="dg" style="z-index: 9999; position: fixed ! important; right: 400px; top: 100px;">
+    <iframe hidden src="chatting.html" scrolling="no"
+            style="border: 0;width: 850px;height: 634px;position: absolute; right: 0; top: 0;background: #ffffff;"></iframe>
+</div>
 
 </body>
 

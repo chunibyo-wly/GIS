@@ -301,107 +301,7 @@
                 <div class="accordion">
                     <h3 class="inner-tittle two">Easy Accordion</h3>
                     <div class="panel-group tool-tips graph-form" id="accordion" role="tablist"
-                         aria-multiselectable="true">
-                        <div class="panel-default">
-                            <div class="panel-heading" role="tab" id="headingOne">
-                                <h4 class="panel-title">
-                                    <a role="button" data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"
-                                       class="collapsed">
-                                        Product 1
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel"
-                                 aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-                                <div class="panel-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. apiente ea proident. Ad
-                                    vegan excepteur butcher vice lomo. labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-default">
-                            <div class="panel-heading" role="tab" id="headingTwo">
-                                <h4 class="panel-title">
-                                    <a class="" role="button" data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        Product 2
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel"
-                                 aria-labelledby="headingTwo" aria-expanded="true">
-                                <div class="panel-body">
-                                    Eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                                    non cupidatat skateboard dolor brunch. Anim pariatur cliche reprehenderit, enim
-                                    Food truck quinoa nesciunt laborum eiusmod. apiente ea proident. Ad vegan
-                                    excepteur butcher vice lomo. labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-default">
-                            <div class="panel-heading" role="tab" id="headingThree">
-                                <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse"
-                                       data-parent="#accordion" href="#collapseThree" aria-expanded="false"
-                                       aria-controls="collapseThree">
-                                        Product 3
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel"
-                                 aria-labelledby="headingThree" aria-expanded="false" style="height: 0px;">
-                                <div class="panel-body">
-                                    3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck
-                                    quinoa nesciunt laborum eiusmod. Anim pariatur cliche reprehenderit, enim
-                                    eiusmod high life accusamus terry richardson ad squid. apiente ea proident. Ad
-                                    vegan excepteur butcher vice lomo. labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-default">
-                            <div class="panel-heading" role="tab" id="headingFour">
-                                <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse"
-                                       data-parent="#accordion" href="#collapseFour" aria-expanded="false"
-                                       aria-controls="collapseFour">
-                                        Product 4
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel"
-                                 aria-labelledby="headingFour" aria-expanded="false" style="height: 0px;">
-                                <div class="panel-body">
-                                    Cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                                    squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food
-                                    truck quinoa nesciunt laborum eiusmod. apiente ea proident. Ad vegan excepteur
-                                    butcher vice lomo. labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-default">
-                            <div class="panel-heading" role="tab" id="headingFive">
-                                <h4 class="panel-title">
-                                    <a class="collapsed" role="button" data-toggle="collapse"
-                                       data-parent="#accordion" href="#collapseFive" aria-expanded="false"
-                                       aria-controls="collapseFive">
-                                        Product 5
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseFive" class="panel-collapse collapse" role="tabpanel"
-                                 aria-labelledby="headingFive" aria-expanded="false" style="height: 0px;">
-                                <div class="panel-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. apiente ea proident. Ad
-                                    vegan excepteur butcher vice lomo. labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                         aria-multiselectable="true"></div>
                 </div>
                 <!--//Accordion-->
 
@@ -586,6 +486,36 @@
 <script src="../js/common/getuser.js"></script>
 <script src="../js/ajax/get_information.js"></script>
 <script src="../js/common/bar.js"></script>
+
+
+<script>
+    todayTask.forEach(function (i) {
+        if (i.id.toString() === resulet_sidebar.id.toString()) {
+            let index = 1;
+            i.todo_list.forEach(function (j) {
+                $("#accordion").append('                        <div class="panel-default">\n' +
+                    '                            <div class="panel-heading" role="tab" id="headingOne">\n' +
+                    '                                <h4 class="panel-title">\n' +
+                    '                                    <a role="button" data-toggle="collapse" data-parent="#accordion"\n' +
+                    '                                       href="#collapse' + index + '" aria-expanded="false" aria-controls="collapse' + index + '"\n' +
+                    '                                       class="collapsed">\n' +
+                    '                                        任务 ' + index + '\n' +
+                    '                                    </a>\n' +
+                    '                                </h4>\n' +
+                    '                            </div>\n' +
+                    '                            <div id="collapse' + index + '" class="panel-collapse collapse" role="tabpanel"\n' +
+                    '                                 aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">\n' +
+                    '                                <div class="panel-body">\n' + j.task +
+                    '                                </div>\n' +
+                    '                            </div>\n' +
+                    '                        </div>');
+
+                index++;
+            });
+        }
+    })
+</script>
+
 </body>
 
 </html>

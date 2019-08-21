@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
 .modal * {
-    box-sizing: border-box;
+    box-sizing: border-box !important;
     /*background-color: #fff;*/
 }
 
 .modal body {
-    background: url('../images/bg.jpg');
-    background-size: cover;
-    background-position: center center;
+    background: url('../images/bg.jpg') !important;
+    background-size: cover !important;
+    background-position: center center !important;
 
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     justify-content: center;
     flex-direction: column;
 

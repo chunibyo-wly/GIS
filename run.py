@@ -8,6 +8,7 @@ import random, requests, math
 
 from tools.base64toimg import getImg
 import tools.face as fa
+import tools.map as m
 
 app = Flask(__name__, static_url_path='')
 CORS(app, supports_credentials=True)
@@ -228,7 +229,7 @@ def get_unread_message():
 def get_case():
     number = int(request.form['num'])
     result = dao.execute(
-        "SELECT case_id, case_name, DATE_FORMAT(inform_time, '%Y-%m') as inform_time, case_position FROM `case` ORDER BY  case_id DESC;")
+        "SELECT case_id, case_name, DATE_FORMAT(inform_time, '%Y-%m') as inform_time, case_position, id FROM `case` ORDER BY  case_id DESC;")
     response = {
         "data": []
     }
@@ -239,7 +240,8 @@ def get_case():
             "case_id": result[i][0],
             "case_name": result[i][1],
             "inform_time": result[i][2],
-            "case_position": result[i][3]
+            "case_position": result[i][3],
+            "uid": result[i][4]
         })
     return jsonify(response)
 
@@ -260,21 +262,23 @@ def insert_case():
     case_lon = request.form['case_lon']
     inform_time = request.form['inform_time']
     case_description = request.form['case_description']
-
-    print(
-        "INSERT INTO `case` (case_type, case_position, case_lon, case_lat,case_description,inform_time) VALUES ('" + case_type + "', '" + case_position + "', " + case_lon + ", " + case_lat + ",'" + case_description + "','" + inform_time + "')")
+    x, y = m.lonlat2Mercator(float(case_lon), float(case_lat))
+    id = request.cookies.get("id")
+    case_name = request.form['case_name']
     dao.execute(
-        "INSERT INTO `case` (case_type, case_position, case_lon, case_lat,case_description,inform_time) VALUES ('" + case_type + "', '" + case_position + "', " + case_lon + ", " + case_lat + ",'" + case_description + "','" + inform_time + "')")
+        "INSERT INTO `case` (case_type, case_position, case_lon, case_lat,case_description,inform_time,X,Y,id,case_name) VALUES ('" + case_type + "', '" + case_position + "', " + case_lon + ", " + case_lat + ",'" + case_description + "','" + inform_time + "','" + str(
+            x) + "','" + str(y) + "','" + str(id) + "','" + case_name + "')")
     return jsonify({"status": "Y"}), 200
 
 
 @app.route('/get_wuhan', methods=['get'])
 def get_wuhan():
-    result = dao.execute("SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case` ;")
+    result = dao.execute("SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case` LIMIT 500;")
     response = []
-    random_list = list(range(6000))
-    random.shuffle(random_list)
-    for i in random_list[:499]:
+    # random_list = list(range(6000))
+    # random.shuffle(random_list)
+    # for i in random_list[:499]:
+    for i in range(len(result)):
         response.append({
             "case_id": result[i][0],
             "case_name": result[i][1],
@@ -369,30 +373,6 @@ def face():
         response.append(data[token2index[i["face_token"]]])
 
     return jsonify(response), 200
-
-
-# @app.route('/get_wuhan', methods=['get'])
-# def get_wuhan():
-#     result = dao.execute("SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case` LIMIT 500;")
-#     response = []
-#     # random_list = list(range(6000))
-#     # random.shuffle(random_list)
-#     # for i in random_list[:499]:
-#     for i in range(len(result)):
-#         response.append({
-#             "case_id": result[i][0],
-#             "case_name": result[i][1],
-#             "case_type": result[i][2],
-#             "time": result[i][13],
-#             "case_position": result[i][6],
-#             "case_description": result[i][9],
-#             "case_status": result[i][10],
-#             "X": float(result[i][11]),
-#             "Y": float(result[i][12]),
-#             "lng": float(result[i][7]),
-#             "lat": float(result[i][8]),
-#         })
-#     return jsonify(response), 200
 
 
 @app.route('/get_police', methods=['GET'])
@@ -510,6 +490,19 @@ def get_path():
     }
     response = make_response(response)
     return response, 200
+
+
+@app.route('/get_userByid', methods=['post'])
+def get_userByid():
+    id = str(request.form['id'])
+    result = dao.execute(
+        "SELECT user_basicInformation.id, identity.role, user_basicInformation.`name` FROM identity, user_basicInformation WHERE identity.id = "
+        + id + " AND identity.id = user_basicInformation.id;")
+    return jsonify({
+        "id": result[0][0],
+        "role": result[0][1],
+        "name": result[0][2],
+    }), 200
 
 
 # @app.route('/set_cookie', methods=['get'])
