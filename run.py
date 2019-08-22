@@ -229,10 +229,9 @@ def get_unread_message():
 def get_case():
     number = int(request.form['num'])
     result = dao.execute(
-        "SELECT case_id, case_name, DATE_FORMAT(inform_time, '%Y-%m') as inform_time, case_position, id FROM `case` ORDER BY  case_id DESC;")
-    response = {
-        "data": []
-    }
+        "SELECT case_id, case_name, DATE_FORMAT(inform_time, '%Y-%m') as inform_time, case_position, id FROM `case` ORDER BY  case_id DESC;"
+    )
+    response = {"data": []}
     begin = (number - 1) * 8
     end = number * 8 - 1
     for i in range(begin, min(end + 1, begin + len(result))):
@@ -266,14 +265,18 @@ def insert_case():
     id = request.cookies.get("id")
     case_name = request.form['case_name']
     dao.execute(
-        "INSERT INTO `case` (case_type, case_position, case_lon, case_lat,case_description,inform_time,X,Y,id,case_name) VALUES ('" + case_type + "', '" + case_position + "', " + case_lon + ", " + case_lat + ",'" + case_description + "','" + inform_time + "','" + str(
-            x) + "','" + str(y) + "','" + str(id) + "','" + case_name + "')")
+        "INSERT INTO `case` (case_type, case_position, case_lon, case_lat,case_description,inform_time,X,Y,id,case_name) VALUES ('"
+        + case_type + "', '" + case_position + "', " + case_lon + ", " +
+        case_lat + ",'" + case_description + "','" + inform_time + "','" +
+        str(x) + "','" + str(y) + "','" + str(id) + "','" + case_name + "')")
     return jsonify({"status": "Y"}), 200
 
 
 @app.route('/get_wuhan', methods=['get'])
 def get_wuhan():
-    result = dao.execute("SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case` LIMIT 500;")
+    result = dao.execute(
+        "SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case` LIMIT 500;"
+    )
     response = []
     # random_list = list(range(6000))
     # random.shuffle(random_list)
@@ -312,10 +315,7 @@ def driving():
     r = requests.get(api, params=data)
     data = json.loads(r.text)
     if data['status'] != '1':
-        response = {
-            'status': 'N',
-            'message': 'error'
-        }
+        response = {'status': 'N', 'message': 'error'}
     else:
         path_count = int(data['count'])
         paths = data['route']['paths']
@@ -336,7 +336,8 @@ def driving():
                     sss = ss.split(',')
                     sss[0] = float(sss[0]) * math.pi / 180 * earth_rad
                     tmp = float(sss[1]) * math.pi / 180
-                    sss[1] = earth_rad / 2 * math.log((1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+                    sss[1] = earth_rad / 2 * math.log(
+                        (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
                     roads.append(sss)
             value = {
                 'distance': distance,
@@ -347,11 +348,7 @@ def driving():
                 'roads': roads
             }
             values.append(value)
-        response = {
-            'status': 'Y',
-            'message': 'Success',
-            'value': values
-        }
+        response = {'status': 'Y', 'message': 'Success', 'value': values}
     response = make_response(response)
     return response, 200
 
@@ -385,16 +382,27 @@ def get_police():
     for i in random_list[:300]:
         tmp = float(result[i][5]) * math.pi / 180
         response.append({
-            'police_station_id': result[i][0],
-            'id': result[i][1],
-            'name': result[i][2],
-            'address': result[i][3],
-            'lng': float(result[i][4]),
-            'lat': float(result[i][5]),
-            'photos': result[i][6],
-            'tel': result[i][7],
-            'X': float(result[i][4]) * math.pi / 180 * earth_rad,
-            'Y': earth_rad / 2 * math.log((1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+            'police_station_id':
+            result[i][0],
+            'id':
+            result[i][1],
+            'name':
+            result[i][2],
+            'address':
+            result[i][3],
+            'lng':
+            float(result[i][4]),
+            'lat':
+            float(result[i][5]),
+            'photos':
+            result[i][6],
+            'tel':
+            result[i][7],
+            'X':
+            float(result[i][4]) * math.pi / 180 * earth_rad,
+            'Y':
+            earth_rad / 2 * math.log(
+                (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
         })
     return jsonify(response), 200
 
@@ -428,18 +436,12 @@ def get_path():
     data = json.loads(r.text)
     if mode != 'bicycling':
         if data['status'] != '1':
-            response = {
-                'status': 'N',
-                'message': data['info']
-            }
+            response = {'status': 'N', 'message': data['info']}
             response = make_response(response)
             return response, 200
     else:
         if data['errcode'] != 0:
-            response = {
-                'status': 'N',
-                'message': data['errdetail']
-            }
+            response = {'status': 'N', 'message': data['errdetail']}
             response = make_response(response)
             return response, 200
 
@@ -465,7 +467,8 @@ def get_path():
                 sss = ss.split(',')
                 sss[0] = float(sss[0]) * math.pi / 180 * earth_rad
                 tmp = float(sss[1]) * math.pi / 180
-                sss[1] = earth_rad / 2 * math.log((1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+                sss[1] = earth_rad / 2 * math.log(
+                    (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
                 roads.append(sss)
         if mode == 'driving':
             value = {
@@ -483,11 +486,7 @@ def get_path():
                 'roads': roads
             }
         values.append(value)
-    response = {
-        'status': 'Y',
-        'message': 'Success',
-        'value': values
-    }
+    response = {'status': 'Y', 'message': 'Success', 'value': values}
     response = make_response(response)
     return response, 200
 
@@ -504,6 +503,27 @@ def get_userByid():
         "name": result[0][2],
     }), 200
 
+
+@app.route('/get_wuhan2', methods=['get'])
+def get_wuhan2():
+    result = dao.execute("SELECT * , DATE_FORMAT(time, '%Y-%m-%d %H:%i') as abcd FROM `wuhan_pois` ;")
+    response = []
+    for i in range(len(result)):
+        response.append({
+            "case_id": result[i][0],
+            "position_name": result[i][1],
+            # "position_type": result[i][2],
+            'case_address':result[i][3],
+            "lng": float(result[i][4]),
+            "lat": float(result[i][5]),
+            "X": float(result[i][6]),
+            "Y": float(result[i][7]),
+            'case_area':result[i][8],
+            "time": result[i][12],
+            "case_description": result[i][10],
+            'case_name':result[i][11]
+        })
+    return jsonify(response), 200
 
 # @app.route('/set_cookie', methods=['get'])
 # def set_cookie():

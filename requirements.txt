@@ -4,3 +4,4 @@ pymysql
 pandas
 requests
 openpyxl
+beautifulsoup4
