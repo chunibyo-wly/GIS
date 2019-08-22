@@ -1,207 +1,54 @@
-<!DOCTYPE HTML
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
 
 <head>
     <meta charset="UTF-8">
-    <title>加载高德地图</title>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wvGuSDMA4xjj0t1dPqEtibPvXY5gyN4U">
-    </script>
-
-    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
-    <script src="../js/MapGis_ol_product.js" type="text/javascript"></script>
-    <script src="../js/jquery-1.11.2.min.js" type="text/javascript"></script>
-    <script src="../js/echarts.js"></script>
-    <script src="../js/chinaMap.js"></script>
-    <script src="../js/BmapLib.js"></script>
-    <script src="../js/data.js"></script>
-    <!--<script type="text/javascript" src="<%=basePath%>/js/jquery-1.12.4.js"></script>-->
-
+    <title>Query and Path</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
-
-    <script>
-        // 判断点在多边形内还是外
-
-        function ptInPolygon(lng, lat) {
-            var pts = CreateChinaMapLine();
-
-            var ply = new BMap.Polygon(pts);
-
-            var pt = new BMap.Point(lng, lat);
-
-            var result = BMapLib.GeoUtils.isPointInPolygon(pt, ply);
-
-            if (result == true) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        /**
-         * 经纬度转墨卡托
-         * @param poi 经纬度
-         * @returns {{}}
-         * @private
-         */
-        function _getMercator(poi) { //[114.32894, 30.585748]
-            var mercator = {};
-            var earthRad = 6378137.0;
-            // console.log("mercator-poi",poi);
-            mercator.x = poi.lng * Math.PI / 180 * earthRad;
-            var a = poi.lat * Math.PI / 180;
-            mercator.y = earthRad / 2 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
-            // console.log("mercator",mercator);
-            return mercator; //[12727039.383734727, 3579066.6894065146]
-        }
-
-        /**
-         * 墨卡托转经纬度
-         * @param poi 墨卡托
-         * @returns {{}}
-         * @private
-         */
-        function _getLngLat(poi) {
-            var lnglat = {};
-            lnglat.lng = poi.x / 20037508.34 * 180;
-            var mmy = poi.y / 20037508.34 * 180;
-            lnglat.lat = 180 / Math.PI * (2 * Math.atan(Math.exp(mmy * Math.PI / 180)) - Math.PI / 2);
-            return lnglat;
-        }
-
-        get_data = function () {
-            var data = [];
-            var len = 3000;
-            var geoCoord
-            while (len--) {
-                geoCoord = placeList[len % placeList.length].geoCoord;
-                var x = geoCoord[0] + Math.random() * 1 - 0.5;
-                var y = geoCoord[1] + Math.random() * 2 - 0;
-                if (ptInPolygon(x, y) || parseInt(x) == 120 || parseInt(x) == 121) {
-                    data.push({
-                        name: placeList[len % placeList.length].name + len,
-                        value: 50,
-                        geoCoord: [
-                            x,
-                            y
-                        ]
-                    })
-                }
-            }
-            return data;
-        };
-
-        get_wuhan = function () {
-            var point_data = {};
-            $.ajax({
-                url: "http://127.0.0.1:5000/get_wuhan", //请求的url地址
-                dataType: "json", //返回格式为json
-                async: false, //请求是否异步，默认为异步，这也是ajax重要特性
-                data: {},
-                type: "get", //请求方式,
-                xhrFields: {
-                    withCredentials: true
-                },
-                crossDomain: true,
-                success: function (data) {
-                    //请求成功时处理
-                    point_data = data;
-                }
-            });
-            return point_data;
-        };
-    </script>
-
-    <style type="text/css">
-        #menu {
-            width: 100%;
-            height: 20px;
-            padding: 5px 10px;
-            font-size: 14px;
-            font-family: "微软雅黑";
-            left: 10px;
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+    <link href="../css/queryPath.css" rel="stylesheet" type="text/css" />
+    <script src="../js/MapGis_ol_product.js" type="text/javascript"></script>
+    <style>
+        #queryBtn {
+            position: fixed;
+            /*bottom: 0;*/
+            top: 0;
+            z-index: 10;
             text-align: center;
+            left: 800px;
         }
 
         #mapCon {
             width: 100%;
-            height: 95%;
+            height: 100%;
             position: absolute;
-        }
-
-        .ol-popup {
-            position: absolute;
-            background-color: white;
-            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #cccccc;
-            border-width: 20px;
-            bottom: 25px;
-            left: -67px;
-        }
-
-        .ol-popup:after,
-        .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
-
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
-        }
-
-        .ol-popup:before {
-            border-top-color: #cccccc;
-            border-width: 11px;
-            left: 48px;
-            margin-left: -11px;
-        }
-
-        .ol-popup-closer {
-            text-decoration: none;
-            position: absolute;
-            top: 2px;
-            right: 8px;
-        }
-
-        .ol-popup-closer:after {
-            content: "✖";
-        }
-
-        #popup-content {
-            font-size: 20px;
-            font-family: "微软雅黑";
-        }
-
-        #popup-content .markerInfo {
-            font-weight: bold;
         }
 
         /* 自定义当前位置样式 */
 
+        #mouse-position {
+            font-size: 20px;
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            z-index: 10;
+            font-weight: bold;
+        }
+
         .ol-zoom-extent {
-            left: 0;
-            bottom: 170px;
+            left: 20px;
+            bottom: 200px;
             right: auto;
             top: auto;
         }
 
         .ol-scale-line {
-            left: 50px;
-            bottom: 175px;
+            left: 70px;
+            bottom: 202px;
             right: auto;
             top: auto;
         }
@@ -210,16 +57,10 @@
 
         .ol-custom-overviewmap,
         .ol-custom-overviewmap.ol-uncollapsible {
-            /*bottom: auto;
-            left: auto;*/
-            left: 0;
-            bottom: 0;
+            left: 20px;
+            bottom: 20px;
             right: auto;
             top: auto;
-            /* 右侧显示 */
-            /*right: 0;*/
-            /* 顶部显示 */
-            /*top: 0;*/
         }
 
         /* 鹰眼控件展开时控件外框的样式 */
@@ -250,106 +91,393 @@
             top: 1px;
         }
 
-        #queryBtn {
-            /*position: fixed;*/
-            /*bottom: 0;*/
-            top: 0;
-            z-index: 10;
-            /*text-align: center;*/
-            /*margin: auto;*/
-            position: absolute;
-            left: 50%;
-            /*top: 50%;*/
-            transform: translate(-50%, 0%);
-        }
-
         /*=E 自定义鹰眼样式 */
     </style>
 </head>
 
 <body>
-
-    <!--<div id="menu" style="font-weight:bold">
-    鼠标单击标注点，弹出Popup标注-->
-
-    <div class="ToolLib">
-        <div class="btn-group" id="queryBtn">
-            <input type="button" class="ButtonLib btn" id="addFeatures" value="添加聚合标注" />
-            <input type="button" class="ButtonLib btn" id="removeFeatures" value="移除聚合标注" />
-            <input type="button" class="ButtonLib btn" id="addPopup" value="添加POPup" />
-            <input type="button" class="ButtonLib btn" id="removePopup" value="移除POPup" />
-        </div>
-    </div>
-
     <div id="mapCon">
-
-        <!-- Popup -->
-        <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-            <div id="popup-content">
+        <div class="container" style="background-color: azure">
+            <div class="btn-group" id="queryBtn">
+                <button type="button" class="btn" onclick="clusterVector.setVisible(true);">打开聚合标注</button>
+                <button type="button" class="btn"
+                    onclick="clusterVector.setVisible(false);close_popup();">关闭聚合标注</button>
             </div>
-
-            <div id="mouse-position" class="custom-mouse-position">
+            <div id="popup" class="ol-popup">
+                <a id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content">
+                </div>
             </div>
-
         </div>
+        <div id="mouse-position"></div>
     </div>
-
-    <!--</div>-->
 
     <script>
-        let vectorLayer;
+        let map; //地图容器
+        let layerArray; //
 
-        let point_wuhan = get_wuhan();
-        $("#addPopup").click(function () {
-            let point_fromLonLat = [];
-            for (let i = 0; point_wuhan.length > i; ++i) {
-                let temp = new ol.Feature({
-                    geometry: new ol.geom.Point(ol.proj.fromLonLat([point_wuhan[i]["lng"], point_wuhan[
-                        i]["lat"]])),
-                    list_id: i,
-                });
-                temp.setStyle(createLabelStyle(temp));
-                point_fromLonLat.push(temp);
-            }
-
-            //矢量标注的数据源
-            var vectorSource = new ol.source.Vector({
-                // features: [iconFeature]
-                features: point_fromLonLat
+        window.onload = function () {
+            let center = [12735697.59001188, 3573981.441510862];
+            //最大级数
+            let maxZoom = 30;
+            //初始化地图图层
+            let layer1 = new Zondy.Map.GoogleLayer({
+                layerType: Zondy.Enum.Map.GoogleLayerType.VEC_IGS,
+                ip: "develop.smaryun.com",
+                port: "6163"
             });
-
-            //矢量标注图层
-            vectorLayer = new ol.layer.Vector({
-                source: vectorSource
+            let layer2 = new Zondy.Map.GoogleLayer({
+                layerType: Zondy.Enum.Map.GoogleLayerType.RASTER_IGS,
+                ip: "develop.smaryun.com",
+                port: "6163"
             });
-            map.addLayer(vectorLayer);
+            let layer3 = new Zondy.Map.GoogleLayer({
+                layerType: Zondy.Enum.Map.GoogleLayerType.TERRAIN_IGS,
+                ip: "develop.smaryun.com",
+                port: "6163"
+            });
+            let layer4 = new Zondy.Map.GoogleLayer({
+                layerType: Zondy.Enum.Map.GoogleLayerType.ROAD_IGS,
+                ip: "develop.smaryun.com",
+                port: "6163"
+            });
+            layerArray = [layer1, layer2, layer3, layer4];
 
-            let featureInfoList = [];
-            for (let i = 0; point_wuhan.length > i; ++i) {
-                featureInfoList.push({
-                    geo: ol.proj.fromLonLat([point_wuhan[i]["lng"], point_wuhan[i]["lat"]]),
-                    att: {
-                        //标注信息的标题内容
-                        title: point_wuhan[i]["case_position"],
-                        //标注内容简介
-                        text: point_wuhan[i]["case_description"] + '\n(' + point_wuhan[i]["time"] +
-                            ')',
+            map = new ol.Map({
+                //添加图层
+                layers: [layer1],
+                //目标DIV
+                target: 'mapCon',
+                view: new ol.View({
+                    center: center,
+                    maxZoom: maxZoom,
+                    minZoom: 4,
+                    zoom: 12
+                })
+            });
+            //实例化鹰眼控件（OverviewMap）,自定义样式的鹰眼控件
+            var overviewMapControl = new ol.control.OverviewMap({
+                //鹰眼控件样式（see in overviewmap-custom.html to see the custom CSS used）
+                className: 'ol-overviewmap ol-custom-overviewmap',
+                //鹰眼中加载同坐标系下不同数据源的图层
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.XYZ({
+                            url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=" +
+                                "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥,
+                            wrapX: false
+                        })
+                    }),
+                    new ol.layer.Tile({
+                        title: "天地图矢量注记图层",
+                        source: new ol.source.XYZ({
+                            url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" +
+                                "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥
+                        })
+                    })
+                ],
+                //鹰眼控件展开时功能按钮上的标识（网页的JS的字符编码）
+                collapseLabel: '\u00BB',
+                //鹰眼控件折叠时功能按钮上的标识（网页的JS的字符编码）
+                label: '\u00AB',
+                //初始为展开显示方式
+                collapsed: false
+            });
+            map.addControl(overviewMapControl);
+
+            //实例化zoomToExtent控件并加载到地图容器中
+            var zoomToExtent = new ol.control.ZoomToExtent({
+                extent: [12733450, 3569910, 12735844, 3571692],
+                tipLabel: "定位到当前位置",
+                label: "O"
+
+            });
+            map.addControl(zoomToExtent);
+
+            //实例化比例尺控件（ScaleLine）
+            var scaleLineControl = new ol.control.ScaleLine({
+                //设置比例尺单位，degrees、imperial、us、nautical、metric（度量单位）
+                units: "metric"
+            });
+            map.addControl(scaleLineControl);
+
+            //实例化鼠标位置控件（MousePosition）
+            var mousePositionControl = new ol.control.MousePosition({
+                //坐标格式
+                coordinateFormat: ol.coordinate.createStringXY(4),
+                //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
+                projection: 'EPSG:4326',
+                //         projection: 'EPSG:3857',
+                //坐标信息显示样式类名，默认是'ol-mouse-position'
+                className: 'custom-mouse-position',
+                //显示鼠标位置信息的目标容器
+                target: document.getElementById('mouse-position'),
+                //未定义坐标的标记
+                undefinedHTML: '&nbsp;'
+            });
+            map.addControl(mousePositionControl);
+
+            $('.ol-zoom-in').hide();
+            $('.ol-zoom-out').hide();
+
+            addListener();
+            init_cluster();
+        };
+
+        let clusterSource;
+        let clusterVector;
+        let clusterFeatures = [];
+        init_cluster = function () {
+            $.ajax({
+                url: 'http://127.0.0.1:5000/get_wuhan2',
+                type: "GET",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    let len = data.length;
+                    for (let i = 0; i < len; ++i) {
+                        clusterFeatures[i] = new ol.Feature({
+                            geometry: new ol.geom.Point([data[i].X, data[i].Y]),
+                            case_id: data[i].case_id,
+                            case_name: data[i].case_name,
+                            position_type: data[i].position_type,
+                            time: data[i].time,
+                            case_position: data[i].case_address,
+                            lng: data[i].lng,
+                            lat: data[i].lat,
+                            case_description: data[i].case_description,
+                            area: data[i].case_area,
+                            X: data[i].X,
+                            Y: data[i].Y
+                        });
                     }
-                });
-            }
-            /**
-             * 实现popup的html元素
-             */
-            var container = document.getElementById('popup');
-            var content = document.getElementById('popup-content');
-            content.setAttribute('style', 'width: 200px !important');
-            var closer = document.getElementById('popup-closer');
+
+                    clusterVector = createClusters(clusterFeatures, 100, '../photo/case.png', 0.3,
+                        '#fff');
+                    clusterVector.setVisible(false);
+                    map.addLayer(clusterVector);
+                }
+            })
+        }
+
+        function createClusters(features, distance, imgUrl, scale, textColor) {
+            //矢量要素数据源
+            var source = new ol.source.Vector({
+                features: features
+            });
+            //聚合标注数据源
+            var clusterSource = new ol.source.Cluster({
+                distance: distance,
+                source: source
+            });
+            //加载聚合标注的矢量图层
+            var styleCache = {};
+            var newCluster = new ol.layer.Vector({
+                source: clusterSource,
+                style: function (feature) {
+                    var size = feature.get('features').length;
+                    var style = styleCache[size];
+                    if (!style) {
+                        style = [
+                            new ol.style.Style({
+                                image: new ol.style.Icon(
+                                    /** @type {olx.style.IconOptions} */
+                                    ({
+                                        //设置图标点
+                                        anchor: [0.5, distance],
+                                        //图标起点
+                                        anchorOrigin: 'top-right',
+                                        //指定x值为图标点的x值
+                                        anchorXUnits: 'fraction',
+                                        //指定Y值为像素的值
+                                        anchorYUnits: 'pixels',
+                                        //偏移
+                                        offsetOrigin: 'top-right',
+                                        // offset:[0,10],
+                                        //图标缩放比例
+                                        scale: scale,
+                                        //透明度
+                                        opacity: 0.75,
+                                        //图标的url
+                                        src: imgUrl
+                                    })),
+                                text: new ol.style.Text({
+                                    text: size.toString(),
+                                    fill: new ol.style.Fill({
+                                        color: '#fff',
+                                    }),
+                                    font: (22) + 'px YaHei Consolas Hybrid',
+                                    textColor: textColor
+                                })
+                            })
+                        ];
+                        styleCache[size] = style;
+                    }
+                    return style;
+                }
+            });
+            return newCluster;
+        }
+
+
+        addListener = function () {
+            container = document.getElementById("popup");
+            content = document.getElementById("popup-content");
+            closer = document.getElementById("popup-closer");
 
             /**
-             * 在地图容器中创建一个Overlay
+             * 添加关闭按钮的单击事件（隐藏popup）
+             * @return {boolean} Don't follow the href.
              */
-            var popup = new ol.Overlay(
+            closer.onclick = function () {
+                //未定义popup位置
+                cluster_popup.setPosition(undefined);
+                //失去焦点
+                closer.blur();
+                return false;
+            };
+
+            // 创建popUp 的OverLayer
+            cluster_popup = createPopupLayer();
+            // 添加popUp 至底图
+            map.addOverlay(cluster_popup);
+
+            /**
+             * 为map添加点击事件监听，渲染弹出popup
+             */
+            map.on('click', function (evt) {
+                //判断当前单击处是否有要素，捕获到要素时弹出popup
+                let feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                    return feature;
+                });
+                if (feature) {
+                    clusterPopup(feature);
+                }
+            });
+            /**
+             * 为map添加鼠标移动事件监听，当指向标注时改变鼠标光标状态
+             */
+            map.on('pointermove', function (e) {
+                let pixel = map.getEventPixel(e.originalEvent);
+                let hit = map.hasFeatureAtPixel(pixel);
+                map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+            });
+        };
+
+
+        //-----------------------------------------------------------------辅助函数
+        /**
+         * 经纬度转墨卡托
+         * @param poi 经纬度
+         * @returns {{}}
+         * @private
+         */
+        function _getMercator(poi) { //[114.32894, 30.585748]
+            let mercator = {};
+            let earthRad = 6378137.0;
+            mercator.x = poi.lng * Math.PI / 180 * earthRad;
+            let a = poi.lat * Math.PI / 180;
+            mercator.y = earthRad / 2 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
+            return mercator; //[12727039.383734727, 3579066.6894065146]
+        }
+
+        /**
+         * 墨卡托转经纬度
+         * @param poi 墨卡托
+         * @returns {{}}
+         * @private
+         */
+        function _getLngLat(poi) {
+            let lnglat = {};
+            lnglat.lng = poi.x / 20037508.34 * 180;
+            let mmy = poi.y / 20037508.34 * 180;
+            lnglat.lat = 180 / Math.PI * (2 * Math.atan(Math.exp(mmy * Math.PI / 180)) - Math.PI / 2);
+            return lnglat;
+        }
+
+        contains = function (map, layer) {
+            for (item of map.getLayers().getArray()) {
+                if (item.values_['id'] === 'isPath') {
+                    return true;
+                }
+            }
+            return false;
+        };
+        //-------------
+
+
+        let description = [];
+
+        /**
+         * 触发popup事件
+         * @param feature
+         */
+        function clusterPopup(feature) {
+            //初始化cluster_popup参数
+            len = getFeatureLen(feature);
+            //刷新信息总页数
+            totalPage = len;
+            //刷新起始页
+            currentPage = 1;
+            //刷新位置
+            var position = getFeatureCoordinates(feature);
+            //刷新内容
+            for (var i = 0; i < len; i++) {
+                description[i] = getFeatureDesc(feature, i);
+            }
+            //初始化首页popup框中信息
+            var i = addFeatrueInfo(description[currentPage - 1]);
+            // var i = addFeatrueInfo("ddddddddd");
+            if (i == -1)
+                return;
+            //进行定位
+            cluster_popup.setPosition(position);
+        }
+
+        /**
+         * 获得feature的坐标
+         * @param feature 聚合簇
+         */
+        function getFeatureCoordinates(feature) {
+            return feature.values_.geometry.flatCoordinates;
+        }
+
+        /**
+         * 获得feature信息
+         * @param feature 聚合簇
+         * @param i
+         */
+        function getFeatureDesc(feature, i) {
+            // return feature.values_.features[i].values_.text;
+            return feature.values_.features[i].values_;
+
+        }
+
+        /**
+         * 获得feature 数目
+         * @param feature 聚合簇
+         * return 返回数目
+         */
+        function getFeatureLen(feature) {
+            if (feature.values_.features == undefined)
+                return;
+            return feature.values_.features.length;
+        }
+
+        /**
+         * 触发查询事件以及聚合标注事件
+         */
+        function addClusterTips() {
+            query(gdb, num, querySuccess, queryError);
+            //矢量要素数据源
+        }
+
+        /**
+         * 构造popLayer
+         * @returns {ol.Overlay}
+         */
+        function createPopupLayer() {
+            return new ol.Overlay(
                 /** @type {olx.OverlayOptions} */
                 ({
                     //要转换成overlay的HTML元素
@@ -365,356 +493,90 @@
                         duration: 250
                     }
                 }));
-            map.addOverlay(popup);
-
-            /**
-             * 添加关闭按钮的单击事件（隐藏popup）
-             * @return {boolean} Don't follow the href.
-             */
-            closer.onclick = function () {
-                //未定义popup位置
-                popup.setPosition(undefined);
-                //失去焦点
-                closer.blur();
-                return false;
-            };
-
-            /**
-             * 动态创建popup的具体内容
-             * @param {string} title
-             */
-            function addFeatrueInfo(info) {
-                //新增a元素
-                var elementA = document.createElement('a');
-                elementA.className = "markerInfo";
-                // elementA.href = info.att.titleURL;
-                //elementA.innerText = info.att.title;
-                setInnerText(elementA, info.att.title);
-                // 新建的div元素添加a子节点
-                content.appendChild(elementA);
-                //新增div元素
-                var elementDiv = document.createElement('div');
-                elementDiv.className = "markerText";
-                //elementDiv.innerText = info.att.text;
-                setInnerText(elementDiv, info.att.text);
-                // 为content添加div子节点
-                content.appendChild(elementDiv);
-                // //新增img元素
-                // var elementImg = document.createElement('img');
-                // elementImg.className = "markerImg";
-                // elementImg.src = info.att.imgURL;
-                // // 为content添加img子节点
-                // content.appendChild(elementImg);
-            }
-
-            /**
-             * 动态设置元素文本内容（兼容）
-             */
-            function setInnerText(element, text) {
-                if (typeof element.textContent == "string") {
-                    element.textContent = text;
-                } else {
-                    element.innerText = text;
-                }
-            }
-
-            /**
-             * 为map添加点击事件监听，渲染弹出popup
-             */
-            map.on('click', function (evt) {
-                //判断当前单击处是否有要素，捕获到要素时弹出popup
-                var feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-                    return feature;
-                });
-                if (feature) {
-                    //清空popup的内容容器
-                    content.innerHTML = '';
-                    //在popup中加载当前要素的具体信息
-                    addFeatrueInfo(featureInfoList[parseInt(feature.values_["list_id"])]);
-                    if (popup.getPosition() === undefined) {
-                        //设置popup的位置
-                        popup.setPosition(featureInfoList[parseInt(feature.values_["list_id"])].geo);
-                    }
-                }
-            });
-
-            /**
-             * 为map添加鼠标移动事件监听，当指向标注时改变鼠标光标状态
-             */
-            map.on('pointermove', function (e) {
-                var pixel = map.getEventPixel(e.originalEvent);
-                var hit = map.hasFeatureAtPixel(pixel);
-                map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-            });
-        });
-
-        $("#removePopup").click(function () {
-            map.removeLayer(vectorLayer);
-        });
-    </script>
-
-    <script type="text/javascript">
-        var point_data = point_wuhan;
-
-        //此示例创建10000个要素
-        var count = point_data.length;
-
-        var features = new Array(count);
-        var e = 4500000;
-        for (var i = 0; count > i; ++i) {
-            //				var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-            // var coordinates = [point_data["point_x"][i], point_data["point_y"][i]];
-            // let tmp = _getMercator({
-            //     "lng": point_data[i]["geoCoord"][0],
-            //     "lat": point_data[i]["geoCoord"][1]
-            // });
-
-            var coordinates = [point_data[i].X, point_data[i].Y];
-            features[i] = new ol.Feature(new ol.geom.Point(coordinates));
         }
-        //矢量要素数据源
-        var source = new ol.source.Vector({
-            features: features
-        });
-        //聚合标注数据源
-        var clusterSource = new ol.source.Cluster({
-            distance: 40,
-            source: source
-        });
-        //加载聚合标注的矢量图层
-        var styleCache = {};
-        var clusters = new ol.layer.Vector({
-            source: clusterSource,
-            style: function (feature, resolution) {
-                var size = feature.get('features').length;
-                var style = styleCache[size];
-                if (!style) {
-                    style = [
-                        new ol.style.Style({
-                            //                      	imgURL: "images/red_biaozhu.png",
-                            image: new ol.style.Circle({
-                                radius: 12,
-                                stroke: new ol.style.Stroke({
-                                    color: '#fff'
-                                }),
-                                fill: new ol.style.Fill({
-                                    color: '#3399CC'
-                                })
-                            }),
-
-                            text: new ol.style.Text({
-                                text: size.toString(),
-                                fill: new ol.style.Fill({
-                                    color: '#fff'
-                                })
-                            })
-                        })
-                    ];
-                    styleCache[size] = style;
-                }
-                return style;
-            }
-        });
-
-        ////实例化鹰眼控件（OverviewMap）,最简单的默认样式鹰眼控件
-        // var overviewMapControl = new ol.control.OverviewMap();
-        //实例化鹰眼控件（OverviewMap）,自定义样式的鹰眼控件
-        var overviewMapControl = new ol.control.OverviewMap({
-            //鹰眼控件样式（see in overviewmap-custom.html to see the custom CSS used）
-            className: 'ol-overviewmap ol-custom-overviewmap',
-            //鹰眼中加载同坐标系下不同数据源的图层
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
-                        url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=" +
-                            "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥,
-                        wrapX: false
-                    })
-                }),
-                new ol.layer.Tile({
-                    title: "天地图矢量注记图层",
-                    source: new ol.source.XYZ({
-                        url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" +
-                            "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥
-                    })
-                })
-            ],
-            //鹰眼控件展开时功能按钮上的标识（网页的JS的字符编码）
-            collapseLabel: '\u00BB',
-            //鹰眼控件折叠时功能按钮上的标识（网页的JS的字符编码）
-            label: '\u00AB',
-            //初始为展开显示方式
-            collapsed: false
-
-            //地图初始中心点
-            //center: [114, 30],
-            //center:[12956494, 4854091],
-
-            //地图投影方式
-            //projection: 'EPSG:4326'
-            //projection:'EPSG:3857'
-
-        });
-
-        //实例化Map对象加载地图
-        var map = new ol.Map({
-            //地图容器div的ID
-            target: 'mapCon',
-            //地图容器中加载的图层
-            layers: [
-                //加载瓦片图层数据
-                new ol.layer.Tile({
-                    title: "高德地图",
-                    source: new ol.source.XYZ({
-                        url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}', //parent.TiandituKey()为天地图密钥,
-                        wrapX: false
-                    })
-                })
-                // new ol.layer.Tile({
-                //     title: "天地图矢量注记图层",
-                //     source: new ol.source.XYZ({
-                //         url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" +
-                //             "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥
-                //     })
-                // })
-            ],
-
-            //地图视图设置
-            view: new ol.View({
-                //              //地图初始中心点
-                //              center: [0, 0],
-                //              //地图初始显示级别
-                //              zoom: 6
-
-                //地图初始中心点
-                //center: [114, 30],
-                center: [12723826, 3580731],
-
-                //地图投影方式
-                //projection: 'EPSG:4326',
-                projection: 'EPSG:3857',
-
-                //地图初始显示级别
-                zoom: 10
-
-                //minZoom: 2
-            }),
-
-            //加载控件到地图容器中
-            //加载鹰眼控件
-            controls: ol.control.defaults().extend([overviewMapControl])
-        });
-
-        //实例化zoomToExtent控件并加载到地图容器中
-        var zoomToExtent = new ol.control.ZoomToExtent({
-            extent: [
-                //          813079.7791264898, 5929220.284081122,//左下
-                //          848966.9639063801, 5936863.986909639 //右上
-                12733450, 3569910, 12735844, 3571692
-            ],
-            tipLabel: "定位到当前位置",
-            label: "O"
-        });
-        map.addControl(zoomToExtent);
-
-        //实例化比例尺控件（ScaleLine）
-        var scaleLineControl = new ol.control.ScaleLine({
-            //设置比例尺单位，degrees、imperial、us、nautical、metric（度量单位）
-            units: "metric"
-        });
-        map.addControl(scaleLineControl);
-
-        // //实例化鼠标位置控件（MousePosition）
-        // var mousePositionControl = new ol.control.MousePosition({
-        //     //坐标格式
-        //     coordinateFormat: ol.coordinate.createStringXY(4),
-        //     //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
-        //     projection: 'EPSG:4326',
-        //     //坐标信息显示样式类名，默认是'ol-mouse-position'
-        //     className: 'custom-mouse-position',
-        //     //显示鼠标位置信息的目标容器
-        //     target: document.getElementById('mouse-position'),
-        //     //未定义坐标的标记
-        //     undefinedHTML: '&nbsp;'
-        // });
-        // map.addControl(mousePositionControl);
 
         /**
-         * 创建标注样式函数,设置image为图标ol.style.Icon
-         * @param {ol.Feature} feature 要素
+         * 为popUp动态添加内容
+         * */
+        function addFeatrueInfo(info) {
+            if (info == undefined)
+                return -1;
+            content.innerHTML = "";
+
+            let html =
+                '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
+                '    <table class="table table-hover table-striped">\n' +
+                '        <tr>\n' +
+                '            <td>案件编号</td>\n' +
+                '            <td>' + info.case_id + ' </td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>案件地址</td>\n' +
+                '            <td>' + info.case_position + '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>案件区域</td>\n' +
+                '            <td>' + info.area + '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>案件时间</td>\n' +
+                '            <td>' + info.time + '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>案件描述</td>\n' +
+                '            <td>' + info.case_description + '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>照片</td>\n' +
+                '            <td>' +
+                '<div style="width: 200px;height: 200px;overflow: hidden;position: relative;">' +
+                '<img src="../photo/' + parseInt(info.case_id) + '.png" style="max-width: 100%;margin: auto">' +
+                '</div>' +
+                '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>\n' +
+                '               <i style="font-size:24px;cursor:pointer;" class="fa" onclick="pageTurnBackFun()">&#xf100;</i>\n' +
+                "&nbsp;" + currentPage + "&nbsp;" +
+                '               <i style="font-size:24px;cursor:pointer;" class="fa" onclick="pageTurnOverFun()">&#xf101;</i>\n' +
+                '            </td>\n' +
+                '            <td>\n' +
+                '               <i style="font-size:24px;cursor:pointer;" class="fa pull-right" onclick="close_popup()">&#xf00d;</i>\n' +
+                '            </td>\n' +
+                '        </tr>\n' +
+                '    </table>\n' +
+                '</div>';
+            content.innerHTML = html;
+        }
+
+        /**
+         * 触发向前翻页事件
          */
-        var createLabelStyle = function (feature) {
-            return new ol.style.Style({
-                image: new ol.style.Icon(
-                    /** @type {olx.style.IconOptions} */
-                    ({
-                        //设置图标点
-                        anchor: [0.5, 60],
-                        //图标起点
-                        anchorOrigin: 'top-right',
-                        //指定x值为图标点的x值
-                        anchorXUnits: 'fraction',
-                        //指定Y值为像素的值
-                        anchorYUnits: 'pixels',
-                        //偏移
-                        offsetOrigin: 'top-right',
-                        // offset:[0,10],
-                        //图标缩放比例
-                        scale: 0.2,
-                        //透明度
-                        opacity: 0.85,
-                        //图标的url
-                        src: '../images/red_biaozhu.png'
-                    })),
-                text: new ol.style.Text({
-                    //位置
-                    textAlign: 'center',
-                    //基准线
-                    textBaseline: 'middle',
-                    //文字样式
-                    font: 'normal 14px 微软雅黑',
-                    //文本内容
-                    text: feature.get('name'),
-                    //文本填充样式（即文字颜色）
-                    fill: new ol.style.Fill({
-                        color: '#aa3300'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#ffcc33',
-                        width: 2
-                    })
-                })
-            });
-        };
-
-        // 添加聚合标注
-        document.getElementById('addFeatures').onclick = function () {
-            //当前聚合标注数据源中的要素
-            var currentFeatrues = clusterSource.getSource().getFeatures();
-            //如果聚合标注数据源中没有要素，则重新添加要素
-            if (currentFeatrues.length === 0) {
-                clusterSource.getSource().addFeatures(features);
-                clusters.setSource(clusterSource);
-                map.addLayer(clusters);
+        function pageTurnBackFun() {
+            if (currentPage > 1) {
+                currentPage = currentPage - 1;
+                addFeatrueInfo(description[currentPage - 1])
             }
-        };
-        //移除聚合标注
-        document.getElementById('removeFeatures').onclick = function () {
-            //当前聚合标注数据源中的要素
-            var currentFeatrues = clusterSource.getSource().getFeatures();
-            //如果聚合标注数据源中没有要素，则重新添加要素
-            if (currentFeatrues.length !== 0) {
-                //移除聚合标注数据源中的所有要素
-                clusterSource.getSource().clear();
-                //移除标注图层
-                map.removeLayer(clusters);
-            }
-        };
-        // 一开始移除聚合标注
-        document.getElementById('removeFeatures').onclick();
+        }
 
-        $('.ol-zoom-in').hide();
-        $('.ol-zoom-out').hide();
+        /**
+         * 触发向后翻页事件
+         */
+        function pageTurnOverFun() {
+            if (currentPage < len) {
+                console.log(currentPage);
+                currentPage = currentPage + 1;
+                addFeatrueInfo(description[currentPage - 1])
+            }
+        }
+
+        function close_popup() {
+            //未定义popup位置
+            cluster_popup.setPosition(undefined);
+            //失去焦点
+            closer.blur();
+            return false;
+        }
     </script>
 
 </body>
