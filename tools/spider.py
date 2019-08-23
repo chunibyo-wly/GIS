@@ -29,12 +29,11 @@ if __name__ == "__main__":
             for img in soup.select('#col1 > div:nth-child(1) > ul img'):
                 src = img.get("src")
                 if src in srcSet:
-                    pass
+                    continue
                 else:
                     download(str(i) + ".png", src)
                     srcSet.append(src)
                     i = i + 1
         except Exception:
-            print(Exception.__traceback__)
             print("page", page, "i", i)
             continue

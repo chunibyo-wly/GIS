@@ -146,10 +146,13 @@
     let clusterFeatures = [];
     init_cluster = function () {
         $.ajax({
-            url: 'http://127.0.0.1:5000/get_wuhan2',
-            type: "GET",
+            url: 'http://127.0.0.1:5000/get_case_BYcaseid',
+            type: "post",
             dataType: "json",
             async: true,
+            data: {
+                "case_id": 400
+            },
             success: function (data) {
                 let len = data.length;
                 for (let i = 0; i < len; ++i) {
@@ -175,7 +178,7 @@
                 map.addLayer(clusterVector);
             }
         })
-    }
+    };
 
     function createClusters(features, distance, imgUrl, scale, textColor) {
         //矢量要素数据源
@@ -419,7 +422,7 @@
         if (info == undefined)
             return -1;
         content.innerHTML = "";
-
+        console.log(info.case_id);
         let html =
             '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
             '    <table class="table table-hover table-striped">\n' +

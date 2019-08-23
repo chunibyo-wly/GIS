@@ -571,35 +571,52 @@
 
 <script src="../js/common/bar.js"></script>
 <script>
-    $.ajax({
-        url: "http://127.0.0.1:5000/get_usrid_ajax",    //请求的url地址
-        dataType: "json",   //返回格式为json
-        async: false,//请求是否异步，默认为异步，这也是ajax重要特性
-        data: {},
-        type: "get",   //请求方式,
-        xhrFields: {
-            withCredentials: true
-        },
-        crossDomain: true,
-        success: function (data) {
-            //请求成功时处理
-            p1_id = parseInt(data.id);
-        }
-    });
+
+    let case_id = window.location.href.split('?')[1];
+
+    get_case_all = function (case_id) {
+        $.ajax({
+            url: "http://127.0.0.1:5000/get_case_all", //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true, //请求是否异步，默认为异步，这也是ajax重要特性
+            data: {
+                "case_id": case_id
+            },
+            type: "post", //请求方式,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function (data) {
+                //请求成功时处理
+                $('#case_type').val(data.case_type);
+                $('#case_position').val(data.case_position);
+                $('#lat').val(data.case_lat);
+                $('#lng').val(data.case_lon);
+                $('#inform_time').val(data.inform_time);
+                $('#case_description').val(data.case_description);
+                $('#case_name').val(data.case_name);
+                $('#blah').attr('src', "../photo/" + case_id + ".png");
+            }
+        });
+    };
+    get_case_all(case_id);
 
     $("#submit").click(function () {
         $.ajax({
-            url: "http://127.0.0.1:5000/insert_case",    //请求的url地址
+            url: "http://127.0.0.1:5000/update_case",    //请求的url地址
             dataType: "json",   //返回格式为json
-            async: false,//请求是否异步，默认为异步，这也是ajax重要特性
+            async: true,//请求是否异步，默认为异步，这也是ajax重要特性
             data: {
+                "case_id": case_id,
                 "case_type": $('#case_type').val(),
                 "case_position": $('#case_position').val(),
                 "case_lat": $('#lat').val(),
                 "case_lon": $('#lng').val(),
                 "inform_time": $('#inform_time').val(),
                 "case_description": $('#case_description').val(),
-                "case_name": $('#case_name').val()
+                "case_name": $('#case_name').val(),
+                "base64_data": document.getElementById("blah").src
             },
             type: "post",   //请求方式,
             xhrFields: {
@@ -608,23 +625,7 @@
             crossDomain: true,
             success: function (data) {
                 //请求成功时处理
-            }
-        });
-
-        $.ajax({
-            url: "http://127.0.0.1:5000/insert_case_image", //请求的url地址
-            dataType: "json", //返回格式为json
-            async: true, //请求是否异步，默认为异步，这也是ajax重要特性
-            data: {
-                "base64_data": document.getElementById("blah").src
-            },
-            type: "post", //请求方式,
-            xhrFields: {
-                withCredentials: true
-            },
-            crossDomain: true,
-            success: function (data) {
-                self.location.href = './show_case.html'
+                self.location.href = "show_case.html"
             }
         });
     })

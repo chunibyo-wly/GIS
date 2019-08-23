@@ -383,26 +383,26 @@ def get_police():
         tmp = float(result[i][5]) * math.pi / 180
         response.append({
             'police_station_id':
-            result[i][0],
+                result[i][0],
             'id':
-            result[i][1],
+                result[i][1],
             'name':
-            result[i][2],
+                result[i][2],
             'address':
-            result[i][3],
+                result[i][3],
             'lng':
-            float(result[i][4]),
+                float(result[i][4]),
             'lat':
-            float(result[i][5]),
+                float(result[i][5]),
             'photos':
-            result[i][6],
+                result[i][6],
             'tel':
-            result[i][7],
+                result[i][7],
             'X':
-            float(result[i][4]) * math.pi / 180 * earth_rad,
+                float(result[i][4]) * math.pi / 180 * earth_rad,
             'Y':
-            earth_rad / 2 * math.log(
-                (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+                earth_rad / 2 * math.log(
+                    (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
         })
     return jsonify(response), 200
 
@@ -513,17 +513,115 @@ def get_wuhan2():
             "case_id": result[i][0],
             "position_name": result[i][1],
             # "position_type": result[i][2],
-            'case_address':result[i][3],
+            'case_address': result[i][3],
             "lng": float(result[i][4]),
             "lat": float(result[i][5]),
             "X": float(result[i][6]),
             "Y": float(result[i][7]),
-            'case_area':result[i][8],
+            'case_area': result[i][8],
             "time": result[i][12],
             "case_description": result[i][10],
-            'case_name':result[i][11]
+            'case_name': result[i][11]
         })
     return jsonify(response), 200
+
+
+@app.route('/insert_case_image', methods=['post'])
+def insert_case_image():
+    result = dao.execute("SELECT MAX(case_id) FROM `case`")
+    base64_data = request.form['base64_data']
+    getImg(base64_data, "./static/photo/" + str(result[0][0]) + ".png")
+    return jsonify({
+        "status": "Y",
+        "message": "登陆成功",
+    }), 200
+
+
+@app.route('/get_case_all', methods=['post'])
+def get_case_all():
+    case_id = request.form['case_id']
+    result = dao.execute(
+        "SELECT *, DATE_FORMAT(inform_time,'%Y-%m-%dT%h:%m:%s') as time FROM `case` WHERE case_id = " + str(case_id))[0]
+    return jsonify({
+        "case_name": result[1],
+        "case_type": result[2],
+        # "inform_time": result[5],
+        "case_position": result[6],
+        "case_lon": float(result[7]),
+        "case_lat": float(result[8]),
+        "case_description": result[9],
+        "inform_time": result[13]
+    }), 200
+
+
+@app.route('/update_case', methods=['post'])
+def update_case():
+    case_id = request.form['case_id']
+    case_type = request.form['case_type']
+    case_position = request.form['case_position']
+    case_lat = request.form['case_lat']
+    case_lon = request.form['case_lon']
+    inform_time = request.form['inform_time']
+    case_description = request.form['case_description']
+    x, y = m.lonlat2Mercator(float(case_lon), float(case_lat))
+    case_name = request.form['case_name']
+    dao.execute(
+        "UPDATE `case` SET case_name = '" + case_name + "', case_type = '" + case_type + "', inform_time = '" + inform_time + "', case_position = '" + case_position + "', case_lon = " + str(
+            case_lon) + ", case_lat = " + case_lat + " , case_description = '" + case_description + ", X = " + str(
+            x) + ", Y = " + str(y) + "' WHERE case_id = " + str(
+            case_id) + ";")
+
+    base64_data = request.form['base64_data']
+    getImg(base64_data, "./static/photo/" + case_id + ".png")
+
+    return jsonify({
+        "status": "Y",
+        "message": "登陆成功",
+    }), 200
+
+
+@app.route('/get_case_byID', methods=['post'])
+def get_case_byID():
+    id = request.form['id']
+    result = dao.execute(
+        "SELECT case_id, DATE_FORMAT(inform_time,'%Y-%m-%d %h:%m:%s') as t, case_description,case_position FROM `case` WHERE ID = " + str(
+            id) + " ORDER BY t DESC")
+    response = {
+        "data": []
+    }
+    for i in result:
+        response['data'].append({
+            "case_id": i[0],
+            "t": i[1],
+            "case_description": i[2],
+            "case_position": i[3]
+        })
+    return jsonify(response), 200
+
+
+@app.route('/get_case_BYcaseid', methods=['post'])
+def get_case_BYcaseid():
+    case_id = request.form['case_id']
+    result = dao.execute(
+        "SELECT * , DATE_FORMAT(time, '%Y-%m-%d %H:%i') as abcd FROM `wuhan_pois` WHERE ID= '" + str(case_id) + "';")
+    response = []
+    for i in range(len(result)):
+        response.append({
+            "case_id": result[i][0],
+            "position_name": result[i][1],
+            # "position_type": result[i][2],
+            'case_address': result[i][3],
+            "lng": float(result[i][4]),
+            "lat": float(result[i][5]),
+            "X": float(result[i][6]),
+            "Y": float(result[i][7]),
+            'case_area': result[i][8],
+            "time": result[i][12],
+            "case_description": result[i][10],
+            'case_name': result[i][11]
+        })
+    return jsonify(response), 200
+
 
 # @app.route('/set_cookie', methods=['get'])
 # def set_cookie():

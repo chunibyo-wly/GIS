@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可分页、排序和搜索的jQuery表格插件</title>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <style>
+        th {
+            font-size: 26px;
+        }
+
+        td {
+            width: 250px;
+            height: 150px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">案件速查</a>
+        </div>
+        <div>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" placeholder="用户ID" class="form-control" value="">
+                </div>
+                <input type="button" class="btn btn-default" value="提交" name="submit"
+                       onclick="get_case_byID($('input[type =\'text\']').val())">
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="col-md-10 col-md-offset-1">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>时间</th>
+            <th>地点</th>
+            <th>描述</th>
+            <th>图片</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Tanmay</td>
+            <td>Bangalore</td>
+            <td>560001</td>
+            <td>
+                <div style="width: 200px;height: 150px;overflow: hidden;position: relative;">
+                    <img src="../photo/66.png" style="max-width: 100%;margin: auto">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Sachin</td>
+            <td>Mumbai</td>
+            <td>560001</td>
+            <td>
+                <div style="width: 200px;height: 150px;overflow: hidden;position: relative;">
+                    <img src="../photo/46.png" style="max-width: 100%;margin: auto">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Uma</td>
+            <td>Pune</td>
+            <td>560001</td>
+            <td class="td">
+                <div style="width: 150px;height: 150px;overflow: hidden;position: relative;">
+                    <img src="../photo/6.png" style="max-width: 100%;margin-right: auto">
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="../js/common/getuser.js"></script>
+<script>
+    let uid = get_user()['id'];
+    $('input[type ="text"]').val(uid);
+
+    get_case_byID = function (id) {
+        $.ajax({
+            url: "http://127.0.0.1:5000/get_case_byID", //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true, //请求是否异步，默认为异步，这也是ajax重要特性
+            data: {
+                "id": id
+            },
+            type: "post", //请求方式,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function (data) {
+                //请求成功时处理
+                $('tbody').empty();
+                data.data.forEach(function (i, index) {
+                    $('tbody').append("<tr case_id=" + i.case_id + ">\n" +
+                        "            <td>" + i.t + "</td>\n" +
+                        "            <td>" + i.case_position + "</td>\n" +
+                        "            <td>" + i.case_description + "</td>\n" +
+                        "            <td class=\"td\">\n" +
+                        "                <div style=\"width: 150px;height: 150px;overflow: hidden;position: relative;\">\n" +
+                        "                    <img src=\"../photo/" + i.case_id + ".png\" style=\"max-width: 100%;margin-right: auto\">\n" +
+                        "                </div>\n" +
+                        "            </td>\n" +
+                        "        </tr>")
+                });
+
+                $('tr').click(function () {
+                    if (uid.toString() !== $('input[type ="text"]').val().toString()) {
+
+                    } else {
+                        let case_id_ = $(this).attr('case_id');
+                        window.top.location.href = "update_case.html?" + case_id_;
+                    }
+
+                })
+            }
+        });
+    };
+
+    get_case_byID(uid);
+</script>
+</body>
+
+</html>

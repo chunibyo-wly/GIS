@@ -24,8 +24,8 @@ random.shuffle(random_list)
 
 # print(list(reader)[0])
 
-for i in random_list[:500]:
-    writer2.writerow(reader[i])
+for i in reader:
+    writer2.writerow(i)
 
 csvFile.close()
 # file1.close()
