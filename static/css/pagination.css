@@ -1,0 +1,97 @@
+.pagination {
+    display: -ms-flexbox;
+    display: flex;
+    /*padding-left: 0;*/
+    list-style: none;
+    border-radius: 3px;
+    padding-left: 45%;
+}
+
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    color: #374254;
+    line-height: 1.25;
+    background-color: #fff;
+    border: 1px solid rgba(167, 180, 201, .3);
+    font-size: 22px;
+}
+
+.page-link:hover {
+    z-index: 2;
+    color: #2ddcd3;
+    text-decoration: none;
+    background-color: rgb(234, 236, 251);
+}
+
+.page-link:focus {
+    z-index: 2;
+    outline: 0;
+    box-shadow: 0;
+}
+
+.page-link:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+.page-item:first-child .page-link {
+    margin-left: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #4A68EC;
+    /*background-color: #2ddcd3;*/
+    border-color: #4A68EC;
+    /*border-color: #2ddcd3;*/
+}
+
+.page-item.disabled .page-link {
+    color: #ced4da;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: rgba(167, 180, 201, .3);
+}
+
+.pagination-lg .page-link {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.125rem;
+    line-height: 1.5;
+}
+
+.pagination-lg .page-item:first-child .page-link {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.pagination-lg .page-item:last-child .page-link {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.pagination-sm .page-link {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.pagination-sm .page-item:first-child .page-link {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.pagination-sm .page-item:last-child .page-link {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}

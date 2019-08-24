@@ -204,7 +204,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
     </style>
-
     <style>
         .pag {
             font-family: 'Open Sans', 'Helvetica', sans-serif;
@@ -306,12 +305,14 @@
             stroke-dashoffset: -110;
         }
     </style>
-<!--    <link rel="stylesheet" href="../css/chatting.css">-->
     <style>
         ::-webkit-scrollbar {
             display: none
         }
     </style>
+
+    <link rel="stylesheet" href="../css/pagination.css">
+
 </head>
 
 <body>
@@ -554,34 +555,16 @@
                     </div>
                     <div class="newsCenterPanel_inner"></div>
                 </div>
-
-                <div class="pag">
-                    <ol class="page-numbers list-3">
-                        <li class="active" data-page="1">
-                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="40" cy="40" r="35" stroke="#00BDFF" stroke-width="10"/>
-                            </svg>
+                <div>
+                    <ul class="pagination">
+                        <li class="page-item page-prev disabled">
+                            <a class="page-link" tabindex="-1" id="prev"><<</a>
                         </li>
-                        <li data-page="2">
-                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="40" cy="40" r="35" stroke="#00BDFF" stroke-width="10"/>
-                            </svg>
+                        <li class="page-item active"><a class="page-link disabled" id="page">1</a></li>
+                        <li class="page-item page-next">
+                            <a class="page-link" id="next">>></a>
                         </li>
-                        <li data-page="3">
-                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="40" cy="40" r="35" stroke="#00BDFF" stroke-width="10"/>
-                            </svg>
-                        </li>
-                        <li data-page="4">
-                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="40" cy="40" r="35" stroke="#00BDFF" stroke-width="10"/>
-                            </svg>
-                        </li>
-                    </ol>
+                    </ul>
                 </div>
             </div>
             <!--//outer-wp-->
@@ -616,10 +599,8 @@
             <ul id="menu">
                 <li>
                     <a class="disabled">
-                        <!--                        <i class="lnr lnr-envelope"></i>-->
                         <i class="iconfont">&#xe72f;</i>
                         <span>案情在线</span>
-                        <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
                     </a>
                 </li>
 
@@ -759,34 +740,7 @@
 <script src="../js/common/bar.js"></script>
 
 <script>
-    // const list1Pages = document.querySelectorAll('.list-1 li[data-page]');
-    // const list2Pages = document.querySelectorAll('.list-2 li[data-page]');
-    const list3Pages = document.querySelectorAll('.list-3 li[data-page]');
 
-    handlePagination = (pages, target) => {
-        pages.forEach(number => {
-            number.classList.toggle('active', number === target);
-        });
-    };
-
-    // list1Pages.forEach(number => {
-    //     number.addEventListener('click', e => {
-    //         handlePagination(list1Pages, e.target);
-    //     });
-    // });
-    // list2Pages.forEach(number => {
-    //     number.addEventListener('click', e => {
-    //         handlePagination(list2Pages, e.target);
-    //     });
-    // });
-    list3Pages.forEach(number => {
-        number.addEventListener('click', e => {
-            handlePagination(list3Pages, e.target);
-        });
-    });
-</script>
-
-<script>
     page = function (num) {
         let data = {
             "num": num
@@ -850,49 +804,58 @@
                             "                        </div>");
                     }
                 }
+
+                $("#dg").empty().append("    <iframe hidden src=\"chatting.html\" scrolling=\"no\"\n" +
+                    "            style=\"border: 0;width: 850px;height: 634px;position: absolute; right: 0; top: 0;background: #ffffff;\"></iframe>\n");
             }
         });
     };
 
-    delete_case = function (data) {
+    window.onload = function () {
+        page(1);
+
+        let whole_page;
+        let current_page = 1;
+
         $.ajax({
-            url: "http://127.0.0.1:5000/delete_case", //请求的url地址
-            // dataType: "json",   //返回格式为json
-            async: false, //请求是否异步，默认为异步，这也是ajax重要特性
-            data: data,
-            type: "post", //请求方式,
+            url: "http://127.0.0.1:5000/get_page_number", //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true, //请求是否异步，默认为异步，这也是ajax重要特性
+            type: "get", //请求方式,
             xhrFields: {
                 withCredentials: true
             },
             crossDomain: true,
-            success: function () {
+            success: function (data) {
                 //请求成功时处理
+                whole_page = parseInt(data);
+                $('#page').text(current_page);
+
+                $('#prev').click(function () {
+                    if (current_page === 2) {
+                        $('#prev').parent().addClass("disabled");
+                    }
+                    current_page -= 1;
+                    $('#next').parent().removeClass("disabled");
+                });
+                $('#next').click(function () {
+                    if (current_page === whole_page - 1) {
+                        $('#next').parent().addClass("disabled");
+                    }
+                    current_page += 1;
+                    $('#prev').parent().removeClass("disabled")
+                });
+
+                $('#prev, #next').click(function () {
+                    $('#page').text(current_page);
+                    page(current_page);
+                });
             }
         });
-    };
-
-    page(1);
-    $('ol>li').click(function () {
-        n = parseInt($(this).attr('data-page'));
-        page(n)
-    });
-
-    $('.delete').click(function () {
-        case_id = [];
-        $("input[type='checkbox']:checked").each(function () {
-            case_id.push($(this).attr('case_id'));
-        });
-        delete_case({
-            "case_id": case_id
-        });
-        self.location.href = ""
-    });
-
+    }
 </script>
 
 <div id="dg" style="z-index: 9999; position: fixed ! important; right: 400px; top: 100px;">
-    <iframe hidden src="chatting.html" scrolling="no"
-            style="border: 0;width: 850px;height: 634px;position: absolute; right: 0; top: 0;background: #ffffff;"></iframe>
 </div>
 
 </body>

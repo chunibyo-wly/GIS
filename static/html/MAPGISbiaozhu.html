@@ -9,493 +9,739 @@
     <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
-    <link href="../css/ol.css" rel="stylesheet" type="text/css"/>
-    <link href="../css/dangeAnalysis.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+    <link href="../css/dangeAnalysis.css" rel="stylesheet" type="text/css" />
     <script src="../js/MapGis_ol_product.js" type="text/javascript"></script>
+    <style>
+        .radio {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 12px 4px 10px 10px;
+            border-radius: 5%;
+        }
+
+        /* The container */
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default radio button */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: rgba(224, 213, 213, 0.507);
+            /* background-color: #eee; */
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .container input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .container .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+    </style>
 </head>
 
 <body>
-<div id="mapCon">
-    <div id="popup" class="">
-        <a id="popup-closer" class=""></a>
-        <div id="popup-content"></div>
+    <div id="mapCon">
+        <div id="popup" class="">
+            <a id="popup-closer" class=""></a>
+            <div id="popup-content"></div>
+        </div>
+        <div class="btn-group" id="queryBtn" hidden>
+            <button type="button" class="btn" onclick="">打开聚合标注</button>
+            <button type="button" class="btn" onclick="clusterVector1.setVisible(false);close_popup();">关闭聚合标注
+            </button>
+        </div>
+        <div id="mouse-position"></div>
+
+
+        <div class="radio" style="z-index: 9999; position: fixed ! important; left: 20px; top: 50px;">
+            <label class="container">聚合标注样式1
+                <input type="radio" checked="checked" name="radio" onclick="show1()">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">聚合标注样式2
+                <input type="radio" name="radio" onclick="show2()">
+                <span class="checkmark"></span>
+            </label>
+            <label class="container">图片标注
+                <input type="radio" name="radio" onclick="show3()">
+                <span class="checkmark"></span>
+            </label>
+            <script>
+                show1 = function () {
+                    close_popup();
+                    clusterVector1.setVisible(true);
+                    clusterVector2.setVisible(false);
+                    ImageFeatures.setVisible(false);
+                }
+
+                show2 = function () {
+                    close_popup();
+                    clusterVector1.setVisible(false);
+                    clusterVector2.setVisible(true);
+                    ImageFeatures.setVisible(false);
+                }
+
+                show3 = function () {
+                    close_popup();
+                    clusterVector1.setVisible(false);
+                    clusterVector2.setVisible(false);
+                    ImageFeatures.setVisible(true);
+                }
+            </script>
+        </div>
+
     </div>
-    <div class="btn-group" id="queryBtn">
-        <button type="button" class="btn" onclick="clusterVector.setVisible(true);">打开聚合标注</button>
-        <button type="button" class="btn"
-                onclick="clusterVector.setVisible(false);close_popup();">关闭聚合标注
-        </button>
-    </div>
-    <div id="mouse-position"></div>
-</div>
 
-<script>
-    let map; //地图容器
-    let layerArray; //
 
-    window.onload = function () {
-        let center = [12735697.59001188, 3573981.441510862];
-        //最大级数
-        let maxZoom = 30;
-        //初始化地图图层
-        let layer1 = new Zondy.Map.GoogleLayer({
-            layerType: Zondy.Enum.Map.GoogleLayerType.VEC_IGS,
-            ip: "develop.smaryun.com",
-            port: "6163"
-        });
-        let layer2 = new Zondy.Map.GoogleLayer({
-            layerType: Zondy.Enum.Map.GoogleLayerType.RASTER_IGS,
-            ip: "develop.smaryun.com",
-            port: "6163"
-        });
-        let layer3 = new Zondy.Map.GoogleLayer({
-            layerType: Zondy.Enum.Map.GoogleLayerType.TERRAIN_IGS,
-            ip: "develop.smaryun.com",
-            port: "6163"
-        });
-        let layer4 = new Zondy.Map.GoogleLayer({
-            layerType: Zondy.Enum.Map.GoogleLayerType.ROAD_IGS,
-            ip: "develop.smaryun.com",
-            port: "6163"
-        });
-        layerArray = [layer1, layer2, layer3, layer4];
+    <script>
+        let map; //地图容器
+        let layerArray; //
 
-        map = new ol.Map({
-            //添加图层
-            layers: [layer1],
-            //目标DIV
-            target: 'mapCon',
-            view: new ol.View({
-                center: center,
-                maxZoom: maxZoom,
-                minZoom: 4,
-                zoom: 12
-            })
-        });
-        //实例化鹰眼控件（OverviewMap）,自定义样式的鹰眼控件
-        var overviewMapControl = new ol.control.OverviewMap({
-            //鹰眼控件样式（see in overviewmap-custom.html to see the custom CSS used）
-            className: 'ol-overviewmap ol-custom-overviewmap',
-            //鹰眼中加载同坐标系下不同数据源的图层
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.XYZ({
-                        url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=" +
-                            "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥,
-                        wrapX: false
-                    })
-                }),
-                new ol.layer.Tile({
-                    title: "天地图矢量注记图层",
-                    source: new ol.source.XYZ({
-                        url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" +
-                            "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥
-                    })
+        window.onload = function () {
+            let center = [12735697.59001188, 3573981.441510862];
+            //最大级数
+            let maxZoom = 30;
+            //初始化地图图层
+            let layer1 = new Zondy.Map.GoogleLayer({
+                layerType: Zondy.Enum.Map.GoogleLayerType.VEC_IGS,
+                ip: "develop.smaryun.com",
+                port: "6163"
+            });
+            let layer2 = new Zondy.Map.GoogleLayer({
+                layerType: Zondy.Enum.Map.GoogleLayerType.RASTER_IGS,
+                ip: "develop.smaryun.com",
+                port: "6163"
+            });
+            let layer3 = new Zondy.Map.GoogleLayer({
+                layerType: Zondy.Enum.Map.GoogleLayerType.TERRAIN_IGS,
+                ip: "develop.smaryun.com",
+                port: "6163"
+            });
+            let layer4 = new Zondy.Map.GoogleLayer({
+                layerType: Zondy.Enum.Map.GoogleLayerType.ROAD_IGS,
+                ip: "develop.smaryun.com",
+                port: "6163"
+            });
+            layerArray = [layer1, layer2, layer3, layer4];
+
+            map = new ol.Map({
+                //添加图层
+                layers: [layer1],
+                //目标DIV
+                target: 'mapCon',
+                view: new ol.View({
+                    center: center,
+                    maxZoom: maxZoom,
+                    minZoom: 4,
+                    zoom: 12
                 })
-            ],
-            //鹰眼控件展开时功能按钮上的标识（网页的JS的字符编码）
-            collapseLabel: '\u00BB',
-            //鹰眼控件折叠时功能按钮上的标识（网页的JS的字符编码）
-            label: '\u00AB',
-            //初始为展开显示方式
-            collapsed: false
-        });
-        map.addControl(overviewMapControl);
-
-        //实例化zoomToExtent控件并加载到地图容器中
-        var zoomToExtent = new ol.control.ZoomToExtent({
-            extent: [12733450, 3569910, 12735844, 3571692],
-            tipLabel: "定位到当前位置",
-            label: "O"
-
-        });
-        map.addControl(zoomToExtent);
-
-        //实例化比例尺控件（ScaleLine）
-        var scaleLineControl = new ol.control.ScaleLine({
-            //设置比例尺单位，degrees、imperial、us、nautical、metric（度量单位）
-            units: "metric"
-        });
-        map.addControl(scaleLineControl);
-
-        //实例化鼠标位置控件（MousePosition）
-        var mousePositionControl = new ol.control.MousePosition({
-            //坐标格式
-            coordinateFormat: ol.coordinate.createStringXY(4),
-            //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
-            projection: 'EPSG:4326',
-            //         projection: 'EPSG:3857',
-            //坐标信息显示样式类名，默认是'ol-mouse-position'
-            className: 'custom-mouse-position',
-            //显示鼠标位置信息的目标容器
-            target: document.getElementById('mouse-position'),
-            //未定义坐标的标记
-            undefinedHTML: '&nbsp;'
-        });
-        map.addControl(mousePositionControl);
-
-        $('.ol-zoom-in').hide();
-        $('.ol-zoom-out').hide();
-
-        addListener();
-        init_cluster();
-    };
-
-    let clusterSource;
-    let clusterVector;
-    let clusterFeatures = [];
-    init_cluster = function () {
-        $.ajax({
-            url: 'http://127.0.0.1:5000/get_wuhan2',
-            type: "GET",
-            dataType: "json",
-            async: true,
-            success: function (data) {
-                let len = data.length;
-                for (let i = 0; i < len; ++i) {
-                    clusterFeatures[i] = new ol.Feature({
-                        geometry: new ol.geom.Point([data[i].X, data[i].Y]),
-                        case_id: data[i].case_id,
-                        case_name: data[i].case_name,
-                        position_type: data[i].position_type,
-                        time: data[i].time,
-                        case_position: data[i].case_address,
-                        lng: data[i].lng,
-                        lat: data[i].lat,
-                        case_description: data[i].case_description,
-                        area: data[i].case_area,
-                        X: data[i].X,
-                        Y: data[i].Y
-                    });
-                }
-
-                clusterVector = createClusters(clusterFeatures, 100, '../photo/case.png', 0.3,
-                    '#fff');
-                clusterVector.setVisible(false);
-                map.addLayer(clusterVector);
-            }
-        })
-    }
-
-    function createClusters(features, distance, imgUrl, scale, textColor) {
-        //矢量要素数据源
-        var source = new ol.source.Vector({
-            features: features
-        });
-        //聚合标注数据源
-        var clusterSource = new ol.source.Cluster({
-            distance: distance,
-            source: source
-        });
-        //加载聚合标注的矢量图层
-        var styleCache = {};
-        var newCluster = new ol.layer.Vector({
-            source: clusterSource,
-            style: function (feature) {
-                var size = feature.get('features').length;
-                var style = styleCache[size];
-                if (!style) {
-                    style = [
-                        new ol.style.Style({
-                            image: new ol.style.Icon(
-                                /** @type {olx.style.IconOptions} */
-                                ({
-                                    //设置图标点
-                                    anchor: [0.5, distance],
-                                    //图标起点
-                                    anchorOrigin: 'top-right',
-                                    //指定x值为图标点的x值
-                                    anchorXUnits: 'fraction',
-                                    //指定Y值为像素的值
-                                    anchorYUnits: 'pixels',
-                                    //偏移
-                                    offsetOrigin: 'top-right',
-                                    // offset:[0,10],
-                                    //图标缩放比例
-                                    scale: scale,
-                                    //透明度
-                                    opacity: 0.75,
-                                    //图标的url
-                                    src: imgUrl
-                                })),
-                            text: new ol.style.Text({
-                                text: size.toString(),
-                                fill: new ol.style.Fill({
-                                    color: '#fff',
-                                }),
-                                font: (22) + 'px YaHei Consolas Hybrid',
-                                textColor: textColor
-                            })
+            });
+            //实例化鹰眼控件（OverviewMap）,自定义样式的鹰眼控件
+            var overviewMapControl = new ol.control.OverviewMap({
+                //鹰眼控件样式（see in overviewmap-custom.html to see the custom CSS used）
+                className: 'ol-overviewmap ol-custom-overviewmap',
+                //鹰眼中加载同坐标系下不同数据源的图层
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.XYZ({
+                            url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=" +
+                                "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥,
+                            wrapX: false
                         })
-                    ];
-                    styleCache[size] = style;
+                    }),
+                    new ol.layer.Tile({
+                        title: "天地图矢量注记图层",
+                        source: new ol.source.XYZ({
+                            url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" +
+                                "b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥
+                        })
+                    })
+                ],
+                //鹰眼控件展开时功能按钮上的标识（网页的JS的字符编码）
+                collapseLabel: '\u00BB',
+                //鹰眼控件折叠时功能按钮上的标识（网页的JS的字符编码）
+                label: '\u00AB',
+                //初始为展开显示方式
+                collapsed: false
+            });
+            map.addControl(overviewMapControl);
+
+            //实例化zoomToExtent控件并加载到地图容器中
+            var zoomToExtent = new ol.control.ZoomToExtent({
+                extent: [12733450, 3569910, 12735844, 3571692],
+                tipLabel: "定位到当前位置",
+                label: "O"
+
+            });
+            map.addControl(zoomToExtent);
+
+            //实例化比例尺控件（ScaleLine）
+            var scaleLineControl = new ol.control.ScaleLine({
+                //设置比例尺单位，degrees、imperial、us、nautical、metric（度量单位）
+                units: "metric"
+            });
+            map.addControl(scaleLineControl);
+
+            //实例化鼠标位置控件（MousePosition）
+            var mousePositionControl = new ol.control.MousePosition({
+                //坐标格式
+                coordinateFormat: ol.coordinate.createStringXY(4),
+                //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
+                projection: 'EPSG:4326',
+                //         projection: 'EPSG:3857',
+                //坐标信息显示样式类名，默认是'ol-mouse-position'
+                className: 'custom-mouse-position',
+                //显示鼠标位置信息的目标容器
+                target: document.getElementById('mouse-position'),
+                //未定义坐标的标记
+                undefinedHTML: '&nbsp;'
+            });
+            map.addControl(mousePositionControl);
+
+            $('.ol-zoom-in').hide();
+            $('.ol-zoom-out').hide();
+
+            get_data();
+
+            init_cluster1();
+            init_cluster2();
+            init_cluster3();
+
+            addListener();
+        };
+
+        let clusterFeatures = [];
+
+        get_data = function () {
+            $.ajax({
+                url: 'http://127.0.0.1:5000/get_wuhan2',
+                type: "GET",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    let len = data.length;
+                    for (let i = 0; i < len; ++i) {
+                        clusterFeatures[i] = new ol.Feature({
+                            geometry: new ol.geom.Point([data[i].X, data[i].Y]),
+                            case_id: data[i].case_id,
+                            case_name: data[i].case_name,
+                            position_type: data[i].position_type,
+                            time: data[i].time,
+                            case_position: data[i].case_address,
+                            lng: data[i].lng,
+                            lat: data[i].lat,
+                            case_description: data[i].case_description,
+                            area: data[i].case_area,
+                            X: data[i].X,
+                            Y: data[i].Y
+                        });
+                    }
+                },
+                error: function () {
+                    setTimeout(function () {
+                        get_data();
+                    }, 5000);
                 }
-                return style;
-            }
-        });
-        return newCluster;
-    }
+            })
+        }
+
+        let clusterVector1;
+        let clusterVector2;
+        let ImageFeatures;
+
+        init_cluster1 = function () {
+            clusterVector1 = createClusters1(clusterFeatures, 65, '../photo/cluster1.png', 0.5,
+                '#fff');
+            clusterVector1.setVisible(true);
+            map.addLayer(clusterVector1);
+        }
+
+        init_cluster2 = function () {
+            clusterVector2 = createClusters2(clusterFeatures, 100, '../photo/cluster1.png', 0.3,
+                '#fff');
+            clusterVector2.setVisible(false);
+            map.addLayer(clusterVector2);
+        }
+
+        init_cluster3 = function () {
+            ImageFeatures = createImageFeatures(clusterFeatures, 50, '../photo/case.png', 0.2,
+                '#fff');
+            ImageFeatures.setVisible(false);
+            map.addLayer(ImageFeatures);
+        }
+
+        function createClusters1(features, distance, imgUrl, scale, textColor) {
+            //矢量要素数据源
+            var source = new ol.source.Vector({
+                features: features
+            });
+            //聚合标注数据源
+            var clusterSource = new ol.source.Cluster({
+                distance: distance,
+                source: source
+            });
+            //加载聚合标注的矢量图层
+            var styleCache = {};
+            var newCluster = new ol.layer.Vector({
+                source: clusterSource,
+                style: function (feature) {
+                    var size = feature.get('features').length;
+                    var style = styleCache[size];
+                    if (!style) {
+                        style = [
+                            new ol.style.Style({
+                                image: new ol.style.Icon(
+                                    /** @type {olx.style.IconOptions} */
+                                    ({
+                                        //设置图标点
+                                        anchor: [0.5, distance],
+                                        //图标起点
+                                        anchorOrigin: 'top-right',
+                                        //指定x值为图标点的x值
+                                        anchorXUnits: 'fraction',
+                                        //指定Y值为像素的值
+                                        anchorYUnits: 'pixels',
+                                        //偏移
+                                        offsetOrigin: 'top-right',
+                                        // offset:[0,10],
+                                        //图标缩放比例
+                                        scale: scale, //scale,
+                                        //透明度
+                                        opacity: 0.65,
+                                        //图标的url
+                                        src: imgUrl,
+
+                                    })),
+                                text: new ol.style.Text({
+                                    text: size.toString(),
+                                    fill: new ol.style.Fill({
+                                        color: '#fff',
+                                    }),
+                                    font: (22) + 'px YaHei Consolas Hybrid',
+                                    textColor: textColor
+                                })
+                            })
+                        ];
+                        styleCache[size] = style;
+                    }
+                    return style;
+                }
+            });
+            return newCluster;
+        }
+
+        function createClusters2(features, distance, imgUrl, scale, textColor) {
+            //矢量要素数据源
+            var source = new ol.source.Vector({
+                features: features
+            });
+            //聚合标注数据源
+            var clusterSource = new ol.source.Cluster({
+                distance: distance,
+                source: source
+            });
+            //加载聚合标注的矢量图层
+            var styleCache = {};
+            var newCluster = new ol.layer.Vector({
+                source: clusterSource,
+                style: function (feature) {
+                    var size = feature.get('features').length;
+                    var style = styleCache[size];
+                    if (!style) {
+                        style = [
+                            new ol.style.Style({
+                                image: new ol.style.Icon(
+                                    /** @type {olx.style.IconOptions} */
+                                    ({
+                                        //设置图标点
+                                        anchor: [0.5, distance],
+                                        //图标起点
+                                        anchorOrigin: 'top-right',
+                                        //指定x值为图标点的x值
+                                        anchorXUnits: 'fraction',
+                                        //指定Y值为像素的值
+                                        anchorYUnits: 'pixels',
+                                        //偏移
+                                        offsetOrigin: 'top-right',
+                                        // offset:[0,10],
+                                        //图标缩放比例
+                                        scale: Math.sqrt(size * 3.5) / 10 + 0.5, //scale,
+                                        //透明度
+                                        opacity: 0.55,
+                                        //图标的url
+                                        src: imgUrl,
+                                    }))
+                            })
+                        ];
+                        styleCache[size] = style;
+                    }
+                    return style;
+                }
+            });
+            return newCluster;
+        }
+
+        function createImageFeatures(features, distance, imgUrl, scale, textColor) {
+            //矢量要素数据源
+            var source = new ol.source.Vector({
+                features: []
+            });
+            //加载聚合标注的矢量图层
+            var newFeatures = new ol.layer.Vector({
+                source: source
+            });
+
+            features.forEach(function (i) {
+                // console.log(addImageFeature(i, distance, scale));
+                source.addFeature(addImageFeature(i, distance, scale));
+            })
 
 
-    addListener = function () {
-        container = document.getElementById("popup");
-        content = document.getElementById("popup-content");
-        closer = document.getElementById("popup-closer");
+            return newFeatures;
+        }
+
+        function ImageStyle(case_id, distance, scale) {
+            return new ol.style.Style({
+                image: new ol.style.Icon(
+                    /** @type {olx.style.IconOptions} */
+                    ({
+                        //设置图标点
+                        anchor: [0.5, distance],
+                        //图标起点
+                        anchorOrigin: 'top-right',
+                        //指定x值为图标点的x值
+                        anchorXUnits: 'fraction',
+                        //指定Y值为像素的值
+                        anchorYUnits: 'pixels',
+                        //偏移
+                        offsetOrigin: 'top-right',
+                        // offset:[0,10],
+                        //图标缩放比例
+                        scale: scale, //scale,
+                        //透明度
+                        opacity: 0.75,
+                        //图标的url
+                        // src: '../photo/case.png',
+                        src: "../photo/" + case_id + ".png",
+                    }))
+            })
+        }
+
+        function addImageFeature(feature, distance, scale) {
+            let newFeature = new ol.Feature({
+                geometry: feature.values_.geometry,
+                case_id: feature.values_.case_id
+            })
+            newFeature.setStyle(ImageStyle(feature.values_.case_id, distance, scale));
+            return newFeature
+        }
+
+        addListener = function () {
+            container = document.getElementById("popup");
+            content = document.getElementById("popup-content");
+            closer = document.getElementById("popup-closer");
+
+            /**
+             * 添加关闭按钮的单击事件（隐藏popup）
+             * @return {boolean} Don't follow the href.
+             */
+            closer.onclick = function () {
+                //未定义popup位置
+                cluster_popup.setPosition(undefined);
+                //失去焦点
+                closer.blur();
+                return false;
+            };
+
+            // 创建popUp 的OverLayer
+            cluster_popup = createPopupLayer();
+            // 添加popUp 至底图
+            map.addOverlay(cluster_popup);
+
+            /**
+             * 为map添加点击事件监听，渲染弹出popup
+             */
+            map.on('click', function (evt) {
+                //判断当前单击处是否有要素，捕获到要素时弹出popup
+                let feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+                    return feature;
+                });
+                console.log(feature);
+                if (feature) {
+                    clusterPopup(feature);
+                }
+            });
+            /**
+             * 为map添加鼠标移动事件监听，当指向标注时改变鼠标光标状态
+             */
+            map.on('pointermove', function (e) {
+                let pixel = map.getEventPixel(e.originalEvent);
+                let hit = map.hasFeatureAtPixel(pixel);
+                map.getTargetElement().style.cursor = hit ? 'pointer' : '';
+            });
+        };
+
+        //-----------------------------------------------------------------辅助函数
+        /**
+         * 经纬度转墨卡托
+         * @param poi 经纬度
+         * @returns {{}}
+         * @private
+         */
+        function _getMercator(poi) { //[114.32894, 30.585748]
+            let mercator = {};
+            let earthRad = 6378137.0;
+            mercator.x = poi.lng * Math.PI / 180 * earthRad;
+            let a = poi.lat * Math.PI / 180;
+            mercator.y = earthRad / 2 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
+            return mercator; //[12727039.383734727, 3579066.6894065146]
+        }
 
         /**
-         * 添加关闭按钮的单击事件（隐藏popup）
-         * @return {boolean} Don't follow the href.
+         * 墨卡托转经纬度
+         * @param poi 墨卡托
+         * @returns {{}}
+         * @private
          */
-        closer.onclick = function () {
+        function _getLngLat(poi) {
+            let lnglat = {};
+            lnglat.lng = poi.x / 20037508.34 * 180;
+            let mmy = poi.y / 20037508.34 * 180;
+            lnglat.lat = 180 / Math.PI * (2 * Math.atan(Math.exp(mmy * Math.PI / 180)) - Math.PI / 2);
+            return lnglat;
+        }
+
+        contains = function (map, layer) {
+            for (item of map.getLayers().getArray()) {
+                if (item.values_['id'] === 'isPath') {
+                    return true;
+                }
+            }
+            return false;
+        };
+        //-------------
+
+
+        let description = [];
+
+        /**
+         * 触发popup事件
+         * @param feature
+         */
+        function clusterPopup(feature) {
+            //初始化cluster_popup参数
+            len = getFeatureLen(feature);
+            //刷新信息总页数
+            totalPage = len;
+            //刷新起始页
+            currentPage = 1;
+            //刷新位置
+            var position = getFeatureCoordinates(feature);
+            //刷新内容
+            for (var i = 0; i < len; i++) {
+                description[i] = getFeatureDesc(feature, i);
+            }
+            //初始化首页popup框中信息
+            var i = addFeatrueInfo(description[currentPage - 1]);
+            // var i = addFeatrueInfo("ddddddddd");
+            if (i == -1)
+                return;
+            //进行定位
+            cluster_popup.setPosition(position);
+        }
+
+        /**
+         * 获得feature的坐标
+         * @param feature 聚合簇
+         */
+        function getFeatureCoordinates(feature) {
+            return feature.values_.geometry.flatCoordinates;
+        }
+
+        /**
+         * 获得feature信息
+         * @param feature 聚合簇
+         * @param i
+         */
+        function getFeatureDesc(feature, i) {
+            // return feature.values_.features[i].values_.text;
+            return feature.values_.features[i].values_;
+
+        }
+
+        /**
+         * 获得feature 数目
+         * @param feature 聚合簇
+         * return 返回数目
+         */
+        function getFeatureLen(feature) {
+            if (feature.values_.features == undefined)
+                return;
+            return feature.values_.features.length;
+        }
+
+        /**
+         * 触发查询事件以及聚合标注事件
+         */
+        function addClusterTips() {
+            query(gdb, num, querySuccess, queryError);
+            //矢量要素数据源
+        }
+
+        /**
+         * 构造popLayer
+         * @returns {ol.Overlay}
+         */
+        function createPopupLayer() {
+            return new ol.Overlay(
+                /** @type {olx.OverlayOptions} */
+                ({
+                    //要转换成overlay的HTML元素
+                    element: container,
+                    //当前窗口可见
+                    autoPan: true,
+                    //Popup放置的位置
+                    positioning: 'bottom-center',
+                    //是否应该停止事件传播到地图窗口
+                    stopEvent: false,
+                    autoPanAnimation: {
+                        //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度
+                        duration: 250
+                    }
+                }));
+        }
+
+        /**
+         * 为popUp动态添加内容
+         * */
+        function addFeatrueInfo(info) {
+            if (info == undefined)
+                return -1;
+            content.innerHTML = "";
+
+            let html =
+                '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
+                '    <table class="table table-hover table-striped">\n' +
+                '        <tr>\n' +
+                '            <td>案件编号</td>\n' +
+                '            <td>' + info.case_id + ' </td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>案件地址</td>\n' +
+                '            <td>' + info.case_position + '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>案件区域</td>\n' +
+                '            <td>' + info.area + '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>案件时间</td>\n' +
+                '            <td>' + info.time + '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>案件描述</td>\n' +
+                '            <td>' + info.case_description + '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>照片</td>\n' +
+                '            <td>' +
+                '<div style="width: 200px;height: 200px;overflow: hidden;position: relative;">' +
+                '<img src="../photo/' + parseInt(info.case_id) + '.png" style="max-width: 100%;margin: auto">' +
+                '</div>' +
+                '</td>\n' +
+                '        </tr>\n' +
+                '        <tr>\n' +
+                '            <td>\n' +
+                '               <i style="font-size:20px;cursor:pointer;" class="fa" onclick="pageTurnBackFun()">&#xf100;</i>\n' +
+                '<span style="font-size:17px;">&nbsp;' + currentPage + '&nbsp;</span>' +
+                '               <i style="font-size:20px;cursor:pointer;" class="fa" onclick="pageTurnOverFun()">&#xf101;</i>\n' +
+                '<span style="font-size:17px;">&nbsp;&nbsp;&nbsp;共' + len + '页</span>' +
+                '            </td>\n' +
+                '            <td>\n' +
+                '               <i style="font-size:24px;cursor:pointer;" class="fa pull-right" onclick="close_popup()">&#xf00d;</i>\n' +
+                '            </td>\n' +
+                '        </tr>\n' +
+                '    </table>\n' +
+                '</div>';
+            content.innerHTML = html;
+        }
+
+        /**
+         * 触发向前翻页事件
+         */
+        function pageTurnBackFun() {
+            if (currentPage > 1) {
+                currentPage = currentPage - 1;
+                addFeatrueInfo(description[currentPage - 1])
+            }
+        }
+
+        /**
+         * 触发向后翻页事件
+         */
+        function pageTurnOverFun() {
+            if (currentPage < len) {
+                console.log(currentPage);
+                currentPage = currentPage + 1;
+                addFeatrueInfo(description[currentPage - 1])
+            }
+        }
+
+        function close_popup() {
             //未定义popup位置
             cluster_popup.setPosition(undefined);
             //失去焦点
             closer.blur();
             return false;
-        };
-
-        // 创建popUp 的OverLayer
-        cluster_popup = createPopupLayer();
-        // 添加popUp 至底图
-        map.addOverlay(cluster_popup);
-
-        /**
-         * 为map添加点击事件监听，渲染弹出popup
-         */
-        map.on('click', function (evt) {
-            //判断当前单击处是否有要素，捕获到要素时弹出popup
-            let feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-                return feature;
-            });
-            if (feature) {
-                clusterPopup(feature);
-            }
-        });
-        /**
-         * 为map添加鼠标移动事件监听，当指向标注时改变鼠标光标状态
-         */
-        map.on('pointermove', function (e) {
-            let pixel = map.getEventPixel(e.originalEvent);
-            let hit = map.hasFeatureAtPixel(pixel);
-            map.getTargetElement().style.cursor = hit ? 'pointer' : '';
-        });
-    };
-
-
-    //-----------------------------------------------------------------辅助函数
-    /**
-     * 经纬度转墨卡托
-     * @param poi 经纬度
-     * @returns {{}}
-     * @private
-     */
-    function _getMercator(poi) { //[114.32894, 30.585748]
-        let mercator = {};
-        let earthRad = 6378137.0;
-        mercator.x = poi.lng * Math.PI / 180 * earthRad;
-        let a = poi.lat * Math.PI / 180;
-        mercator.y = earthRad / 2 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
-        return mercator; //[12727039.383734727, 3579066.6894065146]
-    }
-
-    /**
-     * 墨卡托转经纬度
-     * @param poi 墨卡托
-     * @returns {{}}
-     * @private
-     */
-    function _getLngLat(poi) {
-        let lnglat = {};
-        lnglat.lng = poi.x / 20037508.34 * 180;
-        let mmy = poi.y / 20037508.34 * 180;
-        lnglat.lat = 180 / Math.PI * (2 * Math.atan(Math.exp(mmy * Math.PI / 180)) - Math.PI / 2);
-        return lnglat;
-    }
-
-    contains = function (map, layer) {
-        for (item of map.getLayers().getArray()) {
-            if (item.values_['id'] === 'isPath') {
-                return true;
-            }
         }
-        return false;
-    };
-    //-------------
-
-
-    let description = [];
-
-    /**
-     * 触发popup事件
-     * @param feature
-     */
-    function clusterPopup(feature) {
-        //初始化cluster_popup参数
-        len = getFeatureLen(feature);
-        //刷新信息总页数
-        totalPage = len;
-        //刷新起始页
-        currentPage = 1;
-        //刷新位置
-        var position = getFeatureCoordinates(feature);
-        //刷新内容
-        for (var i = 0; i < len; i++) {
-            description[i] = getFeatureDesc(feature, i);
-        }
-        //初始化首页popup框中信息
-        var i = addFeatrueInfo(description[currentPage - 1]);
-        // var i = addFeatrueInfo("ddddddddd");
-        if (i == -1)
-            return;
-        //进行定位
-        cluster_popup.setPosition(position);
-    }
-
-    /**
-     * 获得feature的坐标
-     * @param feature 聚合簇
-     */
-    function getFeatureCoordinates(feature) {
-        return feature.values_.geometry.flatCoordinates;
-    }
-
-    /**
-     * 获得feature信息
-     * @param feature 聚合簇
-     * @param i
-     */
-    function getFeatureDesc(feature, i) {
-        // return feature.values_.features[i].values_.text;
-        return feature.values_.features[i].values_;
-
-    }
-
-    /**
-     * 获得feature 数目
-     * @param feature 聚合簇
-     * return 返回数目
-     */
-    function getFeatureLen(feature) {
-        if (feature.values_.features == undefined)
-            return;
-        return feature.values_.features.length;
-    }
-
-    /**
-     * 触发查询事件以及聚合标注事件
-     */
-    function addClusterTips() {
-        query(gdb, num, querySuccess, queryError);
-        //矢量要素数据源
-    }
-
-    /**
-     * 构造popLayer
-     * @returns {ol.Overlay}
-     */
-    function createPopupLayer() {
-        return new ol.Overlay(
-            /** @type {olx.OverlayOptions} */
-            ({
-                //要转换成overlay的HTML元素
-                element: container,
-                //当前窗口可见
-                autoPan: true,
-                //Popup放置的位置
-                positioning: 'bottom-center',
-                //是否应该停止事件传播到地图窗口
-                stopEvent: false,
-                autoPanAnimation: {
-                    //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度
-                    duration: 250
-                }
-            }));
-    }
-
-    /**
-     * 为popUp动态添加内容
-     * */
-    function addFeatrueInfo(info) {
-        if (info == undefined)
-            return -1;
-        content.innerHTML = "";
-
-        let html =
-            '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
-            '    <table class="table table-hover table-striped">\n' +
-            '        <tr>\n' +
-            '            <td>案件编号</td>\n' +
-            '            <td>' + info.case_id + ' </td>\n' +
-            '        </tr>\n' +
-            '        <tr>\n' +
-            '            <td>案件地址</td>\n' +
-            '            <td>' + info.case_position + '</td>\n' +
-            '        </tr>\n' +
-            '        <tr>\n' +
-            '            <td>案件区域</td>\n' +
-            '            <td>' + info.area + '</td>\n' +
-            '        </tr>\n' +
-            '        <tr>\n' +
-            '            <td>案件时间</td>\n' +
-            '            <td>' + info.time + '</td>\n' +
-            '        </tr>\n' +
-            '        <tr>\n' +
-            '            <td>案件描述</td>\n' +
-            '            <td>' + info.case_description + '</td>\n' +
-            '        </tr>\n' +
-            '        <tr>\n' +
-            '            <td>照片</td>\n' +
-            '            <td>' +
-            '<div style="width: 200px;height: 200px;overflow: hidden;position: relative;">' +
-            '<img src="../photo/' + parseInt(info.case_id) + '.png" style="max-width: 100%;margin: auto">' +
-            '</div>' +
-            '</td>\n' +
-            '        </tr>\n' +
-            '        <tr>\n' +
-            '            <td>\n' +
-            '               <i style="font-size:20px;cursor:pointer;" class="fa" onclick="pageTurnBackFun()">&#xf100;</i>\n' +
-            '<span style="font-size:17px;">&nbsp;' + currentPage + '&nbsp;</span>' +
-            '               <i style="font-size:20px;cursor:pointer;" class="fa" onclick="pageTurnOverFun()">&#xf101;</i>\n' +
-            '<span style="font-size:17px;">&nbsp;&nbsp;&nbsp;共' + len + '页</span>' +
-            '            </td>\n' +
-            '            <td>\n' +
-            '               <i style="font-size:24px;cursor:pointer;" class="fa pull-right" onclick="close_popup()">&#xf00d;</i>\n' +
-            '            </td>\n' +
-            '        </tr>\n' +
-            '    </table>\n' +
-            '</div>';
-        content.innerHTML = html;
-    }
-
-    /**
-     * 触发向前翻页事件
-     */
-    function pageTurnBackFun() {
-        if (currentPage > 1) {
-            currentPage = currentPage - 1;
-            addFeatrueInfo(description[currentPage - 1])
-        }
-    }
-
-    /**
-     * 触发向后翻页事件
-     */
-    function pageTurnOverFun() {
-        if (currentPage < len) {
-            console.log(currentPage);
-            currentPage = currentPage + 1;
-            addFeatrueInfo(description[currentPage - 1])
-        }
-    }
-
-    function close_popup() {
-        //未定义popup位置
-        cluster_popup.setPosition(undefined);
-        //失去焦点
-        closer.blur();
-        return false;
-    }
-</script>
+    </script>
 
 </body>
 

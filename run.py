@@ -603,24 +603,30 @@ def get_case_byID():
 def get_case_BYcaseid():
     case_id = request.form['case_id']
     result = dao.execute(
-        "SELECT * , DATE_FORMAT(time, '%Y-%m-%d %H:%i') as abcd FROM `wuhan_pois` WHERE ID= '" + str(case_id) + "';")
+        "SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case`  WHERE case_id = " + str(case_id) + ";"
+    )
     response = []
     for i in range(len(result)):
         response.append({
             "case_id": result[i][0],
-            "position_name": result[i][1],
-            # "position_type": result[i][2],
-            'case_address': result[i][3],
-            "lng": float(result[i][4]),
-            "lat": float(result[i][5]),
-            "X": float(result[i][6]),
-            "Y": float(result[i][7]),
-            'case_area': result[i][8],
-            "time": result[i][12],
-            "case_description": result[i][10],
-            'case_name': result[i][11]
+            "case_name": result[i][1],
+            "case_type": result[i][2],
+            "time": result[i][13],
+            "case_position": result[i][6],
+            "case_description": result[i][9],
+            "case_status": result[i][10],
+            "X": float(result[i][11]),
+            "Y": float(result[i][12]),
+            "lng": float(result[i][7]),
+            "lat": float(result[i][8]),
         })
     return jsonify(response), 200
+
+
+@app.route('/get_page_number', methods=['get'])
+def get_page_number():
+    result = dao.execute("SELECT COUNT(*) FROM `case`")[0][0]
+    return jsonify((int(result) - 1) // 8 + 1), 200
 
 
 # @app.route('/set_cookie', methods=['get'])

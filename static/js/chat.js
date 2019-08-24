@@ -8,10 +8,13 @@ parent.$(window.parent.document).find('.chatting').click(function () {
 
     parent.$(window.parent.document).find('iframe').toggle();
 
-    p1_id = get_uid();
+    p1_id = get_uid().toString();
     p2_id = $(this).attr('uid');
-
-    if (p1_id === p2_id) return false;
+    console.log(p1_id, p2_id);
+    if (p1_id === p2_id) {
+        parent.$(window.parent.document).find('iframe').toggle();
+        return false;
+    }
 
     $('.bg .intername').text(get_userByid(p2_id)['name']);
     $('.Righthead .headName').text(get_userByid(p2_id)['name']);
@@ -38,7 +41,6 @@ flush = function () {
         success: function (data) {
             //请求成功时处理
             data.data.forEach(function (item, i) {
-                console.log(data.data);
                 if (item["message_from"].toString() === p1_id.toString()) {
                     right_(item['message_content']);
                 } else {
@@ -72,6 +74,10 @@ $('.sendBtn').on('click', function () {
         right_(news);
         send_message(news);
     }
+});
+
+$('.fa-close').click(function () {
+    parent.$(window.parent.document).find('iframe').hide();
 });
 
 $('.ExP').on('mouseenter', function () {
