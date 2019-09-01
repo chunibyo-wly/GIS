@@ -1,0 +1,1158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+    <title>图层叠加分析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--导入外部样式表-->
+    <link href="../css/style.css" rel="stylesheet" type="text/css" />
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+ 	<!--必要的脚本引用-->
+    <script src="../js/jquery-1.11.2.min.js" type="text/javascript"></script>
+    <script src="../js/MapGis_ol_product.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        /*==========================================底图显示===================================================*/
+        var map, vectorLayer,vectorLayer1; 
+        //缓存结果图层的基地址
+        var resultBaseUrl = "gdbp://MapGisLocal/antu/sfcls/";
+        //地图初始化函数
+        var view = new ol.View({
+                    center: [12723826, 3595731],//[12665443, 3595134],//
+                    projection: 'EPSG:3857', //projection,
+                    zoom: 10
+               });
+        function init() {        	
+            //地图范围
+            var extent = [12656980.1414, 3512499.6042, 12801879.019, 3648415.2566];
+            //投影坐标系
+            var projection = new ol.proj.Projection({ units: ol.proj.Units.METERS, extent: extent });
+            //中心点
+            
+            //var center = ol.extent.getCenter(extent);
+            //图层显示名称
+            var name = "MapGIS IGS VecLayer";
+            var name1 = "MapGIS IGS VecLayer1";
+            var name2 = "MapGIS IGS VecLayer2";
+            var name_area = "MapGIS IGS vectorLayer_area";
+            //要显示的图层的gdbps地址
+            var gdbps = ["gdbp://MapGisLocal/test/sfcls/police1"];
+            var gdbps1 = ["gdbp://MapGisLocal/test/sfcls/case2"];
+            var gdbps2 = ["gdbp://MapGisLocal/test/sfcls/road5"];
+            var gdbps3 = ["gdbp://MapGisLocal/antu/sfcls/武汉市区界_84_2012"];
+            //创建一个图层 
+            vectorLayer = new Zondy.Map.Layer(name, gdbps, {
+                ip: "localhost",
+                port: "6163"
+            });
+            vectorLayer1 = new Zondy.Map.Layer(name1, gdbps1, {
+                ip: "localhost",
+                port: "6163"
+            });
+            vectorLayer2 = new Zondy.Map.Layer(name2, gdbps2, {
+            	ip: "localhost",
+            	port: "6163"
+            });
+            vectorLayer_area = new Zondy.Map.Layer(name_area, gdbps3, {
+            	ip: "localhost",
+            	port: "6163"
+            });
+           
+        	var TiandiMap_vec = new ol.layer.Tile({
+            	title: "天地图矢量图层",
+           	 	source: new ol.source.XYZ({
+                	url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=" + "b5cda9cb266f640b762cf41d3674e2c8",//parent.TiandituKey()为天地图密钥
+                	wrapX: false
+            	})
+        	});
+        	var Tianditu_cva = new ol.layer.Tile({
+            	title: "天地图矢量注记图层",
+            	source: new ol.source.XYZ({
+                	url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" + "b5cda9cb266f640b762cf41d3674e2c8",//parent.TiandituKey()为天地图密钥
+                	wrapX: false
+            	})
+        	});
+            
+            var gaode_map = new ol.layer.Tile({
+            	title: "高德地图",
+            	source: new ol.source.XYZ({
+            		url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}',
+					wrapX: false
+            	})
+            });
+		
+            //创建一个地图容器
+            map = new ol.Map({
+                //目标DIV
+                target: 'mapCon',
+                //添加图层到地图容器中
+                layers: [gaode_map],//,TiandiMap_vec, Tianditu_cva, vectorLayer2, vectorLayer, vectorLayer1   vectorLayer,vectorLayer1 
+                view: view,
+                controls: ol.control.defaults().extend([overviewMapControl])
+                //controls: [new ol.control.MousePosition()]
+            });
+            map.addControl(zoomToExtent);
+            map.addControl(scaleLineControl);
+            map.addControl(mousePositionControl);
+            $('.ol-zoom-in').hide();
+			$('.ol-zoom-out').hide();
+        }; 
+        
+        //实例化鹰眼控件（OverviewMap）,自定义样式的鹰眼控件  
+			var overviewMapControl = new ol.control.OverviewMap({
+				//鹰眼控件样式（see in overviewmap-custom.html to see the custom CSS used）
+				className: 'ol-overviewmap ol-custom-overviewmap',
+				//鹰眼中加载同坐标系下不同数据源的图层
+				layers: [
+					new ol.layer.Tile({
+						source: new ol.source.XYZ({
+							url: "http://t0.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=" +
+								"b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥,
+							wrapX: false
+						})
+					}),
+					new ol.layer.Tile({
+						title: "天地图矢量注记图层",
+						source: new ol.source.XYZ({
+							url: "http://t0.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" +
+								"b5cda9cb266f640b762cf41d3674e2c8", //parent.TiandituKey()为天地图密钥
+						})
+					})
+				],
+				//鹰眼控件展开时功能按钮上的标识（网页的JS的字符编码）
+				collapseLabel: '\u00BB',
+				//鹰眼控件折叠时功能按钮上的标识（网页的JS的字符编码）
+				label: '\u00AB',
+				//初始为展开显示方式
+				collapsed: false
+
+			});
+			//实例化zoomToExtent控件并加载到地图容器中
+			var zoomToExtent = new ol.control.ZoomToExtent({
+				extent: [12733450, 3569910, 12735844, 3571692],
+				tipLabel: "定位到当前位置",
+				label: "O"
+				
+			});			
+			//实例化比例尺控件（ScaleLine）
+			var scaleLineControl = new ol.control.ScaleLine({
+				//设置比例尺单位，degrees、imperial、us、nautical、metric（度量单位）
+				units: "metric"
+			});
+			//实例化鼠标位置控件（MousePosition）
+			var mousePositionControl = new ol.control.MousePosition({
+				//坐标格式
+				coordinateFormat: ol.coordinate.createStringXY(4),
+				//地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
+				projection: 'EPSG:3857',//4326
+				//坐标信息显示样式类名，默认是'ol-mouse-position'
+				className: 'custom-mouse-position',
+				//显示鼠标位置信息的目标容器
+				target: document.getElementById('mouse-position'),
+				//未定义坐标的标记
+				undefinedHTML: '&nbsp;'
+			});     
+    //执行图层叠加分析
+    function transport() {
+    	
+    	$('#analyse_tag2').toggle();
+            clearA();
+            //显示进度条 
+            startPressBar();
+            var resultname = resultBaseUrl + "overLayByLayerAnalysisResultLayer" + getCurentTime();
+            //实例化OverlayByLayer类
+            var overlayParam = new Zondy.Service.OverlayByLayer({
+                ip: "localhost",
+                port: "6163",
+                //设置被叠加图层URL  
+                srcInfo1: "gdbp://MapGisLocal/antu/sfcls/area1_1",//"gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界河流",
+                //设置叠加图层URL
+                srcInfo2: "gdbp://MapGisLocal/antu/ds/案情/sfcls/area1",//"gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界政区",
+                //设置结果URL  			
+                desInfo: resultname,
+                //设置结果图层的图形参数信息  	
+                infoOptType: 2,
+                //求交	
+                overType: 1,
+                //允许重算面积	    
+                isReCalculate: true, 
+                //容差半径		
+                radius: 0.05				
+            });
+            //调用基类的execute方法，执行叠加分析， onSuccess为结果回调函数
+            overlayParam.execute(AnalysisSuccess,"post",false,"json", AnalysisError);
+            
+   		//飞行效果定位
+//      document.getElementById('fly').onclick = function () {
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12665443, 3595134],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 1,
+                duration: duration / 2
+            }, {
+                zoom: 9.5,
+                duration: duration / 2
+            }, callback);
+//      };
+            
+            $('#analyse_tag').toggle();
+        }
+    
+        function safe_area() {
+        	//$('#analyse_tag').toggle();
+        	$('#analyse_tag1').toggle();
+            //clearA();
+            //显示进度条
+            startPressBar();
+            var resultname = resultBaseUrl + "overLayByLayerAnalysisResultLayer" + getCurentTime();
+            //实例化OverlayByLayer类
+            var overlayParam = new Zondy.Service.OverlayByLayer({
+                ip: "localhost",
+                port: "6163",
+                //设置被叠加图层URL
+                srcInfo1: "gdbp://MapGisLocal/antu/ds/案情/sfcls/area1",//"gdbp://MapGisLocal/test/sfcls/police1",//"gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界河流",
+                //设置叠加图层URL
+                srcInfo2: "gdbp://MapGisLocal/antu/ds/案情/sfcls/police_600m",//"gdbp://MapGisLocal/test/sfcls/police2",//"gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界政区",
+                //设置结果URL  			
+                desInfo: resultname,
+                //设置结果图层的图形参数信息  	
+                infoOptType: 2,
+                //求交	
+                overType: 1,
+                //允许重算面积	    
+                isReCalculate: true,
+                //容差半径		
+                radius: 0.05				
+            });
+            //调用基类的execute方法，执行叠加分析， onSuccess为结果回调函数
+            overlayParam.execute(AnalysisSuccess,"post",false,"json", AnalysisError);
+            
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12764754, 3578934],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 10,
+                duration: duration / 2
+            }, callback);
+        }    
+        
+  function strenghten_area() {
+  			$('#analyse_tag1').toggle();
+  			$('#analyse_tag2').toggle();
+            //clearA();
+            //显示进度条
+            startPressBar();
+            var resultname = resultBaseUrl + "overLayByLayerAnalysisResultLayer" + getCurentTime();
+            //实例化OverlayByLayer类
+            var overlayParam = new Zondy.Service.OverlayByLayer({
+                ip: "localhost",
+                port: "6163",
+                //设置被叠加图层URL
+                srcInfo1: "gdbp://MapGisLocal/antu/ds/案情/sfcls/case_1000m",//
+                //设置叠加图层URL
+                srcInfo2: "gdbp://MapGisLocal/antu/ds/案情/sfcls/police_600m",//gdbp://MapGisLocal/antu/ds/案情/sfcls/case_x
+                //设置结果URL  			
+                desInfo: resultname,
+                //设置结果图层的图形参数信息  	
+                infoOptType: 2,
+                //求减	
+                overType:2,
+                //允许重算面积	    
+                isReCalculate: true,
+                //容差半径		
+                radius: 0.05				
+            });
+            //调用基类的execute方法，执行叠加分析， onSuccess为结果回调函数
+            overlayParam.execute(AnalysisSuccess,"post",false,"json", AnalysisError);
+            
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+//          //第一个动画
+//          view.animate({
+//              center: [12764754, 3577934],
+//              duration: duration
+//          }, callback);
+//          //第二个动画
+//          view.animate({
+//              zoom: zoom - 0.5,
+//              duration: duration / 2
+//          }, {
+//              zoom: 10,
+//              duration: duration / 2
+//          }, callback);
+        }
+   function AnalysisError(e) {
+            //停止进度条
+            stopPressBar();
+        }
+    function AnalysisSuccess(data) {
+            //停止进度条
+            stopPressBar(); 
+            if (data.results) {
+                if (data.results.length != 0) {
+                    var resultLayerUrl = data.results[0].Value;
+                    //将结果图层添加到地图视图中显示
+                    var resultLayer = new Zondy.Map.Layer("MapGIS IGS overLayAnalyResultLayer", [resultBaseUrl + resultLayerUrl], {
+                        ip: "localhost",
+                        port: "6163",
+                        isBaseLayer: false
+                    });
+                    map.removeLayer(vectorLayer);
+                    map.removeLayer(vectorLayer1);
+                    map.addLayer(resultLayer);
+                }
+
+            }
+            else {
+                alert("叠加分析失败，请检查参数！");
+            }
+        }
+   	function clearA() {
+            stopPressBar(); //停止进度条
+            if (map.getLayers().array_.length > 1) {
+                for (var i = map.getLayers().array_.length - 1; i > 0; i--) {
+                    map.removeLayer(map.getLayers().array_[i]);
+                }
+            }
+            else
+                return;
+        }
+   	function getCurentTime() {
+            var now = new Date();
+            //获取当前年份
+            var year = now.getFullYear();
+            //获取当前月份     
+            var month = now.getMonth() + 1;
+            //获取当前日期   
+            var day = now.getDate();
+            //获取当前时刻
+            var hh = now.getHours();
+            //获取当前分钟
+            var mm = now.getMinutes();
+            //获取当前秒钟
+            var ss = now.getSeconds();
+            //将当前的日期拼串
+            var clock = year + "-";
+            if (month < 10)
+                clock += "0";
+            clock += month + "-";
+            if (day < 10)
+                clock += "0";
+            clock += day + "-";
+            if (hh < 10)
+                clock += "0";
+            clock += hh;
+            if (mm < 10) clock += '0';
+            clock += mm;
+            if (ss < 10) clock += '0';
+            clock += ss;
+            return (clock);
+        }
+   	function stopPressBar() {
+            document.getElementById('preview').style.display = "none";
+        }
+           //开始进度条动画
+   	function startPressBar() {
+            document.getElementById('preview').style.display = "";
+        }
+   	function test(){
+   	    $("mapCon").ol.layer.setVisible(false);
+   }
+    			               
+   		function fly1(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12714898, 3578628],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 12,
+                duration: duration / 2
+            }, callback);
+		};	
+		
+		function fly2(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12712898, 3580628],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 1,
+                duration: duration / 2
+            }, {
+                zoom: 13,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly3(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12718898, 3586428],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 1,
+                duration: duration / 2
+            }, {
+                zoom: 13,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly4(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12706898, 3580628],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 1,
+                duration: duration / 2
+            }, {
+                zoom: 13,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly5(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12732898, 3585628],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 1,
+                duration: duration / 2
+            }, {
+                zoom: 13,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly6(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12704898, 3573628],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 1,
+                duration: duration / 2
+            }, {
+                zoom: 13,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly7(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12714898, 3578628],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 11,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly8(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12664615, 3542058],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 12,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly9(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12684615, 3592058],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 12,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly10(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12674615, 3563058],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 12,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly11(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12738880, 3606910],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 11,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly12(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12692101, 3533696],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 11,
+                duration: duration / 2
+            }, callback);
+		};
+		
+		function fly13(){
+            var duration = 2000;//动画的持续时间（以毫秒为单位）
+            var zoom = view.getZoom();
+            var parts = 2;
+            var called = false;
+            //动画完成的回调函数
+            function callback(complete) {
+                --parts;
+                if (called) {
+                    return;
+                }
+                if (parts === 0 || !complete) {
+                    called = true;
+                    done(complete);
+                }
+            }
+            //第一个动画
+            view.animate({
+                center: [12696381, 3626401],
+                duration: duration
+            }, callback);
+            //第二个动画
+            view.animate({
+                zoom: zoom - 0.5,
+                duration: duration / 2
+            }, {
+                zoom: 11,
+                duration: duration / 2
+            }, callback);
+		};
+   
+   		
+//  $('#analyse_table').hide();
+//  console.log('aaa');
+   		
+    </script>
+    
+    <style type="text/css">
+			
+			#mapCon {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+			
+			/* 自定义当前位置样式 */
+			
+			.ol-zoom-extent {
+				left: 20px;
+				bottom: 200px;
+				right: auto;
+				top: auto;
+			}
+			
+			.ol-scale-line {
+				left: 70px;
+				bottom: 202px;
+				right: auto;
+				top: auto;
+			}
+			/*=S 自定义鹰眼样式 */
+			 
+			.ol-custom-overviewmap,
+			.ol-custom-overviewmap.ol-uncollapsible {
+				left: 20px;
+				bottom: 20px;
+				right: auto;
+				top: auto;
+			}
+			/* 鹰眼控件展开时控件外框的样式 */
+			
+			.ol-custom-overviewmap:not(.ol-collapsed) {
+				border: 1px solid black;
+			}
+			/* 鹰眼控件中地图容器样式 */
+			
+			.ol-custom-overviewmap .ol-overviewmap-map {
+				border: none;
+				width: 300px;
+			}
+			/* 鹰眼控件中显示当前窗口中主图区域的边框 */
+			
+			.ol-custom-overviewmap .ol-overviewmap-box {
+				border: 2px solid red;
+			}
+			/* 鹰眼控件展开时其控件按钮图标的样式 */
+			
+			.ol-custom-overviewmap:not(.ol-collapsed) button {
+				bottom: auto;
+				left: auto;
+				right: 1px;
+				top: 1px;
+			}
+			/*=E 自定义鹰眼样式 */
+			
+			#mouse-position {
+				font-size: 20px;
+				position: fixed;
+				right: 10px;
+				bottom: 10px;
+				z-index: 200;
+				font-weight: bold;
+			}
+			
+			.custom-mouse-position {
+				font-size: 20px;
+				position: fixed;
+				right: 10px;
+				bottom: 10px;
+				z-index: 200;
+				font-weight: bold;
+			}
+			
+			#analyse{
+				position: absolute;
+				z-index: 200;
+				top: 0px;
+				left: 50%;
+				transform: translate(-50%,0%);
+			}
+			
+			#analyse_table{
+				position: absolute;
+				z-index: 200;
+				top: 110px;
+				left: 33%;
+				transform: translate(-50%,0%);
+				background-color: #F3F7F9;
+			}
+			
+			#analyse_table2{
+				position: absolute;
+				z-index: 200;
+				top: 400px;
+				left: 1400px;
+				transform: translate(-50%,0%);
+				background-color: #F3F7F9;
+			}
+			
+			#preview{
+				z-index:200; 
+				width: 100%; 
+				height: 100%; 
+				position:absolute; 
+				top: 400px; 
+				left:50%; 
+				transform: translate(-50%,0%); 
+				background-color:#8E92AB; 
+				display: none; 
+				text-align: center; 
+				padding-top: 25px;
+				font-weight:bold
+			}
+			
+		.radio {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 12px 4px 10px 10px;
+            border-radius: 5%;
+        }
+
+        /* The container */
+        .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Hide the browser's default radio button */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: rgba(224, 213, 213, 0.507);
+            /* background-color: #eee; */
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .container input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .container .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+
+	</style>
+</head>
+<body onload="init()">
+	
+	<div id="preview" >
+        <!--<img src="images/ing.png" alt='' /><br /><br /><br />-->
+        <!--<span>治安预警分析ing...</span>-->
+    </div>
+   
+    <div id="mapCon">
+    	<div class="btn-group" id="analyse" >    		       	
+        	<input type="button" class="btn" value="治安良好区域" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="safe_area()" />
+            <input type="button" class="btn" value="治安薄弱区域" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="strenghten_area()"/>
+            <input type="button" class="btn" value="案发概率预测" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="transport()" />
+            <input type="button" class="btn" value="清除结果" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="clearA()"/>           
+       </div>
+       
+       <!--<div class="container"></div>-->
+       
+       	<div style="width: 500px; background-color: rgba(255,255,255,0.5)" class="table-responsive-md" id="analyse_tag" hidden="">
+        <table class="table table-hover table-striped" id="analyse_table" style="border-radius: 20px;">
+            <thead style="font-family:'微软雅黑'; font-size: 20px;">
+                <tr>
+                    <th>地区&nbsp;&nbsp;</td> 
+                    <th>面积</td>
+                    <th>预测级别</td>                  
+                </tr>
+            <tbody style="font-family: '微软雅黑'; font-size: 18px;">
+            	<tr onclick="fly1()" >
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武昌区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;82.20平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp;<img src="images/01.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly2()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;江汉区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;33.43平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2 &nbsp;&nbsp;<img src="images/07.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly3()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;江岸区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;64.24平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3 &nbsp;&nbsp;<img src="images/02.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly4()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;硚口区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;41.90平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4 &nbsp;&nbsp;<img src="images/03.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly5()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;青山区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;49.20平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4 &nbsp;&nbsp;<img src="images/03.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly6()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;汉阳区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;108.4平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5 &nbsp;&nbsp;<img src="images/04.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly7()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;洪山区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;509.2平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5 &nbsp;&nbsp;<img src="images/04.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly8()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;汉南区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;287.1平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6 &nbsp;&nbsp;<img src="images/08.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly9()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;东西湖区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;495.5平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6 &nbsp;&nbsp;<img src="images/08.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly10()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;蔡甸区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;1093.5平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7 &nbsp;&nbsp;<img src="images/05.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly11()"> 
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新州区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;1500.2平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7 &nbsp;&nbsp;<img src="images/05.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly12()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;江夏区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;2008.9平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8 &nbsp;&nbsp;<img src="images/06.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr onclick="fly13()">
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;黄陂区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;2261.1平方千米&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8 &nbsp;&nbsp;<img src="images/06.png"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+            </tbody>
+            </thead>
+ 
+        </table>
+    </div>
+		
+		<div style="width: 500px; background-color: rgba(255,255,255,0.5)" class="table-responsive-md" id="analyse_tag1" hidden="">
+        <table class="table table-hover table-striped" id="analyse_table2" style="border-radius: 20px;">
+            <thead style="font-family:'微软雅黑'; font-size: 20px;">
+                <tr>
+                    <th>区域类型</td> 
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+            <tbody style="font-family: '微软雅黑'; font-size: 18px;">
+            	<tr>
+                    <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武昌区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;良  好&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<img src="images/317.png">&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;<img src="images/321.png">&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;<img src="images/325.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+
+            </tbody>
+            </thead>
+ 
+        </table>
+    </div>
+
+		<div style="width: 500px; background-color: rgba(255,255,255,0.5)" class="table-responsive-md" id="analyse_tag2" hidden="">
+        <table class="table table-hover table-striped" id="analyse_table2" style="border-radius: 20px;">
+            <thead style="font-family:'微软雅黑'; font-size: 20px;">
+                <tr>
+                    <th>区域类型</td> 
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+            <tbody style="font-family: '微软雅黑'; font-size: 18px;">
+            	<tr>
+                    <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武昌区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;良  好&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<img src="images/317.png">&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;<img src="images/321.png">&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;<img src="images/325.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+                <tr>
+                    <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;江汉区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;薄  弱&nbsp;&nbsp;&nbsp;</td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<img src="images/01.png">&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;<img src="images/03.png">&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;<img src="images/05.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                </tr>
+            </tbody>
+            </thead>
+ 
+        </table>
+    	</div>
+
+
+    </div>
+    
+    </body>
+</html>

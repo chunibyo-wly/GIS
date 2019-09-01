@@ -62,6 +62,14 @@ let resulet_sidebar = get_user();
 $('.sidebar-menu .name-caret').text(resulet_sidebar.name);
 $('.sidebar-menu p').text(resulet_sidebar.role.split('_')[1]);
 
+if (resulet_sidebar.role.split('_')[1] === "police") {
+    $("#map_navigation").hide();
+} else {
+    $("#map_queryPath").hide();
+    $("#TodayTask").hide();
+}
+
+
 $.ajax({
     url: "http://127.0.0.1:5000/get_unread_message", //请求的url地址
     dataType: "json", //返回格式为json
@@ -117,3 +125,5 @@ $.ajax({
 $(".lnr-power-switch").click(function () {
     logout();
 });
+
+

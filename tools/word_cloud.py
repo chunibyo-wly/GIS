@@ -7,7 +7,7 @@ import jieba
 
 def GetWordCloud():
     path_txt = 'word_cloud.txt'
-    path_img = "china.png"
+    path_img = "/home/chunibyo/Documents/Code/GIS/tools/1_meitu_1_meitu_4_meitu_8.png"
     f = open(path_txt, 'r', encoding='UTF-8').read()
     background_image = np.array(Image.open(path_img))
     # 结巴    生成字符串，如果不通过分词，无法直接生成正确的中文词云,感兴趣的朋友可以去查一下，有多种分词模式
