@@ -20,6 +20,10 @@
             font-size: 24px;
             cursor: pointer;
         }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 
@@ -123,7 +127,7 @@
                 $('tr').click(function () {
                     let case_id_ = $(this).attr('case_id');
                     if (uid.toString() !== $('input[type ="text"]').val().toString()) {
-                        parent.$(window.parent.document).find('iframe').attr("src", "MAPGIScase.html?"+case_id_)
+                        parent.$(window.parent.document).find('iframe').attr("src", "MAPGIScase.html?" + case_id_)
                     } else {
                         window.top.location.href = "update_case.html?" + case_id_;
                     }

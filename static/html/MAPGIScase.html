@@ -164,7 +164,7 @@
             dataType: "json",
             async: true,
             data: {
-                "case_id": 400//window.location.href.split('?')[1]
+                "case_id": window.location.href.split('?')[1]
             },
             success: function (data) {
                 let len = data.length;
@@ -189,7 +189,7 @@
                     '#fff');
                 clusterVector.setVisible(true);
                 map.addLayer(clusterVector);
-                console.log([parseFloat(data[0].X), parseFloat(data[0].Y)]);
+                console.log([parseFloat(data[0].X) + 5.5 * 1000, parseFloat(data[0].Y)]);
                 map.getView().setCenter([parseFloat(data[0].X) + 5.5 * 1000, parseFloat(data[0].Y)]);
 
                 $("table").append("<tr>\n" +

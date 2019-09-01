@@ -11,22 +11,29 @@ window.onload=function () {
         ip: "develop.smaryun.com",
         port: "6163"
     });
-    let layer2 = new Zondy.Map.GoogleLayer({
-        layerType: Zondy.Enum.Map.GoogleLayerType.RASTER_IGS,
-        ip: "develop.smaryun.com",
-        port: "6163"
-    });
-    let layer3 = new Zondy.Map.GoogleLayer({
-        layerType: Zondy.Enum.Map.GoogleLayerType.TERRAIN_IGS,
-        ip: "develop.smaryun.com",
-        port: "6163"
-    });
-    let layer4 = new Zondy.Map.GoogleLayer({
-        layerType: Zondy.Enum.Map.GoogleLayerType.ROAD_IGS,
-        ip: "develop.smaryun.com",
-        port: "6163"
-    });
-    layerArray = [layer1, layer2, layer3, layer4];
+    // let layer2 = new Zondy.Map.GoogleLayer({
+    //     layerType: Zondy.Enum.Map.GoogleLayerType.RASTER_IGS,
+    //     ip: "develop.smaryun.com",
+    //     port: "6163"
+    // });
+    // let layer3 = new Zondy.Map.GoogleLayer({
+    //     layerType: Zondy.Enum.Map.GoogleLayerType.TERRAIN_IGS,
+    //     ip: "develop.smaryun.com",
+    //     port: "6163"
+    // });
+    // let layer4 = new Zondy.Map.GoogleLayer({
+    //     layerType: Zondy.Enum.Map.GoogleLayerType.ROAD_IGS,
+    //     ip: "develop.smaryun.com",
+    //     port: "6163"
+    // });
+    // let gaodeMapLayer = new ol.layer.Tile({
+    //     title: "高德地图",
+    //     source: new ol.source.XYZ({
+    //         url: 'http://wprd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&style=7&x={x}&y={y}&z={z}',
+    //         wrapX: false
+    //     })
+    // });
+    // layerArray = [layer1, layer2, layer3, layer4];
 
     map = new ol.Map({
         //添加图层
@@ -91,8 +98,8 @@ window.onload=function () {
         //坐标格式
         coordinateFormat: ol.coordinate.createStringXY(4),
         //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
-		projection: 'EPSG:4326',
-        // projection: 'EPSG:3857',
+        projection: 'EPSG:4326',
+//         projection: 'EPSG:3857',
         //坐标信息显示样式类名，默认是'ol-mouse-position'
         className: 'custom-mouse-position',
         //显示鼠标位置信息的目标容器
@@ -107,8 +114,8 @@ window.onload=function () {
     addLayer();
     addListener();
     init_case();
-    // init_police();
-    addPopup();
+    init_police();
+    init_medical();
 };
 addLayer=function () {
     // let name = "addimg";
@@ -129,11 +136,11 @@ addLayer=function () {
             callback: cfg && cfg.callback ? cfg.callback : null
         };
 
-        let $input = $(this);
-        let min = this.sliderCfg.min;
-        let max = this.sliderCfg.max;
-        let step = this.sliderCfg.step;
-        let callback = this.sliderCfg.callback;
+        var $input = $(this);
+        var min = this.sliderCfg.min;
+        var max = this.sliderCfg.max;
+        var step = this.sliderCfg.step;
+        var callback = this.sliderCfg.callback;
 
         $input.attr('min', min)
             .attr('max', max)
@@ -152,19 +159,16 @@ addLayer=function () {
 
 let nearDis;//r
 let query;
-showPointSeachRadius=function (query_) {
+showPointSeachRadius=function (query_,queryContent_) {
     query=query_;
-    // document.getElementById("point-radius-box").style.display="block";
+    queryContent=queryContent_;
 };
 surePointRadius=function () {
     nearDis = document.getElementById("point-radius-input").value;
-    if (isNaN(parseFloat(nearDis))){
-        nearDis=0.5;
-    }
     if (query==='point'){
-        queryVectorLayerPoint();
+        queryVectorLayerPoint(queryContent);
     }else {
-        queryVectorLayerLine();
+        queryVectorLayerLine(queryContent);
     }
 };
 
@@ -238,9 +242,12 @@ let caseArray;
 let policeArray;
 let policeSource;
 let policeVector;
+let medicalArray;
+let medicalSource;
+let medicalVector;
 init_case=function(){
     $.ajax({
-        url:'http://127.0.0.1:5000/get_wuhan2',
+        url:'http://127.0.0.1:5000/get_wuhan',
         type:"GET",
         dataType: "json",
         async: false,
@@ -251,14 +258,16 @@ init_case=function(){
                 let point=new ol.Feature({
                     geometry:new ol.geom.Point([data[i].X,data[i].Y]),
                     case_id:data[i].case_id,
-                    case_name:data[i].case_name,
-                    position_type:data[i].position_type,
+                    case_data:data[i].case_name,
+                    case_type:data[i].case_type,
+                    // informant_id:data.data[i].informant_id,
+                    // suspects_id:data.data[i].suspects_id,
                     time:data[i].time,
-                    case_position:data[i].case_address,
+                    case_position:data[i].case_position,
                     lng:data[i].lng,
                     lat:data[i].lat,
                     case_description:data[i].case_description,
-                    area:data[i].case_area,
+                    case_status:data[i].case_status,
                     X:data[i].X,
                     Y:data[i].Y
                 });
@@ -314,34 +323,65 @@ init_police=function(){
         }
     })
 };
+init_medical=function(){
+    $.ajax({
+        url:'http://127.0.0.1:5000/get_medical',
+        type:"GET",
+        dataType: "json",
+        async: false,
+        success:function (data) {
+            medicalArray=[];
+            let len=data.length;
+            for (let i=0;i<len;++i){
+                let point=new ol.Feature({
+                    geometry:new ol.geom.Point([data[i].X,data[i].Y]),
+                    index:data[i].index,
+                    id:data[i].ID,
+                    name:data[i].name,
+                    type:data[i].type,
+                    address:data[i].address,
+                    lng:data[i].lng,
+                    lat:data[i].lat,
+                    X:data[i].X,
+                    Y:data[i].Y,
+                    tel:data[i].tel,
+                    area:data[i].area,
+                });
+                point.setStyle(createMedicalStyle(0));
+                medicalArray.push(point);
+            }
+            medicalSource = new ol.source.Vector({
+                features: medicalArray
+            });
+            //创建一个图层
+            medicalVector = new ol.layer.Vector({
+                source: medicalSource
+            });
+            map.addLayer(medicalVector);
+        }
+    })
+};
 //--------------------------------------------------------------------
 let flag=0;
+let queryContent=0;//1->case,2->police,3->medical
 let DrawVector;
-let draw;
-let output;
-let geom;
+let Draw;
 clearQuery=function(){
-    // if (flag!==0){
-    //     map.removeLayer(resultVector);
-    // }
-    // map.addLayer(caseVector);
-    for(let item of queryResult){
-        item.setStyle(createCaseStyle(0));
+    flag=0;
+    // queryContent=0;
+    for (let item of queryResult){
+        if (queryContent===1){
+            item.setStyle(createCaseStyle(0));
+        }else if (queryContent===2){
+            item.setStyle(createPoliceStyle(0));
+        }else {
+            item.setStyle(createMedicalStyle(0));
+        }
     }
-    if (contains(map,DrawVector)){
-        map.removeLayer(DrawVector);
-    }
-    if (measureTooltipElement) {
-        measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-        measureTooltipElement=null;
-    }
-    // console.log('reset');
 };
-queryVectorLayerCircle=function () {
-    // if (flag!==0){
-    //     map.removeLayer(resultVector);
-    // }
+queryVectorLayerCircle=function (queryContent_) {
     clearQuery();
+    queryContent=queryContent_;
     flag=1;
     let source = new ol.source.Vector({ wrapX: false });
     DrawVector = new ol.layer.Vector({
@@ -356,93 +396,43 @@ queryVectorLayerCircle=function () {
     //将绘制层添加到地图容器中
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
-    draw = new ol.interaction.Draw({
+    Draw = new ol.interaction.Draw({
         type: 'Circle',//'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source,
     });
-    map.addInteraction(draw);
+    map.addInteraction(Draw);
     //点击查询的回调函数
-    draw.on('drawend', DrawControlback);
+    Draw.on('drawend', DrawControlback);
 };
-queryVectorLayerPolygon=function () {
+queryVectorLayerPolygon=function (queryContent_) {
     clearQuery();
+    queryContent=queryContent_;
     flag=2;
     let source = new ol.source.Vector({ wrapX: false });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 255, 255, 0.2)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#ffcc33',
-                width: 2
-            }),
+            //形状
             image: new ol.style.Circle({
-                radius: 7,
-                fill: new ol.style.Fill({
-                    color: '#ffcc33'
-                })
+                radius: 0
             })
         })
     });
     //将绘制层添加到地图容器中
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
-    draw = new ol.interaction.Draw({
+    Draw = new ol.interaction.Draw({
         type: 'Polygon',//'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
-    map.addInteraction(draw);
-    createMeasureTooltip(); //创建测量工具提示框
-    createHelpTooltip(); //创建帮助提示框
-    let listener;
-    //绑定交互绘制工具开始绘制的事件
-    draw.on('drawstart',
-        function (evt) {
-            // set sketch
-            sketch = evt.feature; //绘制的要素
-
-            /** @type {ol.Coordinate|undefined} */
-            let tooltipCoord = evt.coordinate;// 绘制的坐标
-            //绑定change事件，根据绘制几何类型得到测量长度值或面积值，并将其设置到测量工具提示框中显示
-            listener = sketch.getGeometry().on('change', function (evt) {
-                geom = evt.target;//绘制几何要素
-                if (geom instanceof ol.geom.Polygon) {
-                    output = formatArea(/** @type {ol.geom.Polygon} */(geom));//面积值
-                    tooltipCoord = geom.getInteriorPoint().getCoordinates();//坐标
-                } else if (geom instanceof ol.geom.LineString) {
-                    output = formatLength( /** @type {ol.geom.LineString} */(geom));//长度值
-                    tooltipCoord = geom.getLastCoordinate();//坐标
-                }
-                measureTooltipElement.innerHTML = output;//将测量值设置到测量工具提示框中显示
-                measureTooltip.setPosition(tooltipCoord);//设置测量工具提示框的显示位置
-            });
-        }, this);
-    draw.on('drawend',
-        function (evt) {
-            measureTooltipElement.className = 'tooltip tooltip-static'; //设置测量提示框的样式
-            measureTooltip.setOffset([0, -7]);
-            // unset sketch
-            sketch = null; //置空当前绘制的要素对象
-            // unset tooltip so that a new one can be created
-            // measureTooltipElement = null; //置空测量工具提示框对象
-            // createMeasureTooltip();//重新创建一个测试工具提示框显示结果
-            ol.Observable.unByKey(listener);
-            if (helpTooltipElement){
-                helpTooltipElement.parentNode.removeChild(helpTooltipElement);
-                helpTooltipElement=null;
-            }
-        }, this);
+    map.addInteraction(Draw);
     //点击查询的回调函数
-    draw.on('drawend', DrawControlback);
+    Draw.on('drawend', DrawControlback);
 };
-queryVectorLayerRectangle=function () {
-    // if (flag!==0){
-    //     map.removeLayer(resultVector);
-    // }
+queryVectorLayerRectangle=function (queryContent_) {
+    queryContent=queryContent_;
     clearQuery();
     flag=3;
     let source = new ol.source.Vector({ wrapX: false });
@@ -458,17 +448,18 @@ queryVectorLayerRectangle=function () {
     //将绘制层添加到地图容器中
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
-    draw = new ol.interaction.Draw({
+    Draw = new ol.interaction.Draw({
         type: 'Circle',//'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source,
         geometryFunction: ol.interaction.Draw.createRegularPolygon(4)
     });
-    map.addInteraction(draw);
+    map.addInteraction(Draw);
     //点击查询的回调函数
-    draw.on('drawend', DrawControlback);
+    Draw.on('drawend', DrawControlback);
 };
-queryVectorLayerPoint=function () {
+queryVectorLayerPoint=function (queryContent_) {
+    queryContent=queryContent_;
     clearQuery();
     flag=4;
     let source = new ol.source.Vector({ wrapX: false });
@@ -484,96 +475,77 @@ queryVectorLayerPoint=function () {
     //将绘制层添加到地图容器中
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
-    draw = new ol.interaction.Draw({
+    Draw = new ol.interaction.Draw({
         type: 'Point',//'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
-    map.addInteraction(draw);
+    map.addInteraction(Draw);
     //点击查询的回调函数
-    draw.on('drawend', DrawControlback);
+    Draw.on('drawend', DrawControlback);
 };
-queryVectorLayerLine=function () {
+queryVectorLayerLine=function (queryContent_) {
+    queryContent=queryContent_;
     clearQuery();
     flag=5;
     let source = new ol.source.Vector({ wrapX: false });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 255, 255, 0.2)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#ffcc33',
-                width: 2
-            }),
+            //形状
             image: new ol.style.Circle({
-                radius: 7,
-                fill: new ol.style.Fill({
-                    color: '#ffcc33'
-                })
+                radius: 0
             })
         })
     });
     //将绘制层添加到地图容器中
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
-    draw = new ol.interaction.Draw({
+    Draw = new ol.interaction.Draw({
         type: 'LineString',//'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
-    map.addInteraction(draw);
-    createMeasureTooltip(); //创建测量工具提示框
-    createHelpTooltip(); //创建帮助提示框
-    let listener;
-    //绑定交互绘制工具开始绘制的事件
-    draw.on('drawstart',
-        function (evt) {
-            // set sketch
-            sketch = evt.feature; //绘制的要素
-
-            /** @type {ol.Coordinate|undefined} */
-            let tooltipCoord = evt.coordinate;// 绘制的坐标
-            //绑定change事件，根据绘制几何类型得到测量长度值或面积值，并将其设置到测量工具提示框中显示
-            listener = sketch.getGeometry().on('change', function (evt) {
-                geom = evt.target;//绘制几何要素
-                if (geom instanceof ol.geom.Polygon) {
-                    output = formatArea(/** @type {ol.geom.Polygon} */(geom));//面积值
-                    tooltipCoord = geom.getInteriorPoint().getCoordinates();//坐标
-                } else if (geom instanceof ol.geom.LineString) {
-                    output = formatLength( /** @type {ol.geom.LineString} */(geom));//长度值
-                    tooltipCoord = geom.getLastCoordinate();//坐标
-                }
-                measureTooltipElement.innerHTML = output;//将测量值设置到测量工具提示框中显示
-                measureTooltip.setPosition(tooltipCoord);//设置测量工具提示框的显示位置
-            });
-        }, this);
-    draw.on('drawend',
-        function (evt) {
-            measureTooltipElement.className = 'tooltip tooltip-static'; //设置测量提示框的样式
-            measureTooltip.setOffset([0, -7]);
-            // unset sketch
-            sketch = null; //置空当前绘制的要素对象
-            // unset tooltip so that a new one can be created
-            // measureTooltipElement = null; //置空测量工具提示框对象
-            // createMeasureTooltip();//重新创建一个测试工具提示框显示结果
-            ol.Observable.unByKey(listener);
-            if (helpTooltipElement){
-                helpTooltipElement.parentNode.removeChild(helpTooltipElement);
-                helpTooltipElement=null;
-            }
-        }, this);
+    map.addInteraction(Draw);
     //点击查询的回调函数
-    draw.on('drawend', DrawControlback);
+    Draw.on('drawend', DrawControlback);
 };
 //----------------------------------------------------
+let rad=function(d){
+    return d*Math.PI/180;
+};
+let getDistance=function(item2){
+    let earthRad=6378137;
+    let lng1=currentLnglat.lng;
+    let lat1=currentLnglat.lat;
+    let lng2=item2.values_['lng'];
+    let lat2=item2.values_['lat'];
+    let radLat1=rad(lat1);
+    let radLat2=rad(lat2);
+    let a=radLat1-radLat2;
+    let b=rad(lng1)-rad(lng2);
+    let s=2*Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2)+Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+    s=s*earthRad;
+    return s;
+};
+
 let queryResult=[];
-let resultVector;
 DrawControlback=function (features) {
     queryResult.length=0;
-    if (draw!=null){
-        map.removeInteraction(draw);
+    if (Draw!=null){
+        map.removeInteraction(Draw);
+    }
+    map.removeLayer(DrawVector);
+    let querySource;
+    console.log(queryContent);
+    if (queryContent===1){
+        querySource=caseSource;
+    }else if (queryContent===2){
+        querySource=policeSource;
+    }else if (queryContent===3){
+        querySource=medicalSource;
+    }else {
+        querySource=0;
     }
     if (flag===4){
         let bufferedExtent=new ol.extent.buffer(features.feature.getGeometry().getExtent(),nearDis*950);
@@ -587,61 +559,51 @@ DrawControlback=function (features) {
     else {
         let result=caseSource.forEachFeatureIntersectingExtent(features.feature.getGeometry().getExtent(),success);
     }
-
-    if (flag===2||flag===5){
-        let coefficient=parseFloat(queryResult.length/parseFloat(output)).toFixed(4);
-        level=function(c){
-            if (c<=3){
-                return '可能有危险';
-            }else if (c<=5){
-                return '危险性较小';
-            }else if (c<=9){
-                return '危险性较大';
-            }else if (c<=18){
-                return '非常危险';
-            }else {
-                return '及其危险';
+    if (origin!=='current'){
+        let nearest=queryResult[0];
+        for (let item of queryResult){
+            if (getDistance(item)<getDistance(nearest)){
+                nearest=item;
             }
-        };
-        console.log(output);
-        //清空popup的内容容器
-        content.innerHTML = '';
-        //在popup中加载当前要素的具体信息
-        let geo;
-        let typeText;
-        if (flag===2){
-            geo=geom.getInteriorPoint().getCoordinates();
-            typeText='面积:';
-        }else {
-            geo=geom.getLastCoordinate();
-            typeText='长度:'
         }
-        let table='<table class="table table-hover table-striped"><tbody>' +
-            '<tr><td><b>案件数量:</b></td><td>'+queryResult.length+'</td></tr>' +
-            '<tr><td><b>'+typeText+'</b></td><td>'+output+'</td></tr>'+
-            '<tr><td><b>危险系数:</b></td><td>'+coefficient+'</td></tr>'+
-            '<tr><td><b>危险级别:</b></td><td>'+level(coefficient)+'</td></tr>'+
-            '</tbody></table>';
-        let info={
-            geo:geo,
-            att:{
-                title: '危险分析',
-                text:table,
-            }
+        //-----添加文字标注
+        let createLabelStyle = function (feature) {
+            return new ol.style.Style({
+                text: new ol.style.Text({
+                    //位置
+                    textAlign: 'center',
+                    //基准线
+                    textBaseline: 'middle',
+                    //文字样式
+                    font: 'normal 20px 微软雅黑',
+                    //文本内容
+                    text: feature.get('name'),
+                    //文本填充样式（即文字颜色）
+                    fill: new ol.style.Fill({ color: '#aa3300' }),
+                    stroke: new ol.style.Stroke({ color: '#ffcc33', width: 2 })
+                })
+            });
         };
-        addFeatrueInfo(info);
-        if (popup.getPosition() === undefined) {
-            //设置popup的位置
-            console.log(info);
-            popup.setPosition(info.geo);
-        }
+        let labelName;
+        labelName='最佳目的地';
+        let wordLabel=new ol.Feature({
+            geometry:new ol.geom.Point([nearest.values_['X'],nearest.values_['Y']]),
+            name:labelName,
+        });
+        wordLabel.setStyle(createLabelStyle(wordLabel));
+        drivingVectorSource.addFeature(wordLabel);
     }
-    flag=0;
 };
 
 success=function (data) {
     queryResult.push(data);
-    data.setStyle(createCaseStyle());
+    if (queryContent===1){
+        data.setStyle(createCaseStyle());
+    }else if (queryContent===2){
+        data.setStyle(createPoliceStyle());
+    }else {
+        data.setStyle(createMedicalStyle());
+    }
 };
 
 //------------------------路径规划
@@ -658,20 +620,32 @@ let endMarker;
 
 $(function () {
     $('#undo').bind('click',function () {
-        draw.removeLastPoint();
+        Draw.removeLastPoint();
     });
     $('#driving').bind('click',function(){
-        clearPath();
+        // clearPath();
+        // setCurrentOrigin();
+        if (origin==='current'){
+            setCurrentOrigin();
+        }
         isPath=true;
         driving=true;
     });
     $('#bicycling').click(function () {
-        clearPath();
+        // clearPath();
+        // setCurrentOrigin();
+        if (origin==='current'){
+            setCurrentOrigin();
+        }
         isPath=true;
         bicycling=true;
     });
     $('#walking').click(function () {
-        clearPath();
+        // clearPath();
+        // setCurrentOrigin();
+        if (origin==='current'){
+            setCurrentOrigin();
+        }
         isPath=true;
         walking=true;
     });
@@ -679,12 +653,9 @@ $(function () {
         clearQuery();
         clearPath();
     });
-
-    // $('#resultTbody').on( 'click', 'tr', function (e) {
-    //     let index = $(this).parent().context._DT_RowIndex; //行号
-    //     let rows = table.rows( index ).data();//获取行数据
-    //     console.log(index);
-    // });
+    $('#currentPosition').click(function () {
+        setCurrentOrigin();
+    });
     //-----------------------------------------------------------------移动
     let animating = false;
     let speed, now;
@@ -841,14 +812,25 @@ addListener=function () {
         let feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
             return feature;
         });
-        if (feature) {
-            // console.log(feature);
-            // alert(feature.values_['x']+' '+feature.values_['y']);
-            if (isPath){//在路径规划
-                if (origin.length===0){
-                    origin+=(feature.values_['lng']+','+feature.values_['lat']);
+        // console.log(evt);
+        // if (feature) {
+            if (isPath){
+                let xy={
+                    'x':evt.coordinate[0],
+                    'y':evt.coordinate[1],
+                };
+                let lnglat=_getLngLat(xy);
+                if (origin==='current'){
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        lnglat.lng=position.coords.longitude;
+                        lnglat.lat=position.coords.latitude;
+                    });
+                    xy=_getMercator(lnglat);
+                }
+                if (origin.length===0||origin==='current'){
+                    origin+=(lnglat.lng+','+lnglat.lat);
                     startMarker = new ol.Feature({
-                        geometry: new ol.geom.Point([feature.values_['X'],feature.values_['Y']])
+                        geometry: new ol.geom.Point([xy.x,xy.y])
                     });
                     startMarker.setStyle(new ol.style.Style({
                         image: new ol.style.Icon({
@@ -875,24 +857,12 @@ addListener=function () {
                     });
                     map.addLayer(drivingVectorLayer);
                 }else if (destination.length===0){
-                    destination+=(feature.values_['lng']+','+feature.values_['lat']);
+                    destination+=(lnglat.lng+','+lnglat.lat);
                     endMarker = new ol.Feature({
-                        // style: new ol.style.Style({
-                        //     image: new ol.style.Icon({
-                        //         anchor: [0.5, 1],
-                        //         scale:0.2,
-                        //         src: "./image/red.png"
-                        //     })
-                        // }),
-                        geometry: new ol.geom.Point([feature.values_['X'],feature.values_['Y']])
+                        geometry: new ol.geom.Point([xy.x,xy.y])
                     });
                     endMarker.setStyle(new ol.style.Style({
                         image: new ol.style.Icon({
-                            // anchor: [0.5, 60],
-                            // anchorOrigin: 'top-right',
-                            // anchorXUnits: 'fraction',
-                            // anchorYUnits: 'pixels',
-                            // offsetOrigin: 'top-right',
                             opacity: 0.75,
                             scale:0.3,
                             src: "./image/destination2.png"
@@ -902,7 +872,7 @@ addListener=function () {
                     isPath=false;
                     getPath();
                 }
-            }
+            // }
         }
     });
     /**
@@ -913,7 +883,76 @@ addListener=function () {
         let hit = map.hasFeatureAtPixel(pixel);
         map.getTargetElement().style.cursor = hit ? 'pointer' : '';
     });
-    map.on('pointermove', pointerMoveHandler); //地图容器绑定鼠标移动事件，动态显示帮助提示框内容
+};
+let currentLnglat;
+setCurrentOrigin=function(){
+    clearPath();
+    navigator.geolocation.getCurrentPosition(function (position) {
+        // console.log(position);
+        currentLnglat={
+            'lng':position.coords.longitude,
+            'lat':position.coords.latitude,
+        };
+        let xy=_getMercator(currentLnglat);
+        origin=(currentLnglat.lng+','+currentLnglat.lat);
+        startMarker = new ol.Feature({
+            geometry: new ol.geom.Point([xy.x,xy.y])
+        });
+        startMarker.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                // anchor: [0.5, 60],
+                // anchorOrigin: 'top-right',
+                // anchorXUnits: 'fraction',
+                // anchorYUnits: 'pixels',
+                // offsetOrigin: 'top-right',
+                opacity: 0.75,
+                scale:0.3,
+                src: "./image/origin2.png"
+            })
+        }));
+        // console.log(startMarker);
+        // drivingVectorSource.addFeatures([startMarker]);
+        drivingVectorSource = new ol.source.Vector({
+            features:[startMarker],
+        });
+        drivingVectorLayer = new ol.layer.Vector({
+            title:"线",
+            source: drivingVectorSource,
+            // renderMode:'image',
+            id:'isPath'
+        });
+        let view=map.getView();
+        let duration = 2000;//动画的持续时间（以毫秒为单位）
+        let zoom = view.getZoom();
+        let parts = 2;
+        let called = false;
+        //动画完成的回调函数
+        function callback(complete) {
+            --parts;
+            if (called) {
+                return;
+            }
+            if (parts === 0 || !complete) {
+                called = true;
+                done(complete);
+            }
+        }
+        //第一个动画
+        view.animate({
+            center: [xy.x,xy.y],
+            duration: duration
+        }, callback);
+        //第二个动画
+        view.animate({
+            zoom: zoom-0.3,
+            duration: duration / 2
+        }, {
+            zoom: 15,
+            duration: duration / 2
+        }, callback);
+        map.addLayer(drivingVectorLayer);
+    });
+
 };
 getPath=function () {
     let mode;
@@ -924,7 +963,7 @@ getPath=function () {
     }else {
         mode='bicycling';
     }
-    data={
+    let data={
         'origin':origin,
         'destination':destination,//"116.434446,39.90816"
         'mode':mode,
@@ -999,7 +1038,7 @@ drawPath=function (data) {
         // if (driving){
         //     labelName=data.value[i]['strategy']
         // }else {
-            labelName=parseFloat(data.value[i]['distance'])/1000+'KM';
+        labelName=parseFloat(data.value[i]['distance'])/1000+'KM';
         // }
         let wordLabel=new ol.Feature({
             geometry:new ol.geom.Point(line_org[parseInt(line_org.length/2)]),
@@ -1011,7 +1050,7 @@ drawPath=function (data) {
     drivingVectorSource.addFeatures(featurePolylines);
 };
 clearPath=function () {
-    origin='';
+    origin='current';
     destination='';
     geomPolylines.length=0;
     isPath=false;
@@ -1019,351 +1058,8 @@ clearPath=function () {
     walking=false;
     bicycling=false;
     if (contains(map,drivingVectorLayer)){
-        console.log(drivingVectorLayer);
         map.removeLayer(drivingVectorLayer);
     }
-};
-
-//--------------------------------------------------------------------------------测量
-/**
- * 当前绘制的要素（Currently drawn feature.）
- * @type {ol.Feature}
- */
-let sketch;
-/**
- * 帮助提示框对象（The help tooltip element.）
- * @type {Element}
- */
-let helpTooltipElement;
-/**
- *帮助提示框显示的信息（Overlay to show the help messages.）
- * @type {ol.Overlay}
- */
-let helpTooltip;
-/**
- * 测量工具提示框对象（The measure tooltip element. ）
- * @type {Element}
- */
-let measureTooltipElement;
-/**
- *测量工具中显示的测量值（Overlay to show the measurement.）
- * @type {ol.Overlay}
- */
-let measureTooltip;
-
-/**
- *  当用户正在绘制多边形时的提示信息文本
- * @type {string}
- */
-let continuePolygonMsg = 'Click to continue drawing the polygon';
-
-/**
- * 当用户正在绘制线时的提示信息文本
- * @type {string}
- */
-let continueLineMsg = 'Click to continue drawing the line';
-
-let pointerMoveHandler = function (evt) {
-    if (flag===2||flag===5){
-        if (evt.dragging) {
-            return;
-        }
-        /** @type {string} */
-        let helpMsg = 'Click to start drawing';//当前默认提示信息
-        //判断绘制几何类型设置相应的帮助提示信息
-        if (sketch) {
-            let geom = (sketch.getGeometry());
-            if (geom instanceof ol.geom.Polygon) {
-                helpMsg = continuePolygonMsg; //绘制多边形时提示相应内容
-            } else if (geom instanceof ol.geom.LineString) {
-                helpMsg = continueLineMsg; //绘制线时提示相应内容
-            }
-        }
-        helpTooltipElement.innerHTML = helpMsg; //将提示信息设置到对话框中显示
-        helpTooltip.setPosition(evt.coordinate);//设置帮助提示框的位置
-        $(helpTooltipElement).removeClass('hidden');//移除帮助提示框的隐藏样式进行显示
-    }
-};
-
-/**
- *创建一个新的帮助提示框（tooltip）
- */
-function createHelpTooltip() {
-    if (helpTooltipElement) {
-        console.log(helpTooltipElement);
-        helpTooltipElement.parentNode.removeChild(helpTooltipElement);
-    }
-    helpTooltipElement = document.createElement('div');
-    helpTooltipElement.className = 'tooltip hidden';
-    helpTooltip = new ol.Overlay({
-        element: helpTooltipElement,
-        offset: [15, 0],
-        positioning: 'center-left'
-    });
-    map.addOverlay(helpTooltip);
-}
-/**
- *创建一个新的测量工具提示框（tooltip）
- */
-function createMeasureTooltip() {
-    if (measureTooltipElement) {
-        measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-    }
-    measureTooltipElement = document.createElement('div');
-    measureTooltipElement.className = 'tooltip tooltip-measure';
-    measureTooltip = new ol.Overlay({
-        element: measureTooltipElement,
-        offset: [0, -35],
-        positioning: 'bottom-center'
-    });
-    map.addOverlay(measureTooltip);
-}
-
-/**
- * 测量长度输出
- * @param {ol.geom.LineString} line
- * @return {string}
- */
-let formatLength = function (line) {
-    let length;
-    // if (geodesicCheckbox.checked) { //若使用测地学方法测量
-    //     let sourceProj = map.getView().getProjection(); //地图数据源投影坐标系
-    //     length = ol.sphere.getLength(line, { "projection": sourceProj, "radius": 6378137 });
-    // } else {
-    //     length = Math.round(line.getLength() * 100) / 100; //直接得到线的长度
-    // }
-    length = Math.round(line.getLength() * 100) / 100; //直接得到线的长度
-    let output;
-    if (length > 100) {
-        output = (Math.round(length / 1000 * 100) / 100) + ' ' + 'km'; //换算成KM单位
-    } else {
-        output = (Math.round(length * 100) / 100) + ' ' + 'm'; //m为单位
-    }
-    return output;//返回线的长度
-};
-/**
- * 测量面积输出
- * @param {ol.geom.Polygon} polygon
- * @return {string}
- */
-let formatArea = function (polygon) {
-    let area;
-    // if (geodesicCheckbox.checked) {//若使用测地学方法测量
-    //     let sourceProj = map.getView().getProjection();//地图数据源投影坐标系
-    //     let geom = /** @type {ol.geom.Polygon} */(polygon.clone().transform(sourceProj, 'EPSG:4326')); //将多边形要素坐标系投影为EPSG:4326
-    //     area = Math.abs(ol.sphere.getArea(geom, { "projection": sourceProj, "radius": 6378137 })); //获取面积
-    // } else {
-    //     area = polygon.getArea();//直接获取多边形的面积
-    // }
-    area = polygon.getArea();//直接获取多边形的面积
-    let output;
-    if (area > 10000) {
-        output = (Math.round(area / 1000000 * 100) / 100) + ' ' + 'km<sup>2</sup>'; //换算成KM单位
-    } else {
-        output = (Math.round(area * 100) / 100) + ' ' + 'm<sup>2</sup>';//m为单位
-    }
-    return output; //返回多边形的面积
-};
-
-let container;
-let content;
-let closer;
-let popup;
-addPopup=function(){
-    /**
-     * 实现popup的html元素
-     */
-    container = document.getElementById('popup');
-    content = document.getElementById('popup-content');
-    content.setAttribute('style','width:300px !important');
-    closer = document.getElementById('popup-closer');
-    /**
-     * 在地图容器中创建一个Overlay
-     */
-    popup = new ol.Overlay(
-        /** @type {olx.OverlayOptions} */
-        ({
-            //要转换成overlay的HTML元素
-            element: container,
-            //当前窗口可见
-            autoPan: true,
-            //Popup放置的位置
-            positioning: 'bottom-center',
-            //是否应该停止事件传播到地图窗口
-            stopEvent: false,
-            autoPanAnimation: {
-                //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度
-                duration: 250
-            }
-        }));
-    map.addOverlay(popup);
-
-    /**
-     * 添加关闭按钮的单击事件（隐藏popup）
-     * @return {boolean} Don't follow the href.
-     */
-    closer.onclick = function () {
-        //未定义popup位置
-        popup.setPosition(undefined);
-        //失去焦点
-        closer.blur();
-        clearQuery();
-        return false;
-    };
-};
-/**
- * 动态创建popup的具体内容
- * @param {string} title
- */
-function addFeatrueInfo(info) {
-    //新增a元素
-    let elementA = document.createElement('b');
-    elementA.className = "markerInfo";
-    // elementA.href = info.att.titleURL;
-    //elementA.innerText = info.att.title;
-    setInnerHtml(elementA, info.att.title);
-    elementA.setAttribute('style','font-size:20px');
-    // 新建的div元素添加a子节点
-    content.appendChild(elementA);
-    //新增div元素
-    let elementDiv = document.createElement('div');
-    elementDiv.className = "markerText";
-    elementDiv.innerHTML = info.att.text;
-    // setInnerHtml(elementDiv, info.att.text);
-    // 为content添加div子节点
-    content.appendChild(elementDiv);
-    // //新增img元素
-    // let elementImg = document.createElement('img');
-    // elementImg.className = "markerImg";
-    // elementImg.src = info.att.imgURL;
-    // // 为content添加img子节点
-    // content.appendChild(elementImg);
-}
-/**
- * 动态设置元素文本内容（兼容）
- */
-function setInnerHtml(element, text) {
-    element.innerHTML=text;
-}
-conditionStyle=function(){
-    return new ol.style.Style({
-        image: new ol.style.Icon(
-            ({
-                anchor: [0.5, 60],
-                anchorOrigin: 'top-right',
-                anchorXUnits: 'fraction',
-                anchorYUnits: 'pixels',
-                offsetOrigin: 'top-right',
-                // offset:[0,10],
-                //图标缩放比例
-                scale:0.5,
-                //透明度
-                opacity: 0.75,
-                //图标的url
-                src: './image/icon.png'
-            })
-        )
-    })
-};
-let conditionResult;
-timeOk=function () {
-    let startTime=$('#startTime').val();
-    let endTime=$('#endTime').val();
-    let startDate=new Date(startTime);
-    let endDate=new Date(endTime);
-    console.log(startDate,endDate);
-    if (conditionResult&&conditionResult.length!==0){
-        for (let item of caseArray){
-            item.setStyle(createCaseStyle(0));
-        }
-    }
-    conditionResult=[];
-    for (let item of caseArray){
-        let itemDate=new Date(item.values_['time']);
-        console.log(itemDate);
-        if (itemDate>startDate&&itemDate<endDate){
-            item.setStyle(createCaseStyle());
-            conditionResult.push(item);
-        }
-    }
-    updateConditionResult(conditionResult);
-};
-roadOk=function(){
-    let roadNme=$('#roadCondition').val();
-    if (conditionResult&&conditionResult.length!==0){
-        for (let item of caseArray){
-            item.setStyle(createCaseStyle(0));
-        }
-    }
-    conditionResult=[];
-    for (let item of caseArray){
-        if (item.values_['case_position'].search(roadNme)!==-1){
-        item.setStyle(createCaseStyle());
-        conditionResult.push(item);
-        }
-    }
-    updateConditionResult(conditionResult);
-};
-areaOk=function(){
-    let areaName=$('#areaCondition').val();
-    if (conditionResult&&conditionResult.length!==0){
-        for (let item of caseArray){
-            item.setStyle(createCaseStyle(0));
-        }
-    }
-    conditionResult=[];
-    for (let item of caseArray){
-        if (item.values_['area']===areaName){
-            // item.setStyle(conditionStyle());
-            item.setStyle(createCaseStyle());
-            conditionResult.push(item);
-        }
-    }
-    updateConditionResult(conditionResult);
-};
-updateConditionResult=function(result){
-    let resultTbody=$('#resultTbody');
-    resultTbody.empty();
-    let index=0;
-    for (let item of result){
-        resultTbody.append('<tr class="trItem" index='+index+'><td style="width: 40%">'+item.values_['case_position']+'</td><td>'+item.values_['case_description']+'</td></tr>');
-        index+=1;
-    }
-    $(".trItem").click(function () {
-        let index=$(this).attr('index');
-        let view=map.getView();
-        var duration = 2000;//动画的持续时间（以毫秒为单位）
-        var zoom = view.getZoom();
-        var parts = 2;
-        var called = false;
-        //动画完成的回调函数
-        function callback(complete) {
-            --parts;
-            if (called) {
-                return;
-            }
-            if (parts === 0 || !complete) {
-                called = true;
-                done(complete);
-            }
-        }
-        //第一个动画
-        view.animate({
-            center: [conditionResult[index].values_['X'],conditionResult[index].values_['Y']],
-            duration: duration
-        }, callback);
-        //第二个动画
-        view.animate({
-            zoom: zoom-0.5,
-            duration: duration / 2
-        }, {
-            zoom: 20,
-            duration: duration / 2
-        }, callback);
-        // view.setCenter([conditionResult[index].values_['X'],conditionResult[index].values_['Y']]);
-        // view.setZoom(20);
-        console.log(index);
-    });
 };
 
 //-----------------------------------------------------------------辅助函数
@@ -1399,12 +1095,9 @@ function _getLngLat(poi){
 
 contains=function (map,layer) {
     for (item of map.getLayers().getArray()){
-        if (item===layer){
+        if (item.values_['id']==='isPath'){
             return true;
         }
-        // if (item.values_['id']===layer.values_['id']){
-        //     return true;
-        // }
     }
     return false;
 };

@@ -39,6 +39,7 @@ input[type=range]::-webkit-slider-thumb {
     opacity: 0.7;
     white-space: nowrap;
 }
+
 .tooltip-measure {
     opacity: 1;
     font-weight: bold;
@@ -70,8 +71,8 @@ input[type=range]::-webkit-slider-thumb {
 .ol-popup {
     position: absolute;
     background-color: white;
-    -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+    -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
     padding: 15px;
     border-radius: 10px;
     border: 1px solid #cccccc;
@@ -124,10 +125,11 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /*************************************/
-#myModal{
+#myModal {
     z-index: 9999;
 }
-#queryBtn{
+
+#queryBtn {
     /*position: fixed;*/
     /*bottom: 0;*/
     top: 0;
@@ -137,16 +139,18 @@ input[type=range]::-webkit-slider-thumb {
     position: absolute;
     left: 50%;
     /*top: 50%;*/
-    transform: translate(-50%,0%);
+    transform: translate(-50%, 0%);
 }
+
 #mapCon {
     width: 100%;
     height: 100%;
     position: absolute;
 }
+
 /* 自定义当前位置样式 */
 
-#mouse-position{
+#mouse-position {
     font-size: 20px;
     position: fixed;
     right: 10px;
@@ -168,6 +172,7 @@ input[type=range]::-webkit-slider-thumb {
     right: auto;
     top: auto;
 }
+
 /*=S 自定义鹰眼样式 */
 
 .ol-custom-overviewmap,
@@ -177,22 +182,26 @@ input[type=range]::-webkit-slider-thumb {
     right: auto;
     top: auto;
 }
+
 /* 鹰眼控件展开时控件外框的样式 */
 
 .ol-custom-overviewmap:not(.ol-collapsed) {
     border: 1px solid black;
 }
+
 /* 鹰眼控件中地图容器样式 */
 
 .ol-custom-overviewmap .ol-overviewmap-map {
     border: none;
     width: 300px;
 }
+
 /* 鹰眼控件中显示当前窗口中主图区域的边框 */
 
 .ol-custom-overviewmap .ol-overviewmap-box {
     border: 2px solid red;
 }
+
 /* 鹰眼控件展开时其控件按钮图标的样式 */
 
 .ol-custom-overviewmap:not(.ol-collapsed) button {
@@ -201,28 +210,35 @@ input[type=range]::-webkit-slider-thumb {
     right: 1px;
     top: 1px;
 }
+
 /*=E 自定义鹰眼样式 */
 
+#filter {
+    position: fixed;
+    right: 2%;
+    bottom: 10%;
+    z-index: 10;
+    background-color: #ebebeb;
+    height: 85%;
+    width: 25%;
+    border: #cccccc 1px solid;
+    border-radius: 10px;
+}
 
-/*.mybtn {*/
-/*    display: inline-block;*/
-/*    padding: 15px 25px;*/
-/*    font-size: 12px;*/
-/*    cursor: pointer;*/
-/*    text-align: center;*/
-/*    text-decoration: none;*/
-/*    outline: none;*/
-/*    color: #fff;*/
-/*    background-color: #4CAF50;*/
-/*    border: none;*/
-/*    border-radius: 15px;*/
-/*    box-shadow: 0 3px #999;*/
-/*}*/
+#filter > .nav {
+    font-size: 19px;
+}
 
-/*.mybtn:hover {background-color: #3e8e41}*/
+#conditionResult {
+    height: 70%;
+    overflow-y: scroll;
+}
 
-/*.mybtn:active {*/
-/*    background-color: #3e8e41;*/
-/*    box-shadow: 0 5px #666;*/
-/*    transform: translateY(4px);*/
-/*}*/
+li.nav-item {
+    padding-bottom: 3px;
+
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

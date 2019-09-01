@@ -91,14 +91,14 @@
 
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main" class="col-md-8" style="height:780px;width:1400px;"></div>
+<div id="main" class="col-md-8" style="height:780px;width:1400px;margin-top: 50px"></div>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wvGuSDMA4xjj0t1dPqEtibPvXY5gyN4U">
 </script>
 <!-- ECharts单文件引入 -->
 <script src="../js/echarts.js"></script>
-<script src="../js/templates/chinaMap.js"></script>
-<script src="../js/templates/BmapLib.js"></script>
-<script src="../js/templates/data.js"></script>
+<script src="../js/chinaMap.js"></script>
+<script src="../js/BmapLib.js"></script>
+<script src="../js/data.js"></script>
 <script type="text/javascript">
     // 路径配置
     require.config({
@@ -167,7 +167,7 @@
                                 geoCoord = placeList[len % placeList.length].geoCoord;
                                 var x = geoCoord[0] + Math.random() * 1 - 0.5;
                                 var y = geoCoord[1] + Math.random() * 2 - 0;
-                                if (ptInPolygon(x, y)) {
+                                if (ptInPolygon(x, y) || (parseInt(x) === 121 && parseInt(y) === 24)) {
                                     data.push({
                                         name: placeList[len % placeList.length]
                                             .name + len,
@@ -197,12 +197,12 @@
                             data: (function () {
                                 var data = [];
                                 var len = 1000;
-                                var geoCoord
+                                var geoCoord;
                                 while (len--) {
                                     geoCoord = placeList[len % placeList.length].geoCoord;
                                     var x = geoCoord[0] + Math.random() * 5 - 2.5;
                                     var y = geoCoord[1] + Math.random() * 3 - 1.5;
-                                    if (ptInPolygon(x, y)) {
+                                    if (ptInPolygon(x, y) || (parseInt(x) === 120 && parseInt(y) === 24)) {
                                         data.push({
                                             name: placeList[len % placeList.length]
                                                 .name + len,
@@ -262,7 +262,7 @@
 
         var result = BMapLib.GeoUtils.isPointInPolygon(pt, ply);
 
-        if (result == true) {
+        if (result === true) {
             return true;
         } else {
             return false;

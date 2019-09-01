@@ -31,7 +31,7 @@ complete = function (data) {
         crossDomain: true,
         success: function (data) {
             //请求成功时处理
-            self.location.href = "blank.html"
+            self.location.href = "index.html"
         }
     });
 };

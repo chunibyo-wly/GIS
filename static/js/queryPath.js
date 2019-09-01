@@ -26,7 +26,13 @@ window.onload=function () {
         ip: "develop.smaryun.com",
         port: "6163"
     });
-    layerArray = [layer1, layer2, layer3, layer4];
+    let trafficLayer=new ol.layer.Tile({
+        source: new ol.source.XYZ({
+            url: 'http://tm.amap.com/trafficengine/mapabc/traffictile?v=1.0&;t=1&x={x}&y={y}&z={z}&&t='+longTime()//7,8
+        }),
+        projection: ol.proj.get("EPSG:4326")
+    });
+    layerArray = [layer1, layer2, layer3, layer4,trafficLayer];
 
     map = new ol.Map({
         //添加图层
@@ -157,14 +163,29 @@ showPointSeachRadius=function (query_) {
 };
 surePointRadius=function () {
     nearDis = document.getElementById("point-radius-input").value;
+    if (isNaN(parseFloat(nearDis))){
+        nearDis=0.5;
+    }
     if (query==='point'){
         queryVectorLayerPoint();
     }else {
         queryVectorLayerLine();
     }
 };
+// showPointSeachRadius=function (query_,queryContent_) {
+//     query=query_;
+//     queryContent=queryContent_;
+// };
+// surePointRadius=function () {
+//     nearDis = document.getElementById("point-radius-input").value;
+//     if (query==='point'){
+//         queryVectorLayerPoint(queryContent);
+//     }else {
+//         queryVectorLayerLine(queryContent);
+//     }
+// };
 
-let createLabelStyle = function (feature) {
+let createCaseStyle = function (opacity=0.75) {
     return new ol.style.Style({
         /**{olx.style.IconOptions}类型*/
         image: new ol.style.Icon(
@@ -178,12 +199,54 @@ let createLabelStyle = function (feature) {
                 //图标缩放比例
                 scale:0.15,
                 //透明度
-                opacity: 0.75,
+                opacity: opacity,
                 //图标的url
                 src: './image/case2.png'
             })
         )
     });
+};
+let createPoliceStyle=function(opacity=0.75){
+    return new ol.style.Style({
+        /**{olx.style.IconOptions}类型*/
+        image: new ol.style.Icon(
+            ({
+                anchor: [0.5, 60],
+                anchorOrigin: 'top-right',
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                offsetOrigin: 'top-right',
+                // offset:[0,10],
+                //图标缩放比例
+                scale:0.15,
+                //透明度
+                opacity: opacity,
+                //图标的url
+                src: './image/police3.png'
+            })
+        )
+    })
+};
+let createMedicalStyle=function(opacity=0.75){
+    return new ol.style.Style({
+        /**{olx.style.IconOptions}类型*/
+        image: new ol.style.Icon(
+            ({
+                anchor: [0.5, 60],
+                anchorOrigin: 'top-right',
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                offsetOrigin: 'top-right',
+                // offset:[0,10],
+                //图标缩放比例
+                scale:0.7,
+                //透明度
+                opacity: opacity,
+                //图标的url
+                src: './image/medical.png'
+            })
+        )
+    })
 };
 
 let caseSource;
@@ -206,7 +269,7 @@ init_case=function(){
     //         X:data[i][0],
     //         Y:data[i][1],
     //     });
-    //     point.setStyle(createLabelStyle());
+    //     point.setStyle(createCaseStyle());
     //     //     new ol.style.Style({
     //     //     //填充色
     //     //     fill: new ol.style.Fill({
@@ -261,7 +324,7 @@ init_case=function(){
                     X:data[i].X,
                     Y:data[i].Y
                 });
-                point.setStyle(createLabelStyle());
+                point.setStyle(createCaseStyle(0));
                 // point.setStyle(new ol.style.Style({
                 //     //填充色
                 //     fill: new ol.style.Fill({
@@ -317,25 +380,7 @@ init_police=function(){
                     photos:data[i].photos,
                     tel:data[i].tel,
                 });
-                point.setStyle(new ol.style.Style({
-                    /**{olx.style.IconOptions}类型*/
-                    image: new ol.style.Icon(
-                        ({
-                            anchor: [0.5, 60],
-                            anchorOrigin: 'top-right',
-                            anchorXUnits: 'fraction',
-                            anchorYUnits: 'pixels',
-                            offsetOrigin: 'top-right',
-                            // offset:[0,10],
-                            //图标缩放比例
-                            scale:0.15,
-                            //透明度
-                            opacity: 0.75,
-                            //图标的url
-                            src: './image/police3.png'
-                        })
-                    )
-                }));
+                point.setStyle(createPoliceStyle(0));
                 policeArray.push(point);
             }
             policeSource = new ol.source.Vector({
@@ -354,14 +399,142 @@ let flag=0;
 let DrawVector;
 let Draw;
 clearQuery=function(){
-    // if (flag!==0){
-    //     map.removeLayer(resultVector);
-    // }
-    // map.addLayer(caseVector);
-    caseSource.clear();
-    caseSource.addFeatures(caseArray);
-    // console.log('reset');
+    flag=0;
+    for (let item of queryResult){
+        item.setStyle(createCaseStyle(0));
+    }
 };
+// queryVectorLayerCircle=function (queryContent_) {
+//     clearQuery();
+//     queryContent=queryContent_;
+//     flag=1;
+//     let source = new ol.source.Vector({ wrapX: false });
+//     DrawVector = new ol.layer.Vector({
+//         source: source,
+//         style: new ol.style.Style({
+//             //形状
+//             image: new ol.style.Circle({
+//                 radius: 0
+//             })
+//         })
+//     });
+//     //将绘制层添加到地图容器中
+//     map.addLayer(DrawVector);
+//     //实例化交互绘制类对象并添加到地图容器中
+//     Draw = new ol.interaction.Draw({
+//         type: 'Circle',//'Polygon' 'Circle' 'LineString' 'Point'
+//         //绘制层数据源
+//         source: source,
+//     });
+//     map.addInteraction(Draw);
+//     //点击查询的回调函数
+//     Draw.on('drawend', DrawControlback);
+// };
+// queryVectorLayerPolygon=function (queryContent_) {
+//     clearQuery();
+//     queryContent=queryContent_;
+//     flag=2;
+//     let source = new ol.source.Vector({ wrapX: false });
+//     DrawVector = new ol.layer.Vector({
+//         source: source,
+//         style: new ol.style.Style({
+//             //形状
+//             image: new ol.style.Circle({
+//                 radius: 0
+//             })
+//         })
+//     });
+//     //将绘制层添加到地图容器中
+//     map.addLayer(DrawVector);
+//     //实例化交互绘制类对象并添加到地图容器中
+//     Draw = new ol.interaction.Draw({
+//         type: 'Polygon',//'Polygon' 'Circle' 'LineString' 'Point'
+//         //绘制层数据源
+//         source: source
+//     });
+//     map.addInteraction(Draw);
+//     //点击查询的回调函数
+//     Draw.on('drawend', DrawControlback);
+// };
+// queryVectorLayerRectangle=function (queryContent_) {
+//     queryContent=queryContent_;
+//     clearQuery();
+//     flag=3;
+//     let source = new ol.source.Vector({ wrapX: false });
+//     DrawVector = new ol.layer.Vector({
+//         source: source,
+//         style: new ol.style.Style({
+//             //形状
+//             image: new ol.style.Circle({
+//                 radius: 0
+//             })
+//         })
+//     });
+//     //将绘制层添加到地图容器中
+//     map.addLayer(DrawVector);
+//     //实例化交互绘制类对象并添加到地图容器中
+//     Draw = new ol.interaction.Draw({
+//         type: 'Circle',//'Polygon' 'Circle' 'LineString' 'Point'
+//         //绘制层数据源
+//         source: source,
+//         geometryFunction: ol.interaction.Draw.createRegularPolygon(4)
+//     });
+//     map.addInteraction(Draw);
+//     //点击查询的回调函数
+//     Draw.on('drawend', DrawControlback);
+// };
+// queryVectorLayerPoint=function (queryContent_) {
+//     queryContent=queryContent_;
+//     clearQuery();
+//     flag=4;
+//     let source = new ol.source.Vector({ wrapX: false });
+//     DrawVector = new ol.layer.Vector({
+//         source: source,
+//         style: new ol.style.Style({
+//             //形状
+//             image: new ol.style.Circle({
+//                 radius: 0
+//             })
+//         })
+//     });
+//     //将绘制层添加到地图容器中
+//     map.addLayer(DrawVector);
+//     //实例化交互绘制类对象并添加到地图容器中
+//     Draw = new ol.interaction.Draw({
+//         type: 'Point',//'Polygon' 'Circle' 'LineString' 'Point'
+//         //绘制层数据源
+//         source: source
+//     });
+//     map.addInteraction(Draw);
+//     //点击查询的回调函数
+//     Draw.on('drawend', DrawControlback);
+// };
+// queryVectorLayerLine=function (queryContent_) {
+//     queryContent=queryContent_;
+//     clearQuery();
+//     flag=5;
+//     let source = new ol.source.Vector({ wrapX: false });
+//     DrawVector = new ol.layer.Vector({
+//         source: source,
+//         style: new ol.style.Style({
+//             //形状
+//             image: new ol.style.Circle({
+//                 radius: 0
+//             })
+//         })
+//     });
+//     //将绘制层添加到地图容器中
+//     map.addLayer(DrawVector);
+//     //实例化交互绘制类对象并添加到地图容器中
+//     Draw = new ol.interaction.Draw({
+//         type: 'LineString',//'Polygon' 'Circle' 'LineString' 'Point'
+//         //绘制层数据源
+//         source: source
+//     });
+//     map.addInteraction(Draw);
+//     //点击查询的回调函数
+//     Draw.on('drawend', DrawControlback);
+// };
 queryVectorLayerCircle=function () {
     // if (flag!==0){
     //     map.removeLayer(resultVector);
@@ -499,30 +672,44 @@ queryVectorLayerLine=function () {
 };
 //----------------------------------------------------
 let queryResult=[];
-let resultVector;
 DrawControlback=function (features) {
-    // console.log("drawend");
     queryResult.length=0;
-    // map.removeLayer(caseVector);
     if (Draw!=null){
         map.removeInteraction(Draw);
     }
     map.removeLayer(DrawVector);
-    if (flag===4||flag===5){
-        let bufferedExtent=new ol.extent.buffer(features.feature.getGeometry().getExtent(),nearDis*800);
+    if (flag===4){
+        let bufferedExtent=new ol.extent.buffer(features.feature.getGeometry().getExtent(),nearDis*950);
         // console.log('Point');
+        queryContent=1;
         let result=caseSource.forEachFeatureIntersectingExtent(bufferedExtent,success);
-    }else {
-        let result=caseSource.forEachFeatureIntersectingExtent(features.feature.getGeometry().getExtent(),success);
+        queryContent=2;
+        policeSource.forEachFeatureIntersectingExtent(bufferedExtent,success);
+    }else if (flag===5){
+        let bufferedExtent=new ol.extent.buffer(features.feature.getGeometry().getExtent(),nearDis*60);
+        // console.log('Point');
+        queryContent=1;
+        let result=caseSource.forEachFeatureIntersectingExtent(bufferedExtent,success);
+        queryContent=2;
+        policeSource.forEachFeatureIntersectingExtent(bufferedExtent,success);
     }
-
-    caseSource.clear();
-    caseSource.addFeatures(queryResult);
-    // map.addLayer(resultVector);
+    else {
+        queryContent=1;
+        let result=caseSource.forEachFeatureIntersectingExtent(features.feature.getGeometry().getExtent(),success);
+        queryContent=2;
+        policeSource.forEachFeatureIntersectingExtent(features.feature.getGeometry().getExtent(),success);
+    }
 };
 
 success=function (data) {
     queryResult.push(data);
+    if (queryContent===1){
+        data.setStyle(createCaseStyle());
+    }else if (queryContent===2){
+        data.setStyle(createPoliceStyle());
+    }else {
+        data.setStyle(createMedicalStyle());
+    }
 };
 
 //------------------------路径规划
@@ -536,6 +723,8 @@ let drivingVectorLayer;
 let drivingVectorSource;
 let startMarker;
 let endMarker;
+
+let isTrafic=false;
 
 $(function () {
     $('#undo').bind('click',function () {
@@ -559,6 +748,15 @@ $(function () {
     $('#reset').click(function () {
         clearQuery();
         clearPath();
+    });
+    $('#traffic').click(function () {
+        if (isTrafic){
+            map.removeLayer(layerArray[4]);
+            isTrafic=false;
+        }else {
+            map.addLayer(layerArray[4]);
+            isTrafic=true;
+        }
     });
     //-----------------------------------------------------------------移动
     let animating = false;
@@ -717,7 +915,7 @@ addListener=function () {
             return feature;
         });
         if (feature) {
-            // console.log(feature);
+            console.log(feature);
             // alert(feature.values_['x']+' '+feature.values_['y']);
             if (isPath){
                 if (origin.length===0){
@@ -936,5 +1134,25 @@ contains=function (map,layer) {
         }
     }
     return false;
+};
+longTime=function () {
+    //获取当前时间
+    let nowDate = new Date();
+    let year = nowDate.getFullYear();
+    let month = nowDate.getMonth() + 1;
+    let today = nowDate.getDate();
+    let hours = nowDate.getHours();
+    let minutes = nowDate.getMinutes();
+    let seconds = nowDate.getSeconds();
+
+    if (month >= 1 && month<= 9) {
+        month = "0" + month;
+    }
+    if (today >= 1 && today <= 9) {
+        today = "0" + today;
+    }
+    let currentdate = year + "-" + month + "-" + today + " " + hours + ":" + minutes + ":" + seconds;
+    let longTime = new Date(currentdate.replace(new RegExp("-", "gm"), "/")).getTime();
+    return longTime;
 };
 //-------------

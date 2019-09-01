@@ -6,3 +6,5 @@ requests
 openpyxl
 beautifulsoup4
 pillow
+jieba
+wordcloud

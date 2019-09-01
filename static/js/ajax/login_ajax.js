@@ -30,7 +30,7 @@ $("#login_submit").click(function () {
             console.log(data);
             if (data.status === "Y") {
                 // self.location.href = "/html/blank.html";
-                self.location.href = "/html/profile.html";
+                self.location.href = "/html/index.html";
             } else {
                 alert(data.message)
             }
