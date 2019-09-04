@@ -1,7 +1,7 @@
 getUID = function () {
     let id = 0;
     $.ajax({
-        url: "http://127.0.0.1:5000/get_usrid_ajax",    //请求的url地址
+        url: "http://gis.hoxu.xyz:5000/get_usrid_ajax",    //请求的url地址
         dataType: "json",   //返回格式为json
         async: false,//请求是否异步，默认为异步，这也是ajax重要特性
         data: {},
@@ -20,7 +20,7 @@ getUID = function () {
 
 complete = function (data) {
     $.ajax({
-        url: "http://127.0.0.1:5000/complete_information",    //请求的url地址
+        url: "http://gis.hoxu.xyz:5000/complete_information",    //请求的url地址
         dataType: "json",   //返回格式为json
         async: true,//请求是否异步，默认为异步，这也是ajax重要特性
         data: data,
