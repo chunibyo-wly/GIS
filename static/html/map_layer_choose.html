@@ -32,14 +32,13 @@
 
     <style>
         @font-face {
-            font-family: 'iconfont';
-            /* project id 1331180 */
-            src: url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.eot');
-            src: url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.eot?#iefix') format('embedded-opentype'),
-            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.woff2') format('woff2'),
-            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.woff') format('woff'),
-            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.ttf') format('truetype'),
-            url('//at.alicdn.com/t/font_1331180_us4ffk7wjcd.svg#iconfont') format('svg');
+            font-family: 'iconfont';  /* project id 1331180 */
+            src: url('//at.alicdn.com/t/font_1331180_dgm6huvvobo.eot');
+            src: url('//at.alicdn.com/t/font_1331180_dgm6huvvobo.eot?#iefix') format('embedded-opentype'),
+            url('//at.alicdn.com/t/font_1331180_dgm6huvvobo.woff2') format('woff2'),
+            url('//at.alicdn.com/t/font_1331180_dgm6huvvobo.woff') format('woff'),
+            url('//at.alicdn.com/t/font_1331180_dgm6huvvobo.ttf') format('truetype'),
+            url('//at.alicdn.com/t/font_1331180_dgm6huvvobo.svg#iconfont') format('svg');
         }
 
         .iconfont {
@@ -65,19 +64,17 @@
                 <!--menu-right-->
                 <div class="top_menu">
                     <div class="main-search">
-                        <form method=get action="http://www.google.com/search">
-                            <input type=hidden name=domains value="http://www.baidu.com">
-                            <input type=hidden name=sitesearch value="http://www.baidu.com">
+                        <form action="searchInsite.html" target="_blank">
                             <input type="text" name=q value="站内搜索" onFocus="this.value = '';"
-                                   onBlur="if (this.value === '') {this.value = 'Search';}"
-                                   class="text"/>
-                            <input type="submit" value=""/>
+                                   onBlur="if (this.value === '') {this.value = '站内搜索';}" class="text"/>
+                            <input type="submit" value=""
+                                   onclick="setTimeout(function () {$('input[value=\'站内搜索\']').val('站内搜索');}, 1000);"/>
                         </form>
-                        <form method=get action="http://www.google.com/search" target="_blank">
-                            <input type="text" name=q value="bing搜索" onFocus="this.value = '';"
-                                   onBlur="if (this.value === '') {this.value = 'Search';}"
-                                   class="text"/>
-                            <input type="submit" value=""/>
+                        <form action="http://www.baidu.com/s" target="_blank">
+                            <input type="text" name="wd" value="Baidu搜索" onFocus="this.value = '';"
+                                   onBlur="if (this.value === '') {this.value = 'Baidu搜索';}" class="text"/>
+                            <input type="submit" value=""
+                                   onclick="setTimeout(function () {$('input[value=\'Baidu搜索\']').val('Baidu搜索');}, 1000);"/>
                         </form>
                         <div class="close"><img src="../images/cross.png" alt=""/></div>
                     </div>
@@ -87,10 +84,9 @@
                     <script type="text/javascript">
                         $('.main-search').hide();
                         $('button').click(function () {
-                                $('.main-search').show();
-                                $('.main-search text').focus();
-                            }
-                        );
+                            $('.main-search').show();
+                            $('.main-search text').focus();
+                        });
                         $('.close').click(function () {
                             $('.main-search').hide();
                         });
@@ -156,7 +152,7 @@
 
                             <li class="dropdown note">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                                        class="fa fa-envelope-o"></i> <span class="badge">3</span></a>
+                                        class="fa fa-envelope-o"></i> <span class="badge"></span></a>
 
                                 <ul class="dropdown-menu two first">
                                     <li>
@@ -199,7 +195,7 @@
                             <li class="dropdown note">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-bell-o"></i>
-                                    <span class="badge">5</span>
+                                    <span class="badge"></span>
                                 </a>
 
                                 <ul class="dropdown-menu two">
@@ -213,57 +209,11 @@
 
                             <li class="dropdown note">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                                        class="fa fa-tasks"></i> <span class="badge blue1">9</span></a>
+                                        class="fa fa-tasks"></i> <span class="badge blue1"></span></a>
                                 <ul class="dropdown-menu two">
                                     <li>
-                                        <div class="notification_header">
-                                            <h3>You have 9 pending task</h3>
-                                        </div>
-                                    </li>
-                                    <li><a href="#">
-                                        <div class="task-info">
-                                            <span class="task-desc">Database update</span><span
-                                                class="percentage">40%</span>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="progress progress-striped active">
-                                            <div class="bar yellow" style="width:40%;"></div>
-                                        </div>
-                                    </a></li>
-                                    <li><a href="#">
-                                        <div class="task-info">
-                                            <span class="task-desc">Dashboard done</span><span
-                                                class="percentage">90%</span>
-                                            <div class="clearfix"></div>
-                                        </div>
-
-                                        <div class="progress progress-striped active">
-                                            <div class="bar green" style="width:90%;"></div>
-                                        </div>
-                                    </a></li>
-                                    <li><a href="#">
-                                        <div class="task-info">
-                                            <span class="task-desc">Mobile App</span><span
-                                                class="percentage">33%</span>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="progress progress-striped active">
-                                            <div class="bar red" style="width: 33%;"></div>
-                                        </div>
-                                    </a></li>
-                                    <li><a href="#">
-                                        <div class="task-info">
-                                            <span class="task-desc">Issues fixed</span><span
-                                                class="percentage">80%</span>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="progress progress-striped active">
-                                            <div class="bar  blue" style="width: 80%;"></div>
-                                        </div>
-                                    </a></li>
-                                    <li>
                                         <div class="notification_bottom">
-                                            <a href="#">See all pending task</a>
+                                            <a href="TodayTask.html">查看所有任务</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -286,7 +236,8 @@
                 <div class="sub-heard-part">
                     <ol class="breadcrumb m-b-0">
                         <li><a href="index.html">主页</a></li>
-                        <li class="active">个人主页</li>
+                        <li class="active">辅助功能</li>
+                        <li class="active">图层选择</li>
                     </ol>
                 </div>
                 <!--//sub-heard-part-->
@@ -299,144 +250,175 @@
     </div>
     <!--//content-inner-->
     <!--/sidebar-menu-->
-    <div class="sidebar-menu">
-        <header class="logo">
-            <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="index.html"> <span
-                id="logo">
-                        <h1>Augment</h1>
-                    </span></a>
-        </header>
-        <div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
-        <!--/down-->
-        <div class="down">
-            <a href="profile.html"><img src="../images/admin.jpg" alt=""></a>
-            <a href="profile.html"><span class="name-caret">Jasmin Leo</span></a>
-            <p>System Administrator in Company</p>
-            <ul>
-                <li><a class="tooltips" href="profile.html"><span>Profile</span><i class="lnr lnr-user"></i></a>
-                </li>
-                <li><a class="tooltips" href="index.html"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
-                <li><a class="tooltips" href="index.html"><span>Log out</span><i
-                        class="lnr lnr-power-switch"></i></a>
-                </li>
-            </ul>
+        <div class="sidebar-menu">
+            <header class="logo">
+                <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="index.html"> <span
+                    id="logo">
+                            <h1>
+                                <img src="./image/logo.png" style="width: 44px;">
+                                <span>ANTU</span>
+                            </h1>
+                        </span></a>
+            </header>
+            <div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
+            <!--/down-->
+            <div class="down">
+                <a href="profile.html"><img src="../images/admin.jpg" alt=""></a>
+                <a href="profile.html"><span class="name-caret"></span></a>
+                <p></p>
+                <ul>
+                    <li><a class="tooltips" href="profile.html"><span>个人主页</span><i class="lnr lnr-user"></i></a>
+                    </li>
+                    <li><a class="tooltips" href="index.html"><span>主页</span><i class="iconfont">&#xe6a2;</i></a>
+                    </li>
+                    <li><a class="tooltips" href="#"><span>注销</span><i class="lnr lnr-power-switch"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <!--//down-->
+            <div class="menu">
+                <ul id="menu">
+                    <li>
+                        <a class="disabled">
+                            <!--                        <i class="lnr lnr-envelope"></i>-->
+                            <i class="iconfont">&#xe72f;</i>
+                            <span>案情在线</span>
+                            <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="TodayTask.html" target="_self" id="TodayTask">
+                            <i class="iconfont">&#xe610;</i>
+                            <span>今日任务</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="map_queryPath.html" target="_self" id="map_queryPath">
+                            <i class="iconfont">&#xe848;</i>
+                            <span>救援规划</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="map_navigation.html" target="_self" id="map_navigation">
+                            <i class="iconfont">&#xe848;</i>
+                            <span>安全规划</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href=# target="_self">
+                            <i class="iconfont">&#xe613;</i>
+                            <span>案情管理</span>
+                            <span class="fa fa-angle-right"
+                                  style="float: right;transform: translate(0, 25%);"></span>
+                        </a>
+                        <ul>
+                            <li><a href="./show_case.html" target="_self"><i
+                                    class="iconfont">&#xe614;</i>&nbsp;&nbsp;案情查看</a>
+                            </li>
+                            <li><a href="./upload_case.html" target="_self"><i
+                                    class="iconfont">&#xe645;</i>&nbsp;&nbsp;案情上传</a>
+                            </li>
+                            <li><a href="./map_search_case.html" target="_self"><i
+                                    class="iconfont">&#xe60f;</i>&nbsp;&nbsp;案情修改</a>
+                            </li>
+                            <li><a href="./manage_case.html" target="_self"><i
+                                    class="iconfont">&#xe64a;</i>&nbsp;&nbsp;案情删除</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="face.html" target="_self">
+                            <i class="iconfont">&#xe7a6;</i>
+                            <span>人脸识别</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="iconfont">&#xe6af;</i>
+                            <span>安图焦点</span>
+                            <span class="fa fa-angle-right"
+                                  style="float: right;transform: translate(0, 25%);"></span>
+                        </a>
+                        <ul>
+                            <li><a href="news.html" target="_self"><i
+                                    class="iconfont">&#xe615;</i>&nbsp;&nbsp;实事热搜</a>
+                            </li>
+                            <li><a href="http://www.legalinfo.gov.cn/" target="_blank"><i
+                                    class="iconfont">&#xe7a1;</i>&nbsp;&nbsp;普法栏目</a>
+                            </li>
+                            <!--                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>-->
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#" target="_self">
+                            <i class="iconfont">&#xe628;</i>
+                            <span>辅助功能</span>
+                            <span class="fa fa-angle-right"
+                                  style="float: right;transform: translate(0, 25%);"></span>
+                        </a>
+                        <ul>
+                            <li><a href="map_layer_explore.html" target="_self"><i
+                                    class="iconfont">&#xe848;</i>&nbsp;&nbsp;图层探查</a>
+                            </li>
+                            <li><a href="map_layer_choose.html" target="_self"><i
+                                    class="iconfont">&#xe66f;</i>&nbsp;&nbsp;图层选择</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="disabled">
+                            <i class="iconfont">&#xe633;</i>
+                            <span>分析预警</span>
+                            <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="map_dangerAnalysis.html" target="_self">
+                            <i class="iconfont">&#xe654;</i>
+                            <span>危险分析</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="iconfont">&#xe79e;</i>
+                            <span>案情分析</span>
+                            <span class="fa fa-angle-right"
+                                  style="float: right;transform: translate(0, 25%);"></span>
+                        </a>
+                        <ul>
+                            <li><a href="analyse.html" target="_self"><i
+                                    class="iconfont">&#xe619;</i>&nbsp;&nbsp;案情统计图</a>
+                            </li>
+                            <li><a href="map_heatmap.html" target="_self"><i
+                                    class="iconfont">&#xe6be;</i>&nbsp;&nbsp;案情热力图</a>
+                            </li>
+                            <li><a href="map_case_effect.html" target="_self"><i
+                                    class="iconfont">&#xe626;</i>&nbsp;&nbsp;案情影响图</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="map_predict.html" target="_self">
+                            <i class="iconfont">&#xe628;</i>
+                            <span>治安预警</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
-        <!--//down-->
-        <div class="menu">
-            <ul id="menu">
-                <li>
-                    <a class="disabled">
-                        <!--                        <i class="lnr lnr-envelope"></i>-->
-                        <i class="iconfont">&#xe72f;</i>
-                        <span>案情在线</span>
-                        <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe610;</i>
-                        <span>今日任务</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe6af;</i>
-                        <span>安图焦点</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="news.html"><i class="fa fa-inbox"></i>&nbsp;&nbsp;实事热搜</a></li>
-                        <li><a href="http://www.legalinfo.gov.cn/" target="_blank"><i class="fa fa-pencil-square-o"></i>&nbsp;&nbsp;安全提示</a>
-                        </li>
-                        <!--                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>-->
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe613;</i>
-                        <span>天网恢恢</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="upload_case.html"><i class="fa fa-inbox"></i>&nbsp;&nbsp;案件上传</a></li>
-                        <li><a href="show_case.html"><i class="fa fa-pencil-square-o"></i> 案件展示</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe7a6;</i>
-                        <span>人脸搜索</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a class="disabled">
-                        <i class="iconfont">&#xe633;</i>
-                        <span>分析预警</span>
-                        <!--                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>-->
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe654;</i>
-                        <span>危险分析</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe79e;</i>
-                        <span>案情分析</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="iconfont">&#xe628;</i>
-                        <span>案情预警</span>
-                        <span class="fa fa-angle-right" style="float: right;transform: translate(0, 25%);"></span>
-                    </a>
-                    <ul>
-                        <li><a href="#"><i class="fa fa-inbox"></i>Inbox</a></li>
-                        <li><a href="#"><i class="fa fa-pencil-square-o"></i> Compose Mail</a></li>
-                        <li><a href="#"><span class="lnr lnr-highlight"></span> Editors Page</a></li>
-                    </ul>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-    <div class="clearfix"></div>
+        <div class="clearfix"></div>
 </div>
 <script>
     var toggle = true;
