@@ -60,7 +60,12 @@ logout = function () {
 
 let resulet_sidebar = get_user();
 $('.sidebar-menu .name-caret').text(resulet_sidebar.name);
-$('.sidebar-menu p').text(resulet_sidebar.role.split('_')[1]);
+
+let role = resulet_sidebar.role.split('_')[1];
+if(role === "police")
+    $('.sidebar-menu p').text("警察");
+else
+    $('.sidebar-menu p').text("普通用户");
 
 if (resulet_sidebar.role.split('_')[1] === "police") {
     $("#map_navigation").hide();

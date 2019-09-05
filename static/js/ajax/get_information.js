@@ -1,7 +1,11 @@
-// console.log(get_user());
 let result = get_user();
 $('.profile-widget h2').text(result.name);
-$('.profile-widget p').text(result.role.split('_')[1]);
+
+if (result.role.split('_')[1] === "police")
+    $('.profile-widget p').text("警察");
+else
+    $('.profile-widget p').text("普通用户");
+
 
 let information;
 $.ajax({
@@ -17,7 +21,7 @@ $.ajax({
     crossDomain: true,
     success: function (data) {
         //请求成功时处理
-        console.log(data);
+        // console.log(data);
         information = data;
     },
 });
