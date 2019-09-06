@@ -300,7 +300,7 @@ init_case=function(){
     // map.addLayer(caseVector);
 
     $.ajax({
-        url:'http://gis.hoxu.xyz:5000/get_wuhan',
+        url:'http://gis.hoxu.xyz:80/get_wuhan',
         type:"GET",
         dataType: "json",
         async: false,
@@ -359,7 +359,7 @@ init_case=function(){
 };
 init_police=function(){
     $.ajax({
-        url:'http://gis.hoxu.xyz:5000/get_police',
+        url:'http://gis.hoxu.xyz:80/get_police',
         type:"GET",
         dataType: "json",
         async: false,
@@ -1003,7 +1003,7 @@ getPath=function () {
     };
     // console.log(data);
     $.ajax({
-        url:"http://gis.hoxu.xyz:5000/get_path",
+        url:"http://gis.hoxu.xyz:80/get_path",
         dataType:'json',
         async:true,
         data:data,

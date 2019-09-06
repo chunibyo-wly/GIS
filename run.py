@@ -567,8 +567,8 @@ def update_case():
     case_name = request.form['case_name']
     dao.execute(
         "UPDATE `case` SET case_name = '" + case_name + "', case_type = '" + case_type + "', inform_time = '" + inform_time + "', case_position = '" + case_position + "', case_lon = " + str(
-            case_lon) + ", case_lat = " + case_lat + " , case_description = '" + case_description + ", X = " + str(
-            x) + ", Y = " + str(y) + "' WHERE case_id = " + str(
+            case_lon) + ", case_lat = " + case_lat + " , case_description = '" + case_description + "', X = " + str(
+            x) + ", Y = " + str(y) + " WHERE case_id = " + str(
             case_id) + ";")
 
     base64_data = request.form['base64_data']
@@ -646,4 +646,4 @@ def get_page_number():
 #     return name
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)
