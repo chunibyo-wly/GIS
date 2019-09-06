@@ -131,4 +131,8 @@ $(".lnr-power-switch").click(function () {
     logout();
 });
 
+$(".chatting").click(function () {
+    $("div.inner-content > div.header-section > div.top_menu > div.profile_details_left > ul > li:nth-child(3) > a > span").text(0);
+    $("div.inner-content > div.header-section > div.top_menu > div.profile_details_left > ul > li:nth-child(3) > a > span").hide();
+});
 

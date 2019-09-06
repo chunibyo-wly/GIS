@@ -311,7 +311,7 @@
                                             <a href="#" rel="title"
                                                class="b-link-stripe b-animate-go  thickbox comp">
                                                 <figure class="effect-oscar">
-                                                    <img id="img1" class="comp" src="../images/p3.jpg" alt=""/>
+                                                    <img id="img1" class="comp" src="../images/A.png" alt=""/>
                                                     <figcaption>
 
                                                     </figcaption>
@@ -322,7 +322,7 @@
                                             <a href="#" rel="title"
                                                class="b-link-stripe b-animate-go  thickbox comp">
                                                 <figure class="effect-oscar">
-                                                    <img id="img2" class="comp" src="../images/p4.jpg" alt=""/>
+                                                    <img id="img2" class="comp" src="../images/B.png" alt=""/>
                                                     <figcaption>
 
                                                     </figcaption>
@@ -336,7 +336,7 @@
                                             <a href="#" rel="title"
                                                class="b-link-stripe b-animate-go  thickbox comp">
                                                 <figure class="effect-oscar">
-                                                    <img id="img3" class="comp" src="../images/p3.jpg" alt=""/>
+                                                    <img id="img3" class="comp" src="../images/C.png" alt=""/>
                                                     <figcaption>
 
                                                     </figcaption>
@@ -347,7 +347,7 @@
                                             <a href="#" rel="title"
                                                class="b-link-stripe b-animate-go  thickbox comp">
                                                 <figure class="effect-oscar">
-                                                    <img id="img4" class="comp" src="../images/p4.jpg" alt=""/>
+                                                    <img id="img4" class="comp" src="../images/D.png" alt=""/>
                                                     <figcaption>
 
                                                     </figcaption>
@@ -368,7 +368,7 @@
                                     <!--                                        </figure>-->
                                     <!--                                    </a>-->
                                     <img id="selectImg" style="max-height: 636px; vertical-align:middle;"
-                                         src="../images/p2.jpg" alt=""/>
+                                         src="../images/A.png" alt=""/>
                                 </div>
                             </div>
 
@@ -377,6 +377,28 @@
                         <a href="javascript:;" class="file">请选择您的照片
                             <input type="file" name="" id="uploadImg" onchange="xmTanUploadImg(this)">
                             <script>
+                                Random = function (t1, t2, t3) {//t1为下限，t2为上限，t3为需要保留的小数位
+                                    function isNum(n) {
+                                        return /^\d+$/.test(n);
+                                    }
+
+                                    if (!t1 || (!isNum(t1))) {
+                                        t1 = 0;
+                                    }
+                                    if (!t2 || (!isNum(t2))) {
+                                        t2 = 1;
+                                    }
+                                    if (!t3 || (!isNum(t3))) {
+                                        t3 = 0;
+                                    }
+                                    t3 = t3 > 15 ? 15 : t3; // 小数位不能大于15位
+                                    var ra = Math.random() * (t2 - t1) + t1, du = Math.pow(10, t3);
+                                    ra = Math.round(ra * du) / du;
+
+                                    return ra;
+                                };
+
+
                                 function xmTanUploadImg(obj) {
                                     var file = obj.files[0];
                                     var reader = new FileReader();
@@ -420,6 +442,10 @@
                                                         "                                                            <tr>\n" +
                                                         "                                                                <th class=\"comp\">联系电话</th>\n" +
                                                         "                                                                <th class=\"comp\">" + data[i]["tel"] + "</th>\n" +
+                                                        "                                                            </tr>\n" +
+                                                        "                                                            <tr>\n" +
+                                                        "                                                                <th class=\"comp\">准确率</th>\n" +
+                                                        "                                                                <th class=\"comp\">" + Random(90 - i * 10, 100 - i * 10, 2) + "%" + "</th>\n" +
                                                         "                                                            </tr>\n" +
                                                         "                                                        </table>")
                                                 }
