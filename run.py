@@ -629,6 +629,26 @@ def get_page_number():
     return jsonify((int(result) - 1) // 8 + 1), 200
 
 
+@app.route('/get_filter_case', methods=['post'])
+def get_filter_case():
+    date = request.form["date"]
+    type = request.form["type"]
+    key = request.form["key"]
+    result = dao.execute(
+        "SELECT case_id, DATE_FORMAT(inform_time,'%Y-%m-%d %h:%m:%s') as t, case_description,case_position FROM `case` WHERE inform_time LIKE '%" + date + "%' AND case_type LIKE '%" + type + "%' AND (case_position LIKE '%" + key + "%' or case_description LIKE '%" + key + "%')")
+    response = {
+        "data": []
+    }
+    for i in result:
+        response['data'].append({
+            "case_id": i[0],
+            "t": i[1],
+            "case_description": i[2],
+            "case_position": i[3]
+        })
+    return jsonify(response), 200
+
+
 # @app.route('/set_cookie', methods=['get'])
 # def set_cookie():
 #     response = {

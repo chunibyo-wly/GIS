@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        th {
+            font-size: 26px;
+        }
+
+        td {
+            width: 250px;
+            height: 150px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .myCheckbox input {
+            position: relative;
+            z-index: -9999;
+        }
+
+        .myCheckbox span {
+            width: 20px;
+            height: 20px;
+            display: block;
+            background-image: url("./image/checkbox.png");
+            background-repeat: no-repeat;
+        }
+
+        .myCheckbox input:checked + span {
+            background-image: url("./image/checkbox_checked.png");
+        }
+    </style>
+</head>
+
+<body>
+
+<div style="z-index: 500; position: fixed ! important; right: 0; top: 0;width: 1600px;">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">案件速查</a>
+            </div>
+            <div>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="date" class="form-control" id="date">
+                        <input type="text" placeholder="关键字" class="form-control" value="" id="key">
+                        <select class="form-control" id="type">
+                            <option>全部</option>
+                            <option>行政</option>
+                            <option>刑事</option>
+                            <option>民事</option>
+                        </select>
+                        <input type="button" class="btn btn-default" value="提交" name="submit"
+                               onclick="get_filter_case();">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<div class="col-md-10 col-md-offset-1">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>时间</th>
+            <th>地点</th>
+            <th>描述</th>
+            <th>图片</th>
+            <th>删除</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div style="z-index: 9999; position: fixed ! important; right: 200px; bottom: 100px;width: 30px;">
+    <div class="delete" style="cursor: pointer;"><img src="./image/delete.png" style="width: 50px;"></div>
+</div>
+
+<script src="../js/common/getuser.js"></script>
+<script>
+
+    get_filter_case = function () {
+        let date = $("#date").val().replace(/(^\s*)|(\s*$)/g, '');
+        let key = $("#key").val().replace(/(^\s*)|(\s*$)/g, '');
+        let type = $("#type").val().replace(/(^\s*)|(\s*$)/g, '');
+
+        if (date == null || date === '' || date === undefined) {
+            date = ""
+        }
+        if (key == null || key === '' || key === undefined) {
+            key = ""
+        }
+        if (type === "全部") {
+            type = ""
+        }
+
+        $.ajax({
+            url: "http://gis.hoxu.xyz:80/get_filter_case", //请求的url地址
+            dataType: "json",   //返回格式为json
+            async: true, //请求是否异步，默认为异步，这也是ajax重要特性
+            data: {
+                "date": date,
+                "type": type,
+                "key": key
+            },
+            type: "post", //请求方式,
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function (data) {
+                //请求成功时处理
+                $('tbody').empty();
+                data.data.forEach(function (i, index) {
+                    $('tbody').append("<tr case_id=" + i.case_id + ">\n" +
+                        "            <td>" + i.t + "</td>\n" +
+                        "            <td>" + i.case_position + "</td>\n" +
+                        "            <td>" + i.case_description + "</td>\n" +
+                        "            <td class=\"td\">\n" +
+                        "                <div style=\"width: 120px;height: 120px;overflow: hidden;position: relative;\">\n" +
+                        "                    <img src=\"../photo/" + i.case_id + ".png\" style=\"max-width: 100%;margin-right: auto\">\n" +
+                        "                </div>\n" +
+                        "            </td>\n" +
+                        "            <td>" + "<input type='checkbox' class='checkbox' case_id=" + i.case_id + ">" + "</td>\n" +
+
+                        "        </tr>")
+                });
+
+                delete_case = function (data) {
+                    $.ajax({
+                        url: "http://gis.hoxu.xyz:80/delete_case", //请求的url地址
+                        // dataType: "json",   //返回格式为json
+                        async: false, //请求是否异步，默认为异步，这也是ajax重要特性
+                        data: data,
+                        type: "post", //请求方式,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        success: function () {
+                            //请求成功时处理
+                            self.href = ""
+                        }
+                    });
+                };
+
+                $('.delete').click(function () {
+                    case_id = [];
+                    $("input[type='checkbox']:checked").each(function () {
+                        case_id.push($(this).attr('case_id'));
+                    });
+                    console.log(case_id);
+                    delete_case({
+                        "case_id": case_id
+                    });
+                    self.location.href = ""
+                })
+            }
+        });
+    }
+
+    get_filter_case();
+</script>
+</body>
+
+</html>

@@ -14,13 +14,13 @@ todayTask = data = [{
     {
         'id': 16,
         'todo_list': [{
-            "task": '登记户籍',
+            "task": '登记雄楚大道市民户籍',
             "progress": 0.8
         }, {
             "task": '看监控',
             "progress": 0.5
         }, {
-            "task": '建立吸毒人员人员流动档案',
+            "task": '建立吸毒人员流动档案',
             "progress": 0.1
         }, {
             "task": '查找赌博窝点',
@@ -63,7 +63,7 @@ $('.sidebar-menu .name-caret').text(resulet_sidebar.name);
 
 let role = resulet_sidebar.role.split('_')[1];
 if(role === "police")
-    $('.sidebar-menu p').text("警察");
+    $('.sidebar-menu p').text("警员");
 else
     $('.sidebar-menu p').text("普通用户");
 

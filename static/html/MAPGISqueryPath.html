@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
+
 <head>
     <meta charset="UTF-8">
     <title>Query and Path</title>
@@ -8,111 +9,159 @@
     <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <link href="../css/ol.css" rel="stylesheet" type="text/css" />
-    <link href="../css/queryPath.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/queryPath.css" rel="stylesheet" type="text/css" />
     <script src="../js/MapGis_ol_product.js" type="text/javascript"></script>
     <script src="../js/queryPath.js" type="text/javascript"></script>
+    <style>
+        .table td,
+        th {
+            text-align: center;
+        }
 
+        .table img {
+            width: 32px;
+        }
+    </style>
 </head>
+
 <body>
 
-<div id="mapCon">
-    <div class="container">
-        <!--按钮组-->
-        <div class="btn-group" id="queryBtn">
-            <button type="button" class="btn " data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('point')">固定点查询</button>
-            <button type="button" class="btn " data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('line')">固定线查询</button>
-            <button type="button" class="btn " onclick="queryVectorLayerCircle()">固定圆查询</button>
-            <button type="button" class="btn " onclick="queryVectorLayerPolygon()">多边形查询</button>
-            <button type="button" class="btn " onclick="queryVectorLayerRectangle()">矩形查询</button>
-<!--            <div class="btn-group">-->
-<!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">固定点查询<span class="caret"></span></button>-->
-<!--                <div class="dropdown-menu">-->
-<!--                    <a id="pointQuery1" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('point',1)">案件</a>-->
-<!--                    <a id="pointQuery2" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('point',2)">公安机关</a>-->
-<!--&lt;!&ndash;                    <a id="pointQuery3" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('point',3)">医疗点</a>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="btn-group">-->
-<!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">固定线查询<span class="caret"></span></button>-->
-<!--                <div class="dropdown-menu">-->
-<!--                    <a id="lineQuery1" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('line',1)">案件</a>-->
-<!--                    <a id="lineQuery2" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('line',2)">公安机关</a>-->
-<!--&lt;!&ndash;                    <a id="lineQuery3" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('line',3)">医疗点</a>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="btn-group">-->
-<!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">固定圆查询<span class="caret"></span></button>-->
-<!--                <div class="dropdown-menu">-->
-<!--                    <a id="circleQuery1" class="dropdown-item" onclick="queryVectorLayerCircle(1)">案件</a>-->
-<!--                    <a id="circleQuery2" class="dropdown-item" onclick="queryVectorLayerCircle(2)">公安机关</a>-->
-<!--&lt;!&ndash;                    <a id="circleQuery3" class="dropdown-item" onclick="queryVectorLayerCircle(3)">医疗点</a>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="btn-group">-->
-<!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">多边形查询<span class="caret"></span></button>-->
-<!--                <div class="dropdown-menu">-->
-<!--                    <a id="polygonQuery1" class="dropdown-item" onclick="queryVectorLayerPolygon(1)">案件</a>-->
-<!--                    <a id="polygonQuery2" class="dropdown-item" onclick="queryVectorLayerPolygon(2)">公安机关</a>-->
-<!--&lt;!&ndash;                    <a id="polygonQuery3" class="dropdown-item" onclick="queryVectorLayerPolygon(3)">医疗点</a>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="btn-group">-->
-<!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">方形查询<span class="caret"></span></button>-->
-<!--                <div class="dropdown-menu">-->
-<!--                    <a id="rectangleQuery1" class="dropdown-item" onclick="queryVectorLayerRectangle(1)">案件</a>-->
-<!--                    <a id="rectangleQuery2" class="dropdown-item" onclick="queryVectorLayerRectangle(2)">公安机关</a>-->
-<!--&lt;!&ndash;                    <a id="rectangleQuery3" class="dropdown-item" onclick="queryVectorLayerRectangle(3)">医疗点</a>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
+    <div id="mapCon">
 
-            <button id="reset" class="btn ">重置</button>
-            <button id="undo" class="btn ">撤销</button>
-            <!--        <button id="driving" class="btn ">driving</button>-->
-<!--            <div class="btn-group">-->
-                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">路径规划<span class="caret"></span></button>
+        <div id="popup" class="ol-popup">
+            <a id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content"></div>
+        </div>
+
+        <div class="container">
+            <!--按钮组-->
+            <div class="btn-group" id="queryBtn">
+                <button type="button" class="btn " data-toggle="modal" data-target="#myModal"
+                    onclick="showPointSeachRadius('point')">固定点查询
+                </button>
+                <button type="button" class="btn " data-toggle="modal" data-target="#myModal"
+                    onclick="showPointSeachRadius('line')">固定线查询
+                </button>
+                <button type="button" class="btn " onclick="queryVectorLayerCircle()">固定圆查询</button>
+                <button type="button" class="btn " onclick="queryVectorLayerPolygon()">多边形查询</button>
+                <button type="button" class="btn " onclick="queryVectorLayerRectangle()">矩形查询</button>
+                <!--            <div class="btn-group">-->
+                <!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">固定点查询<span class="caret"></span></button>-->
+                <!--                <div class="dropdown-menu">-->
+                <!--                    <a id="pointQuery1" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('point',1)">案件</a>-->
+                <!--                    <a id="pointQuery2" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('point',2)">公安机关</a>-->
+                <!--&lt;!&ndash;                    <a id="pointQuery3" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('point',3)">医疗点</a>&ndash;&gt;-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!--            <div class="btn-group">-->
+                <!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">固定线查询<span class="caret"></span></button>-->
+                <!--                <div class="dropdown-menu">-->
+                <!--                    <a id="lineQuery1" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('line',1)">案件</a>-->
+                <!--                    <a id="lineQuery2" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('line',2)">公安机关</a>-->
+                <!--&lt;!&ndash;                    <a id="lineQuery3" class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="showPointSeachRadius('line',3)">医疗点</a>&ndash;&gt;-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!--            <div class="btn-group">-->
+                <!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">固定圆查询<span class="caret"></span></button>-->
+                <!--                <div class="dropdown-menu">-->
+                <!--                    <a id="circleQuery1" class="dropdown-item" onclick="queryVectorLayerCircle(1)">案件</a>-->
+                <!--                    <a id="circleQuery2" class="dropdown-item" onclick="queryVectorLayerCircle(2)">公安机关</a>-->
+                <!--&lt;!&ndash;                    <a id="circleQuery3" class="dropdown-item" onclick="queryVectorLayerCircle(3)">医疗点</a>&ndash;&gt;-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!--            <div class="btn-group">-->
+                <!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">多边形查询<span class="caret"></span></button>-->
+                <!--                <div class="dropdown-menu">-->
+                <!--                    <a id="polygonQuery1" class="dropdown-item" onclick="queryVectorLayerPolygon(1)">案件</a>-->
+                <!--                    <a id="polygonQuery2" class="dropdown-item" onclick="queryVectorLayerPolygon(2)">公安机关</a>-->
+                <!--&lt;!&ndash;                    <a id="polygonQuery3" class="dropdown-item" onclick="queryVectorLayerPolygon(3)">医疗点</a>&ndash;&gt;-->
+                <!--                </div>-->
+                <!--            </div>-->
+                <!--            <div class="btn-group">-->
+                <!--                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">方形查询<span class="caret"></span></button>-->
+                <!--                <div class="dropdown-menu">-->
+                <!--                    <a id="rectangleQuery1" class="dropdown-item" onclick="queryVectorLayerRectangle(1)">案件</a>-->
+                <!--                    <a id="rectangleQuery2" class="dropdown-item" onclick="queryVectorLayerRectangle(2)">公安机关</a>-->
+                <!--&lt;!&ndash;                    <a id="rectangleQuery3" class="dropdown-item" onclick="queryVectorLayerRectangle(3)">医疗点</a>&ndash;&gt;-->
+                <!--                </div>-->
+                <!--            </div>-->
+
+                <button id="reset" class="btn ">重置</button>
+                <button id="undo" class="btn ">撤销</button>
+                <!--        <button id="driving" class="btn ">driving</button>-->
+                <!--            <div class="btn-group">-->
+                <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">路径规划<span
+                        class="caret"></span></button>
                 <div class="dropdown-menu">
                     <a id="walking" class="dropdown-item" href="#">步行</a>
                     <a id="bicycling" class="dropdown-item" href="#">骑行</a>
                     <a id="driving" class="dropdown-item" href="#">驾车</a>
                 </div>
-<!--            </div>-->
-            <button id="traffic" class="btn ">实时路况</button>
-            <button id="start-animation" class="btn">开始运动</button>
-            <label for="speed" style="margin-top:10px">
-                运动速度:&nbsp;
-                <input id="speed" type="range" min="10" max="999" step="10" value="60" />
-            </label>
+                <!--            </div>-->
+                <button id="traffic" class="btn ">实时路况</button>
+                <button id="start-animation" class="btn">开始运动</button>
+                <label for="speed" style="margin-top:10px">
+                    运动速度:&nbsp;
+                    <input id="speed" type="range" min="10" max="999" step="10" value="60" />
+                </label>
+            </div>
+        </div>
+        <div id="mouse-position"></div>
+
+        <div style="z-index: 9999; position: fixed ! important; left: 20px; top: 96px;">
+            <div class="" style="background-color: rgba(255,255,255,0.8);border-radius: 10%;">
+                <table class="table table-striped" style="width: 250px; font-size: 18px;">
+                    <thead>
+                        <tr>
+                            <th>图例</th>
+                            <th>含义</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="./image/case2.png"></td>
+                            <td>案件</td>
+                        </tr>
+                        <tr>
+                            <td><img src="./image/police3.png"></td>
+                            <td>公安机关</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
         </div>
     </div>
-    <div id="mouse-position"></div>
-</div>
 
-<!-- 模态框 -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- 模态框头部 -->
-            <div class="modal-header">
-                <h4 class="modal-title">设置查询半径</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <!-- 模态框主体 -->
-            <div class="modal-body">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="输入半径" id="point-radius-input" name="point-radius">
-                    <div class="input-group-append">
-                        <span class="input-group-text">KM</span>
+    <!-- 模态框 -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                    <h4 class="modal-title">设置查询半径</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="输入半径" id="point-radius-input"
+                            name="point-radius">
+                        <div class="input-group-append">
+                            <span class="input-group-text">KM</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- 模态框底部 -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="surePointRadius()">确定</button>
-            </div>
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="surePointRadius()">确定
+                    </button>
+                </div>
 
+            </div>
         </div>
     </div>
-</div>
 
 </body>
+
 </html>

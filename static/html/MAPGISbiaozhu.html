@@ -101,15 +101,15 @@
 
 
         <div class="radio" style="z-index: 9999; position: fixed ! important; left: 20px; top: 50px;">
-            <label class="container">聚合标注1
-                <input type="radio" checked="checked" name="radio" onclick="show1()">
+<!--            <label class="container">聚合标注1-->
+<!--                <input type="radio" checked="checked" name="radio" onclick="show1()">-->
+<!--                <span class="checkmark"></span>-->
+<!--            </label>-->
+            <label class="container">案情分布
+                <input type="radio" checked="checked" name="radio" onclick="show2()">
                 <span class="checkmark"></span>
             </label>
-            <label class="container">聚合标注2
-                <input type="radio" name="radio" onclick="show2()">
-                <span class="checkmark"></span>
-            </label>
-            <label class="container">图片标注
+            <label class="container">案情图像
                 <input type="radio" name="radio" onclick="show3()">
                 <span class="checkmark"></span>
             </label>
@@ -299,14 +299,14 @@
         init_cluster1 = function () {
             clusterVector1 = createClusters1(clusterFeatures, 65, '../photo/cluster1.png', 0.5,
                 '#fff');
-            clusterVector1.setVisible(true);
+            clusterVector1.setVisible(false);
             map.addLayer(clusterVector1);
-        }
+        };
 
         init_cluster2 = function () {
             clusterVector2 = createClusters2(clusterFeatures, 100, '../photo/cluster1.png', 0.3,
                 '#fff');
-            clusterVector2.setVisible(false);
+            clusterVector2.setVisible(true);
             map.addLayer(clusterVector2);
         }
 
@@ -401,7 +401,7 @@
                                     /** @type {olx.style.IconOptions} */
                                     ({
                                         //设置图标点
-                                        anchor: [0.5, distance],
+                                        anchor: [0.5, distance*0.66],
                                         //图标起点
                                         anchorOrigin: 'top-right',
                                         //指定x值为图标点的x值
@@ -417,7 +417,15 @@
                                         opacity: 0.55,
                                         //图标的url
                                         src: imgUrl,
-                                    }))
+                                    })),
+                                text: new ol.style.Text({
+                                    text: size.toString(),
+                                    fill: new ol.style.Fill({
+                                        color: '#fff',
+                                    }),
+                                    font: (28) + 'px YaHei Consolas Hybrid bold',
+                                    textColor: textColor
+                                })
                             })
                         ];
                         styleCache[size] = style;
