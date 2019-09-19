@@ -10,8 +10,8 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <link href="../css/ol.css" rel="stylesheet" type="text/css" />
-    <link href="../css/dangeAnalysis.css" rel="stylesheet" type="text/css" />
     <script src="../js/MapGis_ol_product.js" type="text/javascript"></script>
+    <link href="../css/dangeAnalysis.css" rel="stylesheet" type="text/css" />
     <style>
         .radio {
             background-color: rgba(255, 255, 255, 0.5);
@@ -88,8 +88,8 @@
 
 <body>
     <div id="mapCon">
-        <div id="popup" class="">
-            <a id="popup-closer" class=""></a>
+        <div id="popup" class="ol-popup">
+            <a id="popup-closer" class="ol-popup-closer"></a>
             <div id="popup-content"></div>
         </div>
         <div class="btn-group" id="queryBtn" hidden>
@@ -101,10 +101,10 @@
 
 
         <div class="radio" style="z-index: 9999; position: fixed ! important; left: 20px; top: 50px;">
-<!--            <label class="container">聚合标注1-->
-<!--                <input type="radio" checked="checked" name="radio" onclick="show1()">-->
-<!--                <span class="checkmark"></span>-->
-<!--            </label>-->
+            <!--            <label class="container">聚合标注1-->
+            <!--                <input type="radio" checked="checked" name="radio" onclick="show1()">-->
+            <!--                <span class="checkmark"></span>-->
+            <!--            </label>-->
             <label class="container">案情分布
                 <input type="radio" checked="checked" name="radio" onclick="show2()">
                 <span class="checkmark"></span>
@@ -401,7 +401,7 @@
                                     /** @type {olx.style.IconOptions} */
                                     ({
                                         //设置图标点
-                                        anchor: [0.5, distance*0.66],
+                                        anchor: [0.5, distance * 0.66],
                                         //图标起点
                                         anchorOrigin: 'top-right',
                                         //指定x值为图标点的x值
@@ -521,7 +521,7 @@
                 let feature = map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
                     return feature;
                 });
-                console.log(feature);
+                // console.log(feature);
                 if (feature) {
                     clusterPopup(feature);
                 }
@@ -635,7 +635,7 @@
             return feature.values_.features.length;
         }
 
-        /**
+        /** 
          * 触发查询事件以及聚合标注事件
          */
         function addClusterTips() {

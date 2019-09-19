@@ -372,39 +372,48 @@ def face():
     return jsonify(response), 200
 
 
-@app.route('/get_police', methods=['GET'])
-def get_police():
-    result = dao.execute("select * from `police_station`;")
+@app.route('/get_medical', methods=['get'])
+def get_medical():
+    result = dao.execute("SELECT * FROM `medical_pois` LIMIT 150;")
     response = []
-    random_list = list(range(900))
+    for i in range(len(result)):
+        response.append({
+            "index": result[i][0],
+            "ID": result[i][1],
+            'name':result[i][2],
+            'type':result[i][3],
+            "address": result[i][4],
+            "lng": float(result[i][5]),
+            "lat": float(result[i][6]),
+            "X": float(result[i][7]),
+            'Y':float(result[i][8]),
+            "tel": result[i][9],
+            "area": result[i][10],
+        })
+    return jsonify(response), 200
+
+@app.route('/get_police',methods=['GET'])
+def get_police():
+    result=dao.execute("select * from `police_station`;")
+    response=[]
+    random_list=list(range(900))
     random.shuffle(random_list)
     earth_rad = 6378137.0
     for i in random_list[:300]:
-        tmp = float(result[i][5]) * math.pi / 180
+        tmp=float(result[i][5])*math.pi/180
         response.append({
-            'police_station_id':
-                result[i][0],
-            'id':
-                result[i][1],
-            'name':
-                result[i][2],
-            'address':
-                result[i][3],
-            'lng':
-                float(result[i][4]),
-            'lat':
-                float(result[i][5]),
-            'photos':
-                result[i][6],
-            'tel':
-                result[i][7],
-            'X':
-                float(result[i][4]) * math.pi / 180 * earth_rad,
-            'Y':
-                earth_rad / 2 * math.log(
-                    (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+            'police_station_id':result[i][0],
+            'id':result[i][1],
+            'name':result[i][2],
+            'address':result[i][3],
+            'lng':float(result[i][4]),
+            'lat':float(result[i][5]),
+            'photos':result[i][6],
+            'tel':result[i][7],
+            'X':float(result[i][4])*math.pi/180*earth_rad,
+            'Y':earth_rad/2*math.log((1.0+math.sin(tmp))/(1.0-math.sin(tmp)))
         })
-    return jsonify(response), 200
+    return jsonify(response),200
 
 
 @app.route('/get_path', methods=['POST'])

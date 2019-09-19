@@ -1,7 +1,7 @@
-let map;//地图容器
-let layerArray;//
+let map; //地图容器
+let layerArray; //
 
-window.onload=function () {
+window.onload = function () {
     let center = [12735697.59001188, 3573981.441510862];
     //最大级数
     let maxZoom = 30;
@@ -99,7 +99,7 @@ window.onload=function () {
         coordinateFormat: ol.coordinate.createStringXY(4),
         //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
         projection: 'EPSG:4326',
-//         projection: 'EPSG:3857',
+        //         projection: 'EPSG:3857',
         //坐标信息显示样式类名，默认是'ol-mouse-position'
         className: 'custom-mouse-position',
         //显示鼠标位置信息的目标容器
@@ -117,7 +117,7 @@ window.onload=function () {
     init_police();
     init_medical();
 };
-addLayer=function () {
+addLayer = function () {
     // let name = "addimg";
     // //地图文档名称
     // let docname = "images";
@@ -128,7 +128,7 @@ addLayer=function () {
     //     port: "6163"
     // });
     // map.addLayer(mapDocLayer);
-    $.fn.RangeSlider = function(cfg){
+    $.fn.RangeSlider = function (cfg) {
         this.sliderCfg = {
             min: cfg && !isNaN(parseFloat(cfg.min)) ? Number(cfg.min) : null,
             max: cfg && !isNaN(parseFloat(cfg.max)) ? Number(cfg.max) : null,
@@ -146,9 +146,9 @@ addLayer=function () {
             .attr('max', max)
             .attr('step', step);
 
-        $input.bind("input", function(e){
+        $input.bind("input", function (e) {
             $input.attr('value', this.value);
-            $input.css( 'background', 'linear-gradient(to right, #059CFA, white ' + this.value + '%, white)' );
+            $input.css('background', 'linear-gradient(to right, #059CFA, white ' + this.value + '%, white)');
 
             if ($.isFunction(callback)) {
                 callback(this);
@@ -157,22 +157,22 @@ addLayer=function () {
     };
 };
 
-let nearDis;//r
+let nearDis; //r
 let query;
-showPointSeachRadius=function (query_,queryContent_) {
-    query=query_;
-    queryContent=queryContent_;
+showPointSeachRadius = function (query_, queryContent_) {
+    query = query_;
+    queryContent = queryContent_;
 };
-surePointRadius=function () {
+surePointRadius = function () {
     nearDis = document.getElementById("point-radius-input").value;
-    if (query==='point'){
+    if (query === 'point') {
         queryVectorLayerPoint(queryContent);
-    }else {
+    } else {
         queryVectorLayerLine(queryContent);
     }
 };
 
-let createCaseStyle = function (opacity=0.75) {
+let createCaseStyle = function (opacity = 0.75) {
     return new ol.style.Style({
         /**{olx.style.IconOptions}类型*/
         image: new ol.style.Icon(
@@ -184,7 +184,7 @@ let createCaseStyle = function (opacity=0.75) {
                 offsetOrigin: 'top-right',
                 // offset:[0,10],
                 //图标缩放比例
-                scale:0.15,
+                scale: 0.15,
                 //透明度
                 opacity: opacity,
                 //图标的url
@@ -193,7 +193,7 @@ let createCaseStyle = function (opacity=0.75) {
         )
     });
 };
-let createPoliceStyle=function(opacity=0.75){
+let createPoliceStyle = function (opacity = 0.75) {
     return new ol.style.Style({
         /**{olx.style.IconOptions}类型*/
         image: new ol.style.Icon(
@@ -205,7 +205,7 @@ let createPoliceStyle=function(opacity=0.75){
                 offsetOrigin: 'top-right',
                 // offset:[0,10],
                 //图标缩放比例
-                scale:0.15,
+                scale: 0.15,
                 //透明度
                 opacity: opacity,
                 //图标的url
@@ -214,7 +214,7 @@ let createPoliceStyle=function(opacity=0.75){
         )
     })
 };
-let createMedicalStyle=function(opacity=0.75){
+let createMedicalStyle = function (opacity = 0.75) {
     return new ol.style.Style({
         /**{olx.style.IconOptions}类型*/
         image: new ol.style.Icon(
@@ -226,7 +226,7 @@ let createMedicalStyle=function(opacity=0.75){
                 offsetOrigin: 'top-right',
                 // offset:[0,10],
                 //图标缩放比例
-                scale:0.7,
+                scale: 0.7,
                 //透明度
                 opacity: opacity,
                 //图标的url
@@ -245,31 +245,31 @@ let policeVector;
 let medicalArray;
 let medicalSource;
 let medicalVector;
-init_case=function(){
+init_case = function () {
     $.ajax({
-        url:'http://gis.hoxu.xyz:80/get_wuhan',
-        type:"GET",
+        url: 'http://gis.hoxu.xyz:80/get_wuhan',
+        type: "GET",
         dataType: "json",
         async: false,
-        success:function (data) {
-            caseArray=[];
-            let len=data.length;
-            for (let i=0;i<len;++i){
-                let point=new ol.Feature({
-                    geometry:new ol.geom.Point([data[i].X,data[i].Y]),
-                    case_id:data[i].case_id,
-                    case_data:data[i].case_name,
-                    case_type:data[i].case_type,
+        success: function (data) {
+            caseArray = [];
+            let len = data.length;
+            for (let i = 0; i < len; ++i) {
+                let point = new ol.Feature({
+                    geometry: new ol.geom.Point([data[i].X, data[i].Y]),
+                    case_id: data[i].case_id,
+                    case_data: data[i].case_name,
+                    case_type: data[i].case_type,
                     // informant_id:data.data[i].informant_id,
                     // suspects_id:data.data[i].suspects_id,
-                    time:data[i].time,
-                    case_position:data[i].case_position,
-                    lng:data[i].lng,
-                    lat:data[i].lat,
-                    case_description:data[i].case_description,
-                    case_status:data[i].case_status,
-                    X:data[i].X,
-                    Y:data[i].Y
+                    time: data[i].time,
+                    case_position: data[i].case_position,
+                    lng: data[i].lng,
+                    lat: data[i].lat,
+                    case_description: data[i].case_description,
+                    case_status: data[i].case_status,
+                    X: data[i].X,
+                    Y: data[i].Y
                 });
                 point.setStyle(createCaseStyle(0));
                 caseArray.push(point);
@@ -286,28 +286,28 @@ init_case=function(){
     })
 
 };
-init_police=function(){
+init_police = function () {
     $.ajax({
-        url:'http://gis.hoxu.xyz:80/get_police',
-        type:"GET",
+        url: 'http://gis.hoxu.xyz:80/get_police',
+        type: "GET",
         dataType: "json",
         async: false,
-        success:function (data) {
-            policeArray=[];
-            let len=data.length;
-            for (let i=0;i<len;++i){
-                let point=new ol.Feature({
-                    geometry:new ol.geom.Point([data[i].X,data[i].Y]),
-                    police_station_id:data[i].police_station_id,
-                    id:data[i].id,
-                    lng:data[i].lng,
-                    lat:data[i].lat,
-                    X:data[i].X,
-                    Y:data[i].Y,
-                    address:data[i].address,
-                    name:data[i].name,
-                    photos:data[i].photos,
-                    tel:data[i].tel,
+        success: function (data) {
+            policeArray = [];
+            let len = data.length;
+            for (let i = 0; i < len; ++i) {
+                let point = new ol.Feature({
+                    geometry: new ol.geom.Point([data[i].X, data[i].Y]),
+                    police_station_id: data[i].police_station_id,
+                    id: data[i].id,
+                    lng: data[i].lng,
+                    lat: data[i].lat,
+                    X: data[i].X,
+                    Y: data[i].Y,
+                    address: data[i].address,
+                    name: data[i].name,
+                    photos: data[i].photos,
+                    tel: data[i].tel,
                 });
                 point.setStyle(createPoliceStyle(0));
                 policeArray.push(point);
@@ -323,29 +323,29 @@ init_police=function(){
         }
     })
 };
-init_medical=function(){
+init_medical = function () {
     $.ajax({
-        url:'http://gis.hoxu.xyz:80/get_medical',
-        type:"GET",
+        url: 'http://gis.hoxu.xyz:80/get_medical',
+        type: "GET",
         dataType: "json",
         async: false,
-        success:function (data) {
-            medicalArray=[];
-            let len=data.length;
-            for (let i=0;i<len;++i){
-                let point=new ol.Feature({
-                    geometry:new ol.geom.Point([data[i].X,data[i].Y]),
-                    index:data[i].index,
-                    id:data[i].ID,
-                    name:data[i].name,
-                    type:data[i].type,
-                    address:data[i].address,
-                    lng:data[i].lng,
-                    lat:data[i].lat,
-                    X:data[i].X,
-                    Y:data[i].Y,
-                    tel:data[i].tel,
-                    area:data[i].area,
+        success: function (data) {
+            medicalArray = [];
+            let len = data.length;
+            for (let i = 0; i < len; ++i) {
+                let point = new ol.Feature({
+                    geometry: new ol.geom.Point([data[i].X, data[i].Y]),
+                    index: data[i].index,
+                    id: data[i].ID,
+                    name: data[i].name,
+                    type: data[i].type,
+                    address: data[i].address,
+                    lng: data[i].lng,
+                    lat: data[i].lat,
+                    X: data[i].X,
+                    Y: data[i].Y,
+                    tel: data[i].tel,
+                    area: data[i].area,
                 });
                 point.setStyle(createMedicalStyle(0));
                 medicalArray.push(point);
@@ -362,28 +362,30 @@ init_medical=function(){
     })
 };
 //--------------------------------------------------------------------
-let flag=0;
-let queryContent=0;//1->case,2->police,3->medical
+let flag = 0;
+let queryContent = 0; //1->case,2->police,3->medical
 let DrawVector;
 let Draw;
-clearQuery=function(){
-    flag=0;
+clearQuery = function () {
+    flag = 0;
     // queryContent=0;
-    for (let item of queryResult){
-        if (queryContent===1){
+    for (let item of queryResult) {
+        if (queryContent === 1) {
             item.setStyle(createCaseStyle(0));
-        }else if (queryContent===2){
+        } else if (queryContent === 2) {
             item.setStyle(createPoliceStyle(0));
-        }else {
+        } else {
             item.setStyle(createMedicalStyle(0));
         }
     }
 };
-queryVectorLayerCircle=function (queryContent_) {
+queryVectorLayerCircle = function (queryContent_) {
     clearQuery();
-    queryContent=queryContent_;
-    flag=1;
-    let source = new ol.source.Vector({ wrapX: false });
+    queryContent = queryContent_;
+    flag = 1;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -397,7 +399,7 @@ queryVectorLayerCircle=function (queryContent_) {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     Draw = new ol.interaction.Draw({
-        type: 'Circle',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'Circle', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source,
     });
@@ -405,11 +407,13 @@ queryVectorLayerCircle=function (queryContent_) {
     //点击查询的回调函数
     Draw.on('drawend', DrawControlback);
 };
-queryVectorLayerPolygon=function (queryContent_) {
+queryVectorLayerPolygon = function (queryContent_) {
     clearQuery();
-    queryContent=queryContent_;
-    flag=2;
-    let source = new ol.source.Vector({ wrapX: false });
+    queryContent = queryContent_;
+    flag = 2;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -423,7 +427,7 @@ queryVectorLayerPolygon=function (queryContent_) {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     Draw = new ol.interaction.Draw({
-        type: 'Polygon',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'Polygon', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
@@ -431,11 +435,13 @@ queryVectorLayerPolygon=function (queryContent_) {
     //点击查询的回调函数
     Draw.on('drawend', DrawControlback);
 };
-queryVectorLayerRectangle=function (queryContent_) {
-    queryContent=queryContent_;
+queryVectorLayerRectangle = function (queryContent_) {
+    queryContent = queryContent_;
     clearQuery();
-    flag=3;
-    let source = new ol.source.Vector({ wrapX: false });
+    flag = 3;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -449,7 +455,7 @@ queryVectorLayerRectangle=function (queryContent_) {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     Draw = new ol.interaction.Draw({
-        type: 'Circle',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'Circle', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source,
         geometryFunction: ol.interaction.Draw.createRegularPolygon(4)
@@ -458,11 +464,13 @@ queryVectorLayerRectangle=function (queryContent_) {
     //点击查询的回调函数
     Draw.on('drawend', DrawControlback);
 };
-queryVectorLayerPoint=function (queryContent_) {
-    queryContent=queryContent_;
+queryVectorLayerPoint = function (queryContent_) {
+    queryContent = queryContent_;
     clearQuery();
-    flag=4;
-    let source = new ol.source.Vector({ wrapX: false });
+    flag = 4;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -476,7 +484,7 @@ queryVectorLayerPoint=function (queryContent_) {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     Draw = new ol.interaction.Draw({
-        type: 'Point',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'Point', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
@@ -484,11 +492,13 @@ queryVectorLayerPoint=function (queryContent_) {
     //点击查询的回调函数
     Draw.on('drawend', DrawControlback);
 };
-queryVectorLayerLine=function (queryContent_) {
-    queryContent=queryContent_;
+queryVectorLayerLine = function (queryContent_) {
+    queryContent = queryContent_;
     clearQuery();
-    flag=5;
-    let source = new ol.source.Vector({ wrapX: false });
+    flag = 5;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -502,7 +512,7 @@ queryVectorLayerLine=function (queryContent_) {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     Draw = new ol.interaction.Draw({
-        type: 'LineString',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'LineString', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
@@ -511,59 +521,58 @@ queryVectorLayerLine=function (queryContent_) {
     Draw.on('drawend', DrawControlback);
 };
 //----------------------------------------------------
-let rad=function(d){
-    return d*Math.PI/180;
+let rad = function (d) {
+    return d * Math.PI / 180;
 };
-let getDistance=function(item2){
-    let earthRad=6378137;
-    let lng1=currentLnglat.lng;
-    let lat1=currentLnglat.lat;
-    let lng2=item2.values_['lng'];
-    let lat2=item2.values_['lat'];
-    let radLat1=rad(lat1);
-    let radLat2=rad(lat2);
-    let a=radLat1-radLat2;
-    let b=rad(lng1)-rad(lng2);
-    let s=2*Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2)+Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
-    s=s*earthRad;
+let getDistance = function (item2) {
+    let earthRad = 6378137;
+    let lng1 = currentLnglat.lng;
+    let lat1 = currentLnglat.lat;
+    let lng2 = item2.values_['lng'];
+    let lat2 = item2.values_['lat'];
+    let radLat1 = rad(lat1);
+    let radLat2 = rad(lat2);
+    let a = radLat1 - radLat2;
+    let b = rad(lng1) - rad(lng2);
+    let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+    s = s * earthRad;
     return s;
 };
 
-let queryResult=[];
-DrawControlback=function (features) {
-    queryResult.length=0;
-    if (Draw!=null){
+let queryResult = [];
+DrawControlback = function (features) {
+    queryResult.length = 0;
+    if (Draw != null) {
         map.removeInteraction(Draw);
     }
     map.removeLayer(DrawVector);
     let querySource;
     console.log(queryContent);
-    if (queryContent===1){
-        querySource=caseSource;
-    }else if (queryContent===2){
-        querySource=policeSource;
-    }else if (queryContent===3){
-        querySource=medicalSource;
-    }else {
-        querySource=0;
+    if (queryContent === 1) {
+        querySource = caseSource;
+    } else if (queryContent === 2) {
+        querySource = policeSource;
+    } else if (queryContent === 3) {
+        querySource = medicalSource;
+    } else {
+        querySource = 0;
     }
-    if (flag===4){
-        let bufferedExtent=new ol.extent.buffer(features.feature.getGeometry().getExtent(),nearDis*950);
+    if (flag === 4) {
+        let bufferedExtent = new ol.extent.buffer(features.feature.getGeometry().getExtent(), nearDis * 950);
         // console.log('Point');
-        let result=caseSource.forEachFeatureIntersectingExtent(bufferedExtent,success);
-    }else if (flag===5){
-        let bufferedExtent=new ol.extent.buffer(features.feature.getGeometry().getExtent(),nearDis*60);
+        let result = querySource.forEachFeatureIntersectingExtent(bufferedExtent, success);
+    } else if (flag === 5) {
+        let bufferedExtent = new ol.extent.buffer(features.feature.getGeometry().getExtent(), nearDis * 60);
         // console.log('Point');
-        let result=caseSource.forEachFeatureIntersectingExtent(bufferedExtent,success);
+        let result = querySource.forEachFeatureIntersectingExtent(bufferedExtent, success);
+    } else {
+        let result = querySource.forEachFeatureIntersectingExtent(features.feature.getGeometry().getExtent(), success);
     }
-    else {
-        let result=caseSource.forEachFeatureIntersectingExtent(features.feature.getGeometry().getExtent(),success);
-    }
-    if (origin!=='current'){
-        let nearest=queryResult[0];
-        for (let item of queryResult){
-            if (getDistance(item)<getDistance(nearest)){
-                nearest=item;
+    if (origin !== 'current') {
+        let nearest = queryResult[0];
+        for (let item of queryResult) {
+            if (getDistance(item) < getDistance(nearest)) {
+                nearest = item;
             }
         }
         //-----添加文字标注
@@ -579,75 +588,80 @@ DrawControlback=function (features) {
                     //文本内容
                     text: feature.get('name'),
                     //文本填充样式（即文字颜色）
-                    fill: new ol.style.Fill({ color: '#aa3300' }),
-                    stroke: new ol.style.Stroke({ color: '#ffcc33', width: 2 })
+                    fill: new ol.style.Fill({
+                        color: '#aa3300'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#ffcc33',
+                        width: 2
+                    })
                 })
             });
         };
         let labelName;
-        labelName='最佳目的地';
-        let wordLabel=new ol.Feature({
-            geometry:new ol.geom.Point([nearest.values_['X'],nearest.values_['Y']]),
-            name:labelName,
+        labelName = '最佳目的地';
+        let wordLabel = new ol.Feature({
+            geometry: new ol.geom.Point([nearest.values_['X'], nearest.values_['Y']]),
+            name: labelName,
         });
         wordLabel.setStyle(createLabelStyle(wordLabel));
         drivingVectorSource.addFeature(wordLabel);
     }
 };
 
-success=function (data) {
+success = function (data) {
     queryResult.push(data);
-    if (queryContent===1){
+    if (queryContent === 1) {
         data.setStyle(createCaseStyle());
-    }else if (queryContent===2){
+    } else if (queryContent === 2) {
         data.setStyle(createPoliceStyle());
-    }else {
+    } else {
         data.setStyle(createMedicalStyle());
     }
 };
 
 //------------------------路径规划
-let isPath=false;
-let bicycling=false;
-let walking=false;
-let driving=false;
-let origin='';
-let destination='';
+let isPath = false;
+let bicycling = false;
+let walking = false;
+let driving = false;
+let origin = '';
+let destination = '';
 let drivingVectorLayer;
 let drivingVectorSource;
 let startMarker;
 let endMarker;
 
 $(function () {
-    $('#undo').bind('click',function () {
+    $('#undo').bind('click', function () {
         Draw.removeLastPoint();
     });
-    $('#driving').bind('click',function(){
+    $('#driving').bind('click', function () {
         // clearPath();
         // setCurrentOrigin();
-        if (origin==='current'){
+        if (origin === 'current') {
             setCurrentOrigin();
         }
-        isPath=true;
-        driving=true;
+        isPath = true;
+        driving = true;
     });
     $('#bicycling').click(function () {
         // clearPath();
         // setCurrentOrigin();
-        if (origin==='current'){
+        if (origin === 'current') {
             setCurrentOrigin();
         }
-        isPath=true;
-        bicycling=true;
+        isPath = true;
+        bicycling = true;
     });
     $('#walking').click(function () {
         // clearPath();
         // setCurrentOrigin();
-        if (origin==='current'){
+        if (origin === 'current') {
             setCurrentOrigin();
         }
-        isPath=true;
-        walking=true;
+        isPath = true;
+        walking = true;
     });
     $('#reset').click(function () {
         clearQuery();
@@ -663,10 +677,9 @@ $(function () {
     let startButton = document.getElementById('start-animation');
     let vectorLayer;
     let geoMarker;
-    $('#start-animation').bind('click',function () {
+    $('#start-animation').bind('click', function () {
         // for (route of geomPolylines)
-        let route=geomPolylines[0];
-        {
+        let route = geomPolylines[0]; {
             let routeCoords = route.getCoordinates();
             let routeLength = routeCoords.length;
             let styles = {
@@ -679,7 +692,7 @@ $(function () {
                 'icon': new ol.style.Style({
                     image: new ol.style.Icon({
                         anchor: [0.5, 1],
-                        scale:0.1,
+                        scale: 0.1,
                         src: "./image/red.png"
                     })
                 }),
@@ -687,7 +700,9 @@ $(function () {
                     image: new ol.style.Circle({
                         radius: 7,
                         snapToPixel: false,
-                        fill: new ol.style.Fill({ color: 'black' }),
+                        fill: new ol.style.Fill({
+                            color: 'black'
+                        }),
                         stroke: new ol.style.Stroke({
                             color: 'white',
                             width: 2
@@ -718,6 +733,7 @@ $(function () {
                 map.render();
             };
             startAnimation();
+
             function startAnimation() {
                 if (animating) {
                     stopAnimation(false);
@@ -754,7 +770,7 @@ $(function () {
 
                         vectorLayer = new ol.layer.Vector({
                             source: new ol.source.Vector({
-                                features: [routeFeature, geoMarker, ]//startMarker, endMarker
+                                features: [routeFeature, geoMarker, ] //startMarker, endMarker
                             }),
                             style: function (feature) {
                                 //如果动画是激活的就隐藏geoMarker
@@ -800,10 +816,49 @@ $(function () {
     //-----------------------------------------------------------------/移动
 });
 
-addListener=function () {
+addListener = function () {
     // map.on('singleclick',function (e) {
     //     console.log('on-click');
     // });
+
+    container = document.getElementById('popup');
+    content = document.getElementById('popup-content');
+    closer = document.getElementById('popup-closer');
+
+    /**
+     * 添加关闭按钮的单击事件（隐藏popup）
+     * @return {boolean} Don't follow the href.
+     */
+    closer.onclick = function () {
+        //未定义popup位置
+        popup.setPosition(undefined);
+        //失去焦点
+        closer.blur();
+        return false;
+    };
+
+    /**
+     * 在地图容器中创建一个Overlay
+     */
+    popup = new ol.Overlay(
+        /** @type {olx.OverlayOptions} */
+        ({
+            //要转换成overlay的HTML元素
+            element: container,
+            //当前窗口可见
+            autoPan: true,
+            //Popup放置的位置
+            positioning: 'bottom-center',
+            //是否应该停止事件传播到地图窗口
+            stopEvent: false,
+            autoPanAnimation: {
+                //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度
+                duration: 250
+            }
+        }));
+    map.addOverlay(popup);
+
+
     /**
      * 为map添加点击事件监听，渲染弹出popup
      */
@@ -814,66 +869,77 @@ addListener=function () {
         });
         // console.log(evt);
         // if (feature) {
-            if (isPath){
-                let xy={
-                    'x':evt.coordinate[0],
-                    'y':evt.coordinate[1],
-                };
-                let lnglat=_getLngLat(xy);
-                if (origin==='current'){
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        lnglat.lng=position.coords.longitude;
-                        lnglat.lat=position.coords.latitude;
-                    });
-                    xy=_getMercator(lnglat);
-                }
-                if (origin.length===0||origin==='current'){
-                    origin+=(lnglat.lng+','+lnglat.lat);
-                    startMarker = new ol.Feature({
-                        geometry: new ol.geom.Point([xy.x,xy.y])
-                    });
-                    startMarker.setStyle(new ol.style.Style({
-                        image: new ol.style.Icon({
-                            // anchor: [0.5, 60],
-                            // anchorOrigin: 'top-right',
-                            // anchorXUnits: 'fraction',
-                            // anchorYUnits: 'pixels',
-                            // offsetOrigin: 'top-right',
-                            opacity: 0.75,
-                            scale:0.3,
-                            src: "./image/origin2.png"
-                        })
-                    }));
-                    // console.log(startMarker);
-                    // drivingVectorSource.addFeatures([startMarker]);
-                    drivingVectorSource = new ol.source.Vector({
-                        features:[startMarker],
-                    });
-                    drivingVectorLayer = new ol.layer.Vector({
-                        title:"线",
-                        source: drivingVectorSource,
-                        // renderMode:'image',
-                        id:'isPath'
-                    });
-                    map.addLayer(drivingVectorLayer);
-                }else if (destination.length===0){
-                    destination+=(lnglat.lng+','+lnglat.lat);
-                    endMarker = new ol.Feature({
-                        geometry: new ol.geom.Point([xy.x,xy.y])
-                    });
-                    endMarker.setStyle(new ol.style.Style({
-                        image: new ol.style.Icon({
-                            opacity: 0.75,
-                            scale:0.3,
-                            src: "./image/destination2.png"
-                        })
-                    }));
-                    drivingVectorSource.addFeatures([endMarker]);
-                    isPath=false;
-                    getPath();
-                }
+
+        if (feature) console.log(feature);
+
+        if (isPath) {
+            let xy = {
+                'x': evt.coordinate[0],
+                'y': evt.coordinate[1],
+            };
+            let lnglat = _getLngLat(xy);
+            if (origin === 'current') {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    lnglat.lng = position.coords.longitude;
+                    lnglat.lat = position.coords.latitude;
+                });
+                xy = _getMercator(lnglat);
+            }
+            if (origin.length === 0 || origin === 'current') {
+                origin += (lnglat.lng + ',' + lnglat.lat);
+                startMarker = new ol.Feature({
+                    geometry: new ol.geom.Point([xy.x, xy.y])
+                });
+                startMarker.setStyle(new ol.style.Style({
+                    image: new ol.style.Icon({
+                        // anchor: [0.5, 60],
+                        // anchorOrigin: 'top-right',
+                        // anchorXUnits: 'fraction',
+                        // anchorYUnits: 'pixels',
+                        // offsetOrigin: 'top-right',
+                        opacity: 0.75,
+                        scale: 0.3,
+                        src: "./image/origin2.png"
+                    })
+                }));
+                // console.log(startMarker);
+                // drivingVectorSource.addFeatures([startMarker]);
+                drivingVectorSource = new ol.source.Vector({
+                    features: [startMarker],
+                });
+                drivingVectorLayer = new ol.layer.Vector({
+                    title: "线",
+                    source: drivingVectorSource,
+                    // renderMode:'image',
+                    id: 'isPath'
+                });
+                map.addLayer(drivingVectorLayer);
+            } else if (destination.length === 0) {
+                destination += (lnglat.lng + ',' + lnglat.lat);
+                endMarker = new ol.Feature({
+                    geometry: new ol.geom.Point([xy.x, xy.y])
+                });
+                endMarker.setStyle(new ol.style.Style({
+                    image: new ol.style.Icon({
+                        opacity: 0.75,
+                        scale: 0.3,
+                        src: "./image/destination2.png"
+                    })
+                }));
+                drivingVectorSource.addFeatures([endMarker]);
+                isPath = false;
+                getPath();
+            }
             // }
+        } else if (feature) {
+            if (feature.values_.hasOwnProperty("police_station_id") ||
+                feature.values_.hasOwnProperty("case_id")) {
+                createPopup(feature);
+            } else if (feature.values_.hasOwnProperty("index")) {
+                createPopup(feature);
+            }
         }
+
     });
     /**
      * 为map添加鼠标移动事件监听，当指向标注时改变鼠标光标状态
@@ -885,18 +951,18 @@ addListener=function () {
     });
 };
 let currentLnglat;
-setCurrentOrigin=function(){
+setCurrentOrigin = function () {
     clearPath();
     navigator.geolocation.getCurrentPosition(function (position) {
         // console.log(position);
-        currentLnglat={
-            'lng':position.coords.longitude,
-            'lat':position.coords.latitude,
+        currentLnglat = {
+            'lng': position.coords.longitude,
+            'lat': position.coords.latitude,
         };
-        let xy=_getMercator(currentLnglat);
-        origin=(currentLnglat.lng+','+currentLnglat.lat);
+        let xy = _getMercator(currentLnglat);
+        origin = (currentLnglat.lng + ',' + currentLnglat.lat);
         startMarker = new ol.Feature({
-            geometry: new ol.geom.Point([xy.x,xy.y])
+            geometry: new ol.geom.Point([xy.x, xy.y])
         });
         startMarker.setStyle(new ol.style.Style({
             image: new ol.style.Icon({
@@ -906,23 +972,23 @@ setCurrentOrigin=function(){
                 // anchorYUnits: 'pixels',
                 // offsetOrigin: 'top-right',
                 opacity: 0.75,
-                scale:0.3,
+                scale: 0.3,
                 src: "./image/origin2.png"
             })
         }));
         // console.log(startMarker);
         // drivingVectorSource.addFeatures([startMarker]);
         drivingVectorSource = new ol.source.Vector({
-            features:[startMarker],
+            features: [startMarker],
         });
         drivingVectorLayer = new ol.layer.Vector({
-            title:"线",
+            title: "线",
             source: drivingVectorSource,
             // renderMode:'image',
-            id:'isPath'
+            id: 'isPath'
         });
-        let view=map.getView();
-        let duration = 2000;//动画的持续时间（以毫秒为单位）
+        let view = map.getView();
+        let duration = 2000; //动画的持续时间（以毫秒为单位）
         let zoom = view.getZoom();
         let parts = 2;
         let called = false;
@@ -939,12 +1005,12 @@ setCurrentOrigin=function(){
         }
         //第一个动画
         view.animate({
-            center: [xy.x,xy.y],
+            center: [xy.x, xy.y],
             duration: duration
         }, callback);
         //第二个动画
         view.animate({
-            zoom: zoom-0.3,
+            zoom: zoom - 0.3,
             duration: duration / 2
         }, {
             zoom: 15,
@@ -954,33 +1020,33 @@ setCurrentOrigin=function(){
     });
 
 };
-getPath=function () {
+getPath = function () {
     let mode;
-    if (driving){
-        mode='driving';
-    }else if (walking){
-        mode='walking';
-    }else {
-        mode='bicycling';
+    if (driving) {
+        mode = 'driving';
+    } else if (walking) {
+        mode = 'walking';
+    } else {
+        mode = 'bicycling';
     }
-    let data={
-        'origin':origin,
-        'destination':destination,//"116.434446,39.90816"
-        'mode':mode,
+    let data = {
+        'origin': origin,
+        'destination': destination, //"116.434446,39.90816"
+        'mode': mode,
     };
     // console.log(data);
     $.ajax({
-        url:"http://gis.hoxu.xyz:80/get_path",
-        dataType:'json',
-        async:true,
-        data:data,
-        type:'POST',
+        url: "http://gis.hoxu.xyz:80/get_path",
+        dataType: 'json',
+        async: true,
+        data: data,
+        type: 'POST',
         success: function (data) {
             //请求成功时处理
             // console.log(data);
-            if (data['status']==='N'){
+            if (data['status'] === 'N') {
                 alert(data['message'])
-            }else {
+            } else {
                 drawPath(data);
             }
         },
@@ -990,9 +1056,9 @@ getPath=function () {
         }
     });
 };
-let geomPolylines=[];//路径线集合
-drawPath=function (data) {
-    let featurePolylines=[];
+let geomPolylines = []; //路径线集合
+drawPath = function (data) {
+    let featurePolylines = [];
     //---style
     let stroke = new ol.style.Stroke({
         color: '#8A02F9',
@@ -1004,10 +1070,10 @@ drawPath=function (data) {
         })
     ];
     //--
-    for (let i=0;i<data.value.length;++i){
-        let line_org=data.value[i]['roads'];
+    for (let i = 0; i < data.value.length; ++i) {
+        let line_org = data.value[i]['roads'];
         // console.log(line_org);
-        let geomPolyline= new ol.geom.LineString(line_org);
+        let geomPolyline = new ol.geom.LineString(line_org);
         let featurePolyline = new ol.Feature({
             geometry: geomPolyline,
             name: 'Polyline',
@@ -1029,8 +1095,13 @@ drawPath=function (data) {
                     //文本内容
                     text: feature.get('name'),
                     //文本填充样式（即文字颜色）
-                    fill: new ol.style.Fill({ color: '#aa3300' }),
-                    stroke: new ol.style.Stroke({ color: '#ffcc33', width: 2 })
+                    fill: new ol.style.Fill({
+                        color: '#aa3300'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#ffcc33',
+                        width: 2
+                    })
                 })
             });
         };
@@ -1038,29 +1109,182 @@ drawPath=function (data) {
         // if (driving){
         //     labelName=data.value[i]['strategy']
         // }else {
-        labelName=parseFloat(data.value[i]['distance'])/1000+'KM';
+        labelName = parseFloat(data.value[i]['distance']) / 1000 + 'KM';
         // }
-        let wordLabel=new ol.Feature({
-            geometry:new ol.geom.Point(line_org[parseInt(line_org.length/2)]),
-            name:labelName,
+        let wordLabel = new ol.Feature({
+            geometry: new ol.geom.Point(line_org[parseInt(line_org.length / 2)]),
+            name: labelName,
         });
         wordLabel.setStyle(createLabelStyle(wordLabel));
         drivingVectorSource.addFeature(wordLabel);
     }
     drivingVectorSource.addFeatures(featurePolylines);
 };
-clearPath=function () {
-    origin='current';
-    destination='';
-    geomPolylines.length=0;
-    isPath=false;
-    driving=false;
-    walking=false;
-    bicycling=false;
-    if (contains(map,drivingVectorLayer)){
+clearPath = function () {
+    origin = 'current';
+    destination = '';
+    geomPolylines.length = 0;
+    isPath = false;
+    driving = false;
+    walking = false;
+    bicycling = false;
+    if (contains(map, drivingVectorLayer)) {
         map.removeLayer(drivingVectorLayer);
     }
 };
+
+//-----------------------------------------------------------------Popup
+
+/**
+ * 获得feature的坐标
+ * @param feature 聚合簇
+ */
+function getFeatureCoordinates(feature) {
+    return feature.values_.geometry.flatCoordinates;
+}
+
+/**
+ * 构造popLayer
+ * @returns {ol.Overlay}
+ */
+function createPopupLayer() {
+    return new ol.Overlay(
+        /** @type {olx.OverlayOptions} */
+        ({
+            //要转换成overlay的HTML元素
+            element: container,
+            //当前窗口可见
+            autoPan: true,
+            //Popup放置的位置
+            positioning: 'bottom-center',
+            //是否应该停止事件传播到地图窗口
+            stopEvent: false,
+            autoPanAnimation: {
+                //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度
+                duration: 250
+            }
+        }));
+}
+
+function createPopup(feature) {
+    //初始化首页popup框中信息
+    addFeatrueInfo(feature.values_);
+    //刷新位置
+    var position = getFeatureCoordinates(feature);
+    //进行定位
+    popup.setPosition(position);
+}
+
+String.prototype.replaceAll = function (search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+/**
+ * 为popUp动态添加内容
+ * */
+function addFeatrueInfo(info) {
+    console.log(info);
+
+    if (info.tel == "[]") {
+        info.tel = "无";
+    }
+
+    if (info == undefined)
+        return -1;
+    content.innerHTML = "";
+
+    if (info.hasOwnProperty("police_station_id")) {
+        if (info.tel.toString() == "NULL") info.tel = "无";
+        content.innerHTML =
+            '<h4>公安机关</h4>' +
+            '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
+            '    <table class="table table-hover table-striped">\n' +
+            '        <tr>\n' +
+            '            <td>编号</td>\n' +
+            '            <td>' + info.id + ' </td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>名称</td>\n' +
+            '            <td>' + info.name + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>地址</td>\n' +
+            '            <td>' + info.address + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>电话</td>\n' +
+            '            <td>' + info.tel + '</td>\n' +
+            '        </tr>\n' +
+            '    </table>\n' +
+            '</div>';
+    } else if (info.hasOwnProperty("case_id")) {
+        content.innerHTML =
+            '<h4>案件</h4>' +
+            '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
+            '    <table class="table table-hover table-striped">\n' +
+            '        <tr>\n' +
+            '            <td>案件编号</td>\n' +
+            '            <td>' + info.case_id + ' </td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>案件地址</td>\n' +
+            '            <td>' + info.case_position + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>案件时间</td>\n' +
+            '            <td>' + info.time + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>案件描述</td>\n' +
+            '            <td>' + info.case_description + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>照片</td>\n' +
+            '            <td>' +
+            '<div style="width: 200px;height: 200px;overflow: hidden;position: relative;">' +
+            '<img src="../photo/' + parseInt(info.case_id) + '.png" style="max-width: 100%;margin: auto">' +
+            '</div>' +
+            '</td>\n' +
+            '        </tr>\n' +
+            '    </table>\n' +
+            '</div>';
+    } else if (info.hasOwnProperty('index')) {
+        info.tel = info.tel.replaceAll(";", "<br>");
+
+        // if(info.tel == })
+
+        content.innerHTML =
+            '<h4>医疗点</h4>' +
+            '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
+            '    <table class="table table-hover table-striped">\n' +
+            '        <tr>\n' +
+            '            <td>医疗点编号</td>\n' +
+            '            <td>' + info.index + ' </td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>名称</td>\n' +
+            '            <td>' + info.name + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>地址</td>\n' +
+            '            <td>' + info.address + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>隶属区域</td>\n' +
+            '            <td>' + info.area + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>电话</td>\n' +
+            '            <td>' + info.tel + '</td>\n' +
+            '        </tr>\n' +
+            '    </table>\n' +
+            '</div>';
+    }
+}
+
+
+
 
 //-----------------------------------------------------------------辅助函数
 /**
@@ -1069,7 +1293,7 @@ clearPath=function () {
  * @returns {{}}
  * @private
  */
-function _getMercator(poi) {//[114.32894, 30.585748]
+function _getMercator(poi) { //[114.32894, 30.585748]
     let mercator = {};
     let earthRad = 6378137.0;
     // console.log("mercator-poi",poi);
@@ -1085,17 +1309,17 @@ function _getMercator(poi) {//[114.32894, 30.585748]
  * @returns {{}}
  * @private
  */
-function _getLngLat(poi){
+function _getLngLat(poi) {
     let lnglat = {};
-    lnglat.lng = poi.x/20037508.34*180;
-    let mmy = poi.y/20037508.34*180;
-    lnglat.lat = 180/Math.PI*(2*Math.atan(Math.exp(mmy*Math.PI/180))-Math.PI/2);
+    lnglat.lng = poi.x / 20037508.34 * 180;
+    let mmy = poi.y / 20037508.34 * 180;
+    lnglat.lat = 180 / Math.PI * (2 * Math.atan(Math.exp(mmy * Math.PI / 180)) - Math.PI / 2);
     return lnglat;
 }
 
-contains=function (map,layer) {
-    for (item of map.getLayers().getArray()){
-        if (item.values_['id']==='isPath'){
+contains = function (map, layer) {
+    for (item of map.getLayers().getArray()) {
+        if (item.values_['id'] === 'isPath') {
             return true;
         }
     }

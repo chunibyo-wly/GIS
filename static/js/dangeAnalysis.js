@@ -1,7 +1,7 @@
-let map;//地图容器
-let layerArray;//
+let map; //地图容器
+let layerArray; //
 
-window.onload=function () {
+window.onload = function () {
     let center = [12735697.59001188, 3573981.441510862];
     //最大级数
     let maxZoom = 30;
@@ -91,7 +91,7 @@ window.onload=function () {
         //坐标格式
         coordinateFormat: ol.coordinate.createStringXY(4),
         //地图投影坐标系（若未设置则输出为默认投影坐标系下的坐标）
-		projection: 'EPSG:4326',
+        projection: 'EPSG:4326',
         // projection: 'EPSG:3857',
         //坐标信息显示样式类名，默认是'ol-mouse-position'
         className: 'custom-mouse-position',
@@ -110,7 +110,7 @@ window.onload=function () {
     // init_police();
     addPopup();
 };
-addLayer=function () {
+addLayer = function () {
     // let name = "addimg";
     // //地图文档名称
     // let docname = "images";
@@ -121,7 +121,7 @@ addLayer=function () {
     //     port: "6163"
     // });
     // map.addLayer(mapDocLayer);
-    $.fn.RangeSlider = function(cfg){
+    $.fn.RangeSlider = function (cfg) {
         this.sliderCfg = {
             min: cfg && !isNaN(parseFloat(cfg.min)) ? Number(cfg.min) : null,
             max: cfg && !isNaN(parseFloat(cfg.max)) ? Number(cfg.max) : null,
@@ -139,9 +139,9 @@ addLayer=function () {
             .attr('max', max)
             .attr('step', step);
 
-        $input.bind("input", function(e){
+        $input.bind("input", function (e) {
             $input.attr('value', this.value);
-            $input.css( 'background', 'linear-gradient(to right, #059CFA, white ' + this.value + '%, white)' );
+            $input.css('background', 'linear-gradient(to right, #059CFA, white ' + this.value + '%, white)');
 
             if ($.isFunction(callback)) {
                 callback(this);
@@ -150,25 +150,25 @@ addLayer=function () {
     };
 };
 
-let nearDis;//r
+let nearDis; //r
 let query;
-showPointSeachRadius=function (query_) {
-    query=query_;
+showPointSeachRadius = function (query_) {
+    query = query_;
     // document.getElementById("point-radius-box").style.display="block";
 };
-surePointRadius=function () {
+surePointRadius = function () {
     nearDis = document.getElementById("point-radius-input").value;
-    if (isNaN(parseFloat(nearDis))){
-        nearDis=0.5;
+    if (isNaN(parseFloat(nearDis))) {
+        nearDis = 0.5;
     }
-    if (query==='point'){
+    if (query === 'point') {
         queryVectorLayerPoint();
-    }else {
+    } else {
         queryVectorLayerLine();
     }
 };
 
-let createCaseStyle = function (opacity=0.75) {
+let createCaseStyle = function (opacity = 0.75) {
     return new ol.style.Style({
         /**{olx.style.IconOptions}类型*/
         image: new ol.style.Icon(
@@ -180,7 +180,7 @@ let createCaseStyle = function (opacity=0.75) {
                 offsetOrigin: 'top-right',
                 // offset:[0,10],
                 //图标缩放比例
-                scale:0.15,
+                scale: 0.15,
                 //透明度
                 opacity: opacity,
                 //图标的url
@@ -189,7 +189,7 @@ let createCaseStyle = function (opacity=0.75) {
         )
     });
 };
-let createPoliceStyle=function(opacity=0.75){
+let createPoliceStyle = function (opacity = 0.75) {
     return new ol.style.Style({
         /**{olx.style.IconOptions}类型*/
         image: new ol.style.Icon(
@@ -201,7 +201,7 @@ let createPoliceStyle=function(opacity=0.75){
                 offsetOrigin: 'top-right',
                 // offset:[0,10],
                 //图标缩放比例
-                scale:0.15,
+                scale: 0.15,
                 //透明度
                 opacity: opacity,
                 //图标的url
@@ -210,7 +210,7 @@ let createPoliceStyle=function(opacity=0.75){
         )
     })
 };
-let createMedicalStyle=function(opacity=0.75){
+let createMedicalStyle = function (opacity = 0.75) {
     return new ol.style.Style({
         /**{olx.style.IconOptions}类型*/
         image: new ol.style.Icon(
@@ -222,7 +222,7 @@ let createMedicalStyle=function(opacity=0.75){
                 offsetOrigin: 'top-right',
                 // offset:[0,10],
                 //图标缩放比例
-                scale:0.7,
+                scale: 0.7,
                 //透明度
                 opacity: opacity,
                 //图标的url
@@ -238,29 +238,29 @@ let caseArray;
 let policeArray;
 let policeSource;
 let policeVector;
-init_case=function(){
+init_case = function () {
     $.ajax({
-        url:'http://gis.hoxu.xyz:80/get_wuhan2',
-        type:"GET",
+        url: 'http://gis.hoxu.xyz:80/get_wuhan2',
+        type: "GET",
         dataType: "json",
         async: false,
-        success:function (data) {
-            caseArray=[];
-            let len=data.length;
-            for (let i=0;i<len;++i){
-                let point=new ol.Feature({
-                    geometry:new ol.geom.Point([data[i].X,data[i].Y]),
-                    case_id:data[i].case_id,
-                    case_name:data[i].case_name,
-                    position_type:data[i].position_type,
-                    time:data[i].time,
-                    case_position:data[i].case_address,
-                    lng:data[i].lng,
-                    lat:data[i].lat,
-                    case_description:data[i].case_description,
-                    area:data[i].case_area,
-                    X:data[i].X,
-                    Y:data[i].Y
+        success: function (data) {
+            caseArray = [];
+            let len = data.length;
+            for (let i = 0; i < len; ++i) {
+                let point = new ol.Feature({
+                    geometry: new ol.geom.Point([data[i].X, data[i].Y]),
+                    case_id: data[i].case_id,
+                    case_name: data[i].case_name,
+                    position_type: data[i].position_type,
+                    time: data[i].time,
+                    case_position: data[i].case_address,
+                    lng: data[i].lng,
+                    lat: data[i].lat,
+                    case_description: data[i].case_description,
+                    area: data[i].case_area,
+                    X: data[i].X,
+                    Y: data[i].Y
                 });
                 point.setStyle(createCaseStyle(0));
                 caseArray.push(point);
@@ -277,28 +277,28 @@ init_case=function(){
     })
 
 };
-init_police=function(){
+init_police = function () {
     $.ajax({
-        url:'http://gis.hoxu.xyz:80/get_police',
-        type:"GET",
+        url: 'http://gis.hoxu.xyz:80/get_police',
+        type: "GET",
         dataType: "json",
         async: false,
-        success:function (data) {
-            policeArray=[];
-            let len=data.length;
-            for (let i=0;i<len;++i){
-                let point=new ol.Feature({
-                    geometry:new ol.geom.Point([data[i].X,data[i].Y]),
-                    police_station_id:data[i].police_station_id,
-                    id:data[i].id,
-                    lng:data[i].lng,
-                    lat:data[i].lat,
-                    X:data[i].X,
-                    Y:data[i].Y,
-                    address:data[i].address,
-                    name:data[i].name,
-                    photos:data[i].photos,
-                    tel:data[i].tel,
+        success: function (data) {
+            policeArray = [];
+            let len = data.length;
+            for (let i = 0; i < len; ++i) {
+                let point = new ol.Feature({
+                    geometry: new ol.geom.Point([data[i].X, data[i].Y]),
+                    police_station_id: data[i].police_station_id,
+                    id: data[i].id,
+                    lng: data[i].lng,
+                    lat: data[i].lat,
+                    X: data[i].X,
+                    Y: data[i].Y,
+                    address: data[i].address,
+                    name: data[i].name,
+                    photos: data[i].photos,
+                    tel: data[i].tel,
                 });
                 point.setStyle(createPoliceStyle(0));
                 policeArray.push(point);
@@ -315,35 +315,37 @@ init_police=function(){
     })
 };
 //--------------------------------------------------------------------
-let flag=0;
+let flag = 0;
 let DrawVector;
 let draw;
 let output;
 let geom;
-clearQuery=function(){
+clearQuery = function () {
     // if (flag!==0){
     //     map.removeLayer(resultVector);
     // }
     // map.addLayer(caseVector);
-    for(let item of queryResult){
+    for (let item of queryResult) {
         item.setStyle(createCaseStyle(0));
     }
-    if (contains(map,DrawVector)){
+    if (contains(map, DrawVector)) {
         map.removeLayer(DrawVector);
     }
     if (measureTooltipElement) {
         measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-        measureTooltipElement=null;
+        measureTooltipElement = null;
     }
     // console.log('reset');
 };
-queryVectorLayerCircle=function () {
+queryVectorLayerCircle = function () {
     // if (flag!==0){
     //     map.removeLayer(resultVector);
     // }
     clearQuery();
-    flag=1;
-    let source = new ol.source.Vector({ wrapX: false });
+    flag = 1;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -357,7 +359,7 @@ queryVectorLayerCircle=function () {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     draw = new ol.interaction.Draw({
-        type: 'Circle',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'Circle', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source,
     });
@@ -365,10 +367,12 @@ queryVectorLayerCircle=function () {
     //点击查询的回调函数
     draw.on('drawend', DrawControlback);
 };
-queryVectorLayerPolygon=function () {
+queryVectorLayerPolygon = function () {
     clearQuery();
-    flag=2;
-    let source = new ol.source.Vector({ wrapX: false });
+    flag = 2;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -391,7 +395,7 @@ queryVectorLayerPolygon=function () {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     draw = new ol.interaction.Draw({
-        type: 'Polygon',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'Polygon', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
@@ -406,19 +410,19 @@ queryVectorLayerPolygon=function () {
             sketch = evt.feature; //绘制的要素
 
             /** @type {ol.Coordinate|undefined} */
-            let tooltipCoord = evt.coordinate;// 绘制的坐标
+            let tooltipCoord = evt.coordinate; // 绘制的坐标
             //绑定change事件，根据绘制几何类型得到测量长度值或面积值，并将其设置到测量工具提示框中显示
             listener = sketch.getGeometry().on('change', function (evt) {
-                geom = evt.target;//绘制几何要素
+                geom = evt.target; //绘制几何要素
                 if (geom instanceof ol.geom.Polygon) {
-                    output = formatArea(/** @type {ol.geom.Polygon} */(geom));//面积值
-                    tooltipCoord = geom.getInteriorPoint().getCoordinates();//坐标
+                    output = formatArea( /** @type {ol.geom.Polygon} */ (geom)); //面积值
+                    tooltipCoord = geom.getInteriorPoint().getCoordinates(); //坐标
                 } else if (geom instanceof ol.geom.LineString) {
-                    output = formatLength( /** @type {ol.geom.LineString} */(geom));//长度值
-                    tooltipCoord = geom.getLastCoordinate();//坐标
+                    output = formatLength( /** @type {ol.geom.LineString} */ (geom)); //长度值
+                    tooltipCoord = geom.getLastCoordinate(); //坐标
                 }
-                measureTooltipElement.innerHTML = output;//将测量值设置到测量工具提示框中显示
-                measureTooltip.setPosition(tooltipCoord);//设置测量工具提示框的显示位置
+                measureTooltipElement.innerHTML = output; //将测量值设置到测量工具提示框中显示
+                measureTooltip.setPosition(tooltipCoord); //设置测量工具提示框的显示位置
             });
         }, this);
     draw.on('drawend',
@@ -431,21 +435,23 @@ queryVectorLayerPolygon=function () {
             // measureTooltipElement = null; //置空测量工具提示框对象
             // createMeasureTooltip();//重新创建一个测试工具提示框显示结果
             ol.Observable.unByKey(listener);
-            if (helpTooltipElement){
+            if (helpTooltipElement) {
                 helpTooltipElement.parentNode.removeChild(helpTooltipElement);
-                helpTooltipElement=null;
+                helpTooltipElement = null;
             }
         }, this);
     //点击查询的回调函数
     draw.on('drawend', DrawControlback);
 };
-queryVectorLayerRectangle=function () {
+queryVectorLayerRectangle = function () {
     // if (flag!==0){
     //     map.removeLayer(resultVector);
     // }
     clearQuery();
-    flag=3;
-    let source = new ol.source.Vector({ wrapX: false });
+    flag = 3;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -459,7 +465,7 @@ queryVectorLayerRectangle=function () {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     draw = new ol.interaction.Draw({
-        type: 'Circle',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'Circle', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source,
         geometryFunction: ol.interaction.Draw.createRegularPolygon(4)
@@ -468,10 +474,12 @@ queryVectorLayerRectangle=function () {
     //点击查询的回调函数
     draw.on('drawend', DrawControlback);
 };
-queryVectorLayerPoint=function () {
+queryVectorLayerPoint = function () {
     clearQuery();
-    flag=4;
-    let source = new ol.source.Vector({ wrapX: false });
+    flag = 4;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -485,7 +493,7 @@ queryVectorLayerPoint=function () {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     draw = new ol.interaction.Draw({
-        type: 'Point',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'Point', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
@@ -493,10 +501,12 @@ queryVectorLayerPoint=function () {
     //点击查询的回调函数
     draw.on('drawend', DrawControlback);
 };
-queryVectorLayerLine=function () {
+queryVectorLayerLine = function () {
     clearQuery();
-    flag=5;
-    let source = new ol.source.Vector({ wrapX: false });
+    flag = 5;
+    let source = new ol.source.Vector({
+        wrapX: false
+    });
     DrawVector = new ol.layer.Vector({
         source: source,
         style: new ol.style.Style({
@@ -519,7 +529,7 @@ queryVectorLayerLine=function () {
     map.addLayer(DrawVector);
     //实例化交互绘制类对象并添加到地图容器中
     draw = new ol.interaction.Draw({
-        type: 'LineString',//'Polygon' 'Circle' 'LineString' 'Point'
+        type: 'LineString', //'Polygon' 'Circle' 'LineString' 'Point'
         //绘制层数据源
         source: source
     });
@@ -534,19 +544,19 @@ queryVectorLayerLine=function () {
             sketch = evt.feature; //绘制的要素
 
             /** @type {ol.Coordinate|undefined} */
-            let tooltipCoord = evt.coordinate;// 绘制的坐标
+            let tooltipCoord = evt.coordinate; // 绘制的坐标
             //绑定change事件，根据绘制几何类型得到测量长度值或面积值，并将其设置到测量工具提示框中显示
             listener = sketch.getGeometry().on('change', function (evt) {
-                geom = evt.target;//绘制几何要素
+                geom = evt.target; //绘制几何要素
                 if (geom instanceof ol.geom.Polygon) {
-                    output = formatArea(/** @type {ol.geom.Polygon} */(geom));//面积值
-                    tooltipCoord = geom.getInteriorPoint().getCoordinates();//坐标
+                    output = formatArea( /** @type {ol.geom.Polygon} */ (geom)); //面积值
+                    tooltipCoord = geom.getInteriorPoint().getCoordinates(); //坐标
                 } else if (geom instanceof ol.geom.LineString) {
-                    output = formatLength( /** @type {ol.geom.LineString} */(geom));//长度值
-                    tooltipCoord = geom.getLastCoordinate();//坐标
+                    output = formatLength( /** @type {ol.geom.LineString} */ (geom)); //长度值
+                    tooltipCoord = geom.getLastCoordinate(); //坐标
                 }
-                measureTooltipElement.innerHTML = output;//将测量值设置到测量工具提示框中显示
-                measureTooltip.setPosition(tooltipCoord);//设置测量工具提示框的显示位置
+                measureTooltipElement.innerHTML = output; //将测量值设置到测量工具提示框中显示
+                measureTooltip.setPosition(tooltipCoord); //设置测量工具提示框的显示位置
             });
         }, this);
     draw.on('drawend',
@@ -559,47 +569,46 @@ queryVectorLayerLine=function () {
             // measureTooltipElement = null; //置空测量工具提示框对象
             // createMeasureTooltip();//重新创建一个测试工具提示框显示结果
             ol.Observable.unByKey(listener);
-            if (helpTooltipElement){
+            if (helpTooltipElement) {
                 helpTooltipElement.parentNode.removeChild(helpTooltipElement);
-                helpTooltipElement=null;
+                helpTooltipElement = null;
             }
         }, this);
     //点击查询的回调函数
     draw.on('drawend', DrawControlback);
 };
 //----------------------------------------------------
-let queryResult=[];
+let queryResult = [];
 let resultVector;
-DrawControlback=function (features) {
-    queryResult.length=0;
-    if (draw!=null){
+DrawControlback = function (features) {
+    queryResult.length = 0;
+    if (draw != null) {
         map.removeInteraction(draw);
     }
-    if (flag===4){
-        let bufferedExtent=new ol.extent.buffer(features.feature.getGeometry().getExtent(),nearDis*950);
+    if (flag === 4) {
+        let bufferedExtent = new ol.extent.buffer(features.feature.getGeometry().getExtent(), nearDis * 950);
         // console.log('Point');
-        let result=caseSource.forEachFeatureIntersectingExtent(bufferedExtent,success);
-    }else if (flag===5){
-        let bufferedExtent=new ol.extent.buffer(features.feature.getGeometry().getExtent(),nearDis*60);
+        let result = caseSource.forEachFeatureIntersectingExtent(bufferedExtent, success);
+    } else if (flag === 5) {
+        let bufferedExtent = new ol.extent.buffer(features.feature.getGeometry().getExtent(), nearDis * 60);
         // console.log('Point');
-        let result=caseSource.forEachFeatureIntersectingExtent(bufferedExtent,success);
-    }
-    else {
-        let result=caseSource.forEachFeatureIntersectingExtent(features.feature.getGeometry().getExtent(),success);
+        let result = caseSource.forEachFeatureIntersectingExtent(bufferedExtent, success);
+    } else {
+        let result = caseSource.forEachFeatureIntersectingExtent(features.feature.getGeometry().getExtent(), success);
     }
 
-    if (flag===2||flag===5){
-        let coefficient=parseFloat(queryResult.length/parseFloat(output)).toFixed(4);
-        level=function(c){
-            if (c<=3){
+    if (flag === 2 || flag === 5) {
+        let coefficient = parseFloat(queryResult.length / parseFloat(output)).toFixed(4);
+        level = function (c) {
+            if (c <= 3) {
                 return '可能有危险';
-            }else if (c<=5){
+            } else if (c <= 5) {
                 return '危险性较小';
-            }else if (c<=9){
+            } else if (c <= 9) {
                 return '危险性较大';
-            }else if (c<=18){
+            } else if (c <= 18) {
                 return '非常危险';
-            }else {
+            } else {
                 return '及其危险';
             }
         };
@@ -609,24 +618,24 @@ DrawControlback=function (features) {
         //在popup中加载当前要素的具体信息
         let geo;
         let typeText;
-        if (flag===2){
-            geo=geom.getInteriorPoint().getCoordinates();
-            typeText='面积:';
-        }else {
-            geo=geom.getLastCoordinate();
-            typeText='长度:'
+        if (flag === 2) {
+            geo = geom.getInteriorPoint().getCoordinates();
+            typeText = '面积:';
+        } else {
+            geo = geom.getLastCoordinate();
+            typeText = '长度:'
         }
-        let table='<table class="table table-hover table-striped"><tbody>' +
-            '<tr><td><b>案件数量:</b></td><td>'+queryResult.length+'</td></tr>' +
-            '<tr><td><b>'+typeText+'</b></td><td>'+output+'</td></tr>'+
-            '<tr><td><b>危险系数:</b></td><td>'+coefficient+'</td></tr>'+
-            '<tr><td><b>危险级别:</b></td><td>'+level(coefficient)+'</td></tr>'+
+        let table = '<table class="table table-hover table-striped"><tbody>' +
+            '<tr><td><b>案件数量:</b></td><td>' + queryResult.length + '</td></tr>' +
+            '<tr><td><b>' + typeText + '</b></td><td>' + output + '</td></tr>' +
+            '<tr><td><b>危险系数:</b></td><td>' + coefficient + '</td></tr>' +
+            '<tr><td><b>危险级别:</b></td><td>' + level(coefficient) + '</td></tr>' +
             '</tbody></table>';
-        let info={
-            geo:geo,
-            att:{
+        let info = {
+            geo: geo,
+            att: {
                 title: '危险分析',
-                text:table,
+                text: table,
             }
         };
         addFeatrueInfo(info);
@@ -636,44 +645,44 @@ DrawControlback=function (features) {
             popup.setPosition(info.geo);
         }
     }
-    flag=0;
+    flag = 0;
 };
 
-success=function (data) {
+success = function (data) {
     queryResult.push(data);
     data.setStyle(createCaseStyle());
 };
 
 //------------------------路径规划
-let isPath=false;
-let bicycling=false;
-let walking=false;
-let driving=false;
-let origin='';
-let destination='';
+let isPath = false;
+let bicycling = false;
+let walking = false;
+let driving = false;
+let origin = '';
+let destination = '';
 let drivingVectorLayer;
 let drivingVectorSource;
 let startMarker;
 let endMarker;
 
 $(function () {
-    $('#undo').bind('click',function () {
+    $('#undo').bind('click', function () {
         draw.removeLastPoint();
     });
-    $('#driving').bind('click',function(){
+    $('#driving').bind('click', function () {
         clearPath();
-        isPath=true;
-        driving=true;
+        isPath = true;
+        driving = true;
     });
     $('#bicycling').click(function () {
         clearPath();
-        isPath=true;
-        bicycling=true;
+        isPath = true;
+        bicycling = true;
     });
     $('#walking').click(function () {
         clearPath();
-        isPath=true;
-        walking=true;
+        isPath = true;
+        walking = true;
     });
     $('#reset').click(function () {
         clearQuery();
@@ -692,10 +701,9 @@ $(function () {
     let startButton = document.getElementById('start-animation');
     let vectorLayer;
     let geoMarker;
-    $('#start-animation').bind('click',function () {
+    $('#start-animation').bind('click', function () {
         // for (route of geomPolylines)
-        let route=geomPolylines[0];
-        {
+        let route = geomPolylines[0]; {
             let routeCoords = route.getCoordinates();
             let routeLength = routeCoords.length;
             let styles = {
@@ -708,7 +716,7 @@ $(function () {
                 'icon': new ol.style.Style({
                     image: new ol.style.Icon({
                         anchor: [0.5, 1],
-                        scale:0.1,
+                        scale: 0.1,
                         src: "./image/red.png"
                     })
                 }),
@@ -716,7 +724,9 @@ $(function () {
                     image: new ol.style.Circle({
                         radius: 7,
                         snapToPixel: false,
-                        fill: new ol.style.Fill({ color: 'black' }),
+                        fill: new ol.style.Fill({
+                            color: 'black'
+                        }),
                         stroke: new ol.style.Stroke({
                             color: 'white',
                             width: 2
@@ -747,6 +757,7 @@ $(function () {
                 map.render();
             };
             startAnimation();
+
             function startAnimation() {
                 if (animating) {
                     stopAnimation(false);
@@ -783,7 +794,7 @@ $(function () {
 
                         vectorLayer = new ol.layer.Vector({
                             source: new ol.source.Vector({
-                                features: [routeFeature, geoMarker, ]//startMarker, endMarker
+                                features: [routeFeature, geoMarker, ] //startMarker, endMarker
                             }),
                             style: function (feature) {
                                 //如果动画是激活的就隐藏geoMarker
@@ -829,10 +840,48 @@ $(function () {
     //-----------------------------------------------------------------/移动
 });
 
-addListener=function () {
+addListener = function () {
     // map.on('singleclick',function (e) {
     //     console.log('on-click');
     // });
+
+    container = document.getElementById('popup');
+    content = document.getElementById('popup-content');
+    closer = document.getElementById('popup-closer');
+
+    /**
+     * 添加关闭按钮的单击事件（隐藏popup）
+     * @return {boolean} Don't follow the href.
+     */
+    closer.onclick = function () {
+        //未定义popup位置
+        popup.setPosition(undefined);
+        //失去焦点
+        closer.blur();
+        return false;
+    };
+
+    /**
+     * 在地图容器中创建一个Overlay
+     */
+    popup = new ol.Overlay(
+        /** @type {olx.OverlayOptions} */
+        ({
+            //要转换成overlay的HTML元素
+            element: container,
+            //当前窗口可见
+            autoPan: true,
+            //Popup放置的位置
+            positioning: 'bottom-center',
+            //是否应该停止事件传播到地图窗口
+            stopEvent: false,
+            autoPanAnimation: {
+                //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度
+                duration: 250
+            }
+        }));
+    map.addOverlay(popup);
+
     /**
      * 为map添加点击事件监听，渲染弹出popup
      */
@@ -844,11 +893,11 @@ addListener=function () {
         if (feature) {
             // console.log(feature);
             // alert(feature.values_['x']+' '+feature.values_['y']);
-            if (isPath){//在路径规划
-                if (origin.length===0){
-                    origin+=(feature.values_['lng']+','+feature.values_['lat']);
+            if (isPath) { //在路径规划
+                if (origin.length === 0) {
+                    origin += (feature.values_['lng'] + ',' + feature.values_['lat']);
                     startMarker = new ol.Feature({
-                        geometry: new ol.geom.Point([feature.values_['X'],feature.values_['Y']])
+                        geometry: new ol.geom.Point([feature.values_['X'], feature.values_['Y']])
                     });
                     startMarker.setStyle(new ol.style.Style({
                         image: new ol.style.Icon({
@@ -858,24 +907,24 @@ addListener=function () {
                             // anchorYUnits: 'pixels',
                             // offsetOrigin: 'top-right',
                             opacity: 0.75,
-                            scale:0.3,
+                            scale: 0.3,
                             src: "./image/origin2.png"
                         })
                     }));
                     // console.log(startMarker);
                     // drivingVectorSource.addFeatures([startMarker]);
                     drivingVectorSource = new ol.source.Vector({
-                        features:[startMarker],
+                        features: [startMarker],
                     });
                     drivingVectorLayer = new ol.layer.Vector({
-                        title:"线",
+                        title: "线",
                         source: drivingVectorSource,
                         // renderMode:'image',
-                        id:'isPath'
+                        id: 'isPath'
                     });
                     map.addLayer(drivingVectorLayer);
-                }else if (destination.length===0){
-                    destination+=(feature.values_['lng']+','+feature.values_['lat']);
+                } else if (destination.length === 0) {
+                    destination += (feature.values_['lng'] + ',' + feature.values_['lat']);
                     endMarker = new ol.Feature({
                         // style: new ol.style.Style({
                         //     image: new ol.style.Icon({
@@ -884,7 +933,7 @@ addListener=function () {
                         //         src: "./image/red.png"
                         //     })
                         // }),
-                        geometry: new ol.geom.Point([feature.values_['X'],feature.values_['Y']])
+                        geometry: new ol.geom.Point([feature.values_['X'], feature.values_['Y']])
                     });
                     endMarker.setStyle(new ol.style.Style({
                         image: new ol.style.Icon({
@@ -894,14 +943,16 @@ addListener=function () {
                             // anchorYUnits: 'pixels',
                             // offsetOrigin: 'top-right',
                             opacity: 0.75,
-                            scale:0.3,
+                            scale: 0.3,
                             src: "./image/destination2.png"
                         })
                     }));
                     drivingVectorSource.addFeatures([endMarker]);
-                    isPath=false;
+                    isPath = false;
                     getPath();
                 }
+            } else if (feature.values_.hasOwnProperty("police_station_id") || feature.values_.hasOwnProperty("case_id")) {
+                createPopup(feature);
             }
         }
     });
@@ -915,33 +966,33 @@ addListener=function () {
     });
     map.on('pointermove', pointerMoveHandler); //地图容器绑定鼠标移动事件，动态显示帮助提示框内容
 };
-getPath=function () {
+getPath = function () {
     let mode;
-    if (driving){
-        mode='driving';
-    }else if (walking){
-        mode='walking';
-    }else {
-        mode='bicycling';
+    if (driving) {
+        mode = 'driving';
+    } else if (walking) {
+        mode = 'walking';
+    } else {
+        mode = 'bicycling';
     }
-    data={
-        'origin':origin,
-        'destination':destination,//"116.434446,39.90816"
-        'mode':mode,
+    data = {
+        'origin': origin,
+        'destination': destination, //"116.434446,39.90816"
+        'mode': mode,
     };
     // console.log(data);
     $.ajax({
-        url:"http://gis.hoxu.xyz:80/get_path",
-        dataType:'json',
-        async:true,
-        data:data,
-        type:'POST',
+        url: "http://gis.hoxu.xyz:80/get_path",
+        dataType: 'json',
+        async: true,
+        data: data,
+        type: 'POST',
         success: function (data) {
             //请求成功时处理
             // console.log(data);
-            if (data['status']==='N'){
+            if (data['status'] === 'N') {
                 alert(data['message'])
-            }else {
+            } else {
                 drawPath(data);
             }
         },
@@ -951,9 +1002,9 @@ getPath=function () {
         }
     });
 };
-let geomPolylines=[];//路径线集合
-drawPath=function (data) {
-    let featurePolylines=[];
+let geomPolylines = []; //路径线集合
+drawPath = function (data) {
+    let featurePolylines = [];
     //---style
     let stroke = new ol.style.Stroke({
         color: '#8A02F9',
@@ -965,10 +1016,10 @@ drawPath=function (data) {
         })
     ];
     //--
-    for (let i=0;i<data.value.length;++i){
-        let line_org=data.value[i]['roads'];
+    for (let i = 0; i < data.value.length; ++i) {
+        let line_org = data.value[i]['roads'];
         // console.log(line_org);
-        let geomPolyline= new ol.geom.LineString(line_org);
+        let geomPolyline = new ol.geom.LineString(line_org);
         let featurePolyline = new ol.Feature({
             geometry: geomPolyline,
             name: 'Polyline',
@@ -990,8 +1041,13 @@ drawPath=function (data) {
                     //文本内容
                     text: feature.get('name'),
                     //文本填充样式（即文字颜色）
-                    fill: new ol.style.Fill({ color: '#aa3300' }),
-                    stroke: new ol.style.Stroke({ color: '#ffcc33', width: 2 })
+                    fill: new ol.style.Fill({
+                        color: '#aa3300'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#ffcc33',
+                        width: 2
+                    })
                 })
             });
         };
@@ -999,30 +1055,142 @@ drawPath=function (data) {
         // if (driving){
         //     labelName=data.value[i]['strategy']
         // }else {
-            labelName=parseFloat(data.value[i]['distance'])/1000+'KM';
+        labelName = parseFloat(data.value[i]['distance']) / 1000 + 'KM';
         // }
-        let wordLabel=new ol.Feature({
-            geometry:new ol.geom.Point(line_org[parseInt(line_org.length/2)]),
-            name:labelName,
+        let wordLabel = new ol.Feature({
+            geometry: new ol.geom.Point(line_org[parseInt(line_org.length / 2)]),
+            name: labelName,
         });
         wordLabel.setStyle(createLabelStyle(wordLabel));
         drivingVectorSource.addFeature(wordLabel);
     }
     drivingVectorSource.addFeatures(featurePolylines);
 };
-clearPath=function () {
-    origin='';
-    destination='';
-    geomPolylines.length=0;
-    isPath=false;
-    driving=false;
-    walking=false;
-    bicycling=false;
-    if (contains(map,drivingVectorLayer)){
+clearPath = function () {
+    origin = '';
+    destination = '';
+    geomPolylines.length = 0;
+    isPath = false;
+    driving = false;
+    walking = false;
+    bicycling = false;
+    if (contains(map, drivingVectorLayer)) {
         console.log(drivingVectorLayer);
         map.removeLayer(drivingVectorLayer);
     }
 };
+
+//-----------------------------------------------------------------Popup
+
+/**
+ * 获得feature的坐标
+ * @param feature 聚合簇
+ */
+function getFeatureCoordinates(feature) {
+    return feature.values_.geometry.flatCoordinates;
+}
+
+/**
+ * 构造popLayer
+ * @returns {ol.Overlay}
+ */
+function createPopupLayer() {
+    return new ol.Overlay(
+        /** @type {olx.OverlayOptions} */
+        ({
+            //要转换成overlay的HTML元素
+            element: container,
+            //当前窗口可见
+            autoPan: true,
+            //Popup放置的位置
+            positioning: 'bottom-center',
+            //是否应该停止事件传播到地图窗口
+            stopEvent: false,
+            autoPanAnimation: {
+                //当Popup超出地图边界时，为了Popup全部可见，地图移动的速度
+                duration: 250
+            }
+        }));
+}
+
+function createPopup(feature) {
+    //初始化首页popup框中信息
+    addFeatrueInfo_2(feature.values_);
+    //刷新位置
+    var position = getFeatureCoordinates(feature);
+    //进行定位
+    popup.setPosition(position);
+}
+
+/**
+ * 为popUp动态添加内容
+ * */
+function addFeatrueInfo_2(info) {
+    // console.log(info);
+    if (info == undefined)
+        return -1;
+    content.innerHTML = "";
+
+    if (info.hasOwnProperty("police_station_id")) {
+        if (info.tel.toString() == "NULL") info.tel = "无";
+        content.innerHTML =
+            '<h4>公安机关</h4>' +
+            '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
+            '    <table class="table table-hover table-striped">\n' +
+            '        <tr>\n' +
+            '            <td>编号</td>\n' +
+            '            <td>' + info.id + ' </td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>名称</td>\n' +
+            '            <td>' + info.name + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>地址</td>\n' +
+            '            <td>' + info.address + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>电话</td>\n' +
+            '            <td>' + info.tel + '</td>\n' +
+            '        </tr>\n' +
+            '    </table>\n' +
+            '</div>';
+    } else if (info.hasOwnProperty("case_id")) {
+        content.innerHTML =
+            '<h4>案件</h4>' +
+            '<div style="background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
+            '    <table class="table table-hover table-striped">\n' +
+            '        <tr>\n' +
+            '            <td>案件编号</td>\n' +
+            '            <td>' + info.case_id + ' </td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>案件地址</td>\n' +
+            '            <td>' + info.case_position + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>案件时间</td>\n' +
+            '            <td>' + info.time + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>案件描述</td>\n' +
+            '            <td>' + info.case_description + '</td>\n' +
+            '        </tr>\n' +
+            '        <tr>\n' +
+            '            <td>照片</td>\n' +
+            '            <td>' +
+            '<div style="width: 200px;height: 200px;overflow: hidden;position: relative;">' +
+            '<img src="../photo/' + parseInt(info.case_id) + '.png" style="max-width: 100%;margin: auto">' +
+            '</div>' +
+            '</td>\n' +
+            '        </tr>\n' +
+            '    </table>\n' +
+            '</div>';
+    }
+}
+
+
+
 
 //--------------------------------------------------------------------------------测量
 /**
@@ -1064,12 +1232,12 @@ let continuePolygonMsg = 'Click to continue drawing the polygon';
 let continueLineMsg = 'Click to continue drawing the line';
 
 let pointerMoveHandler = function (evt) {
-    if (flag===2||flag===5){
+    if (flag === 2 || flag === 5) {
         if (evt.dragging) {
             return;
         }
         /** @type {string} */
-        let helpMsg = 'Click to start drawing';//当前默认提示信息
+        let helpMsg = 'Click to start drawing'; //当前默认提示信息
         //判断绘制几何类型设置相应的帮助提示信息
         if (sketch) {
             let geom = (sketch.getGeometry());
@@ -1080,8 +1248,8 @@ let pointerMoveHandler = function (evt) {
             }
         }
         helpTooltipElement.innerHTML = helpMsg; //将提示信息设置到对话框中显示
-        helpTooltip.setPosition(evt.coordinate);//设置帮助提示框的位置
-        $(helpTooltipElement).removeClass('hidden');//移除帮助提示框的隐藏样式进行显示
+        helpTooltip.setPosition(evt.coordinate); //设置帮助提示框的位置
+        $(helpTooltipElement).removeClass('hidden'); //移除帮助提示框的隐藏样式进行显示
     }
 };
 
@@ -1139,7 +1307,7 @@ let formatLength = function (line) {
     } else {
         output = (Math.round(length * 100) / 100) + ' ' + 'm'; //m为单位
     }
-    return output;//返回线的长度
+    return output; //返回线的长度
 };
 /**
  * 测量面积输出
@@ -1155,12 +1323,12 @@ let formatArea = function (polygon) {
     // } else {
     //     area = polygon.getArea();//直接获取多边形的面积
     // }
-    area = polygon.getArea();//直接获取多边形的面积
+    area = polygon.getArea(); //直接获取多边形的面积
     let output;
     if (area > 10000) {
         output = (Math.round(area / 1000000 * 100) / 100) + ' ' + 'km<sup>2</sup>'; //换算成KM单位
     } else {
-        output = (Math.round(area * 100) / 100) + ' ' + 'm<sup>2</sup>';//m为单位
+        output = (Math.round(area * 100) / 100) + ' ' + 'm<sup>2</sup>'; //m为单位
     }
     return output; //返回多边形的面积
 };
@@ -1169,13 +1337,13 @@ let container;
 let content;
 let closer;
 let popup;
-addPopup=function(){
+addPopup = function () {
     /**
      * 实现popup的html元素
      */
     container = document.getElementById('popup');
     content = document.getElementById('popup-content');
-    content.setAttribute('style','width:300px !important');
+    content.setAttribute('style', 'width:300px !important');
     closer = document.getElementById('popup-closer');
     /**
      * 在地图容器中创建一个Overlay
@@ -1222,7 +1390,7 @@ function addFeatrueInfo(info) {
     // elementA.href = info.att.titleURL;
     //elementA.innerText = info.att.title;
     setInnerHtml(elementA, info.att.title);
-    elementA.setAttribute('style','font-size:20px');
+    elementA.setAttribute('style', 'font-size:20px');
     // 新建的div元素添加a子节点
     content.appendChild(elementA);
     //新增div元素
@@ -1243,9 +1411,9 @@ function addFeatrueInfo(info) {
  * 动态设置元素文本内容（兼容）
  */
 function setInnerHtml(element, text) {
-    element.innerHTML=text;
+    element.innerHTML = text;
 }
-conditionStyle=function(){
+conditionStyle = function () {
     return new ol.style.Style({
         image: new ol.style.Icon(
             ({
@@ -1256,7 +1424,7 @@ conditionStyle=function(){
                 offsetOrigin: 'top-right',
                 // offset:[0,10],
                 //图标缩放比例
-                scale:0.5,
+                scale: 0.5,
                 //透明度
                 opacity: 0.75,
                 //图标的url
@@ -1266,54 +1434,54 @@ conditionStyle=function(){
     })
 };
 let conditionResult;
-timeOk=function () {
-    let startTime=$('#startTime').val();
-    let endTime=$('#endTime').val();
-    let startDate=new Date(startTime);
-    let endDate=new Date(endTime);
-    console.log(startDate,endDate);
-    if (conditionResult&&conditionResult.length!==0){
-        for (let item of caseArray){
+timeOk = function () {
+    let startTime = $('#startTime').val();
+    let endTime = $('#endTime').val();
+    let startDate = new Date(startTime);
+    let endDate = new Date(endTime);
+    console.log(startDate, endDate);
+    if (conditionResult && conditionResult.length !== 0) {
+        for (let item of caseArray) {
             item.setStyle(createCaseStyle(0));
         }
     }
-    conditionResult=[];
-    for (let item of caseArray){
-        let itemDate=new Date(item.values_['time']);
+    conditionResult = [];
+    for (let item of caseArray) {
+        let itemDate = new Date(item.values_['time']);
         console.log(itemDate);
-        if (itemDate>startDate&&itemDate<endDate){
+        if (itemDate > startDate && itemDate < endDate) {
             item.setStyle(createCaseStyle());
             conditionResult.push(item);
         }
     }
     updateConditionResult(conditionResult);
 };
-roadOk=function(){
-    let roadNme=$('#roadCondition').val();
-    if (conditionResult&&conditionResult.length!==0){
-        for (let item of caseArray){
+roadOk = function () {
+    let roadNme = $('#roadCondition').val();
+    if (conditionResult && conditionResult.length !== 0) {
+        for (let item of caseArray) {
             item.setStyle(createCaseStyle(0));
         }
     }
-    conditionResult=[];
-    for (let item of caseArray){
-        if (item.values_['case_position'].search(roadNme)!==-1){
-        item.setStyle(createCaseStyle());
-        conditionResult.push(item);
+    conditionResult = [];
+    for (let item of caseArray) {
+        if (item.values_['case_position'].search(roadNme) !== -1) {
+            item.setStyle(createCaseStyle());
+            conditionResult.push(item);
         }
     }
     updateConditionResult(conditionResult);
 };
-areaOk=function(){
-    let areaName=$('#areaCondition').val();
-    if (conditionResult&&conditionResult.length!==0){
-        for (let item of caseArray){
+areaOk = function () {
+    let areaName = $('#areaCondition').val();
+    if (conditionResult && conditionResult.length !== 0) {
+        for (let item of caseArray) {
             item.setStyle(createCaseStyle(0));
         }
     }
-    conditionResult=[];
-    for (let item of caseArray){
-        if (item.values_['area']===areaName){
+    conditionResult = [];
+    for (let item of caseArray) {
+        if (item.values_['area'] === areaName) {
             // item.setStyle(conditionStyle());
             item.setStyle(createCaseStyle());
             conditionResult.push(item);
@@ -1321,18 +1489,18 @@ areaOk=function(){
     }
     updateConditionResult(conditionResult);
 };
-updateConditionResult=function(result){
-    let resultTbody=$('#resultTbody');
+updateConditionResult = function (result) {
+    let resultTbody = $('#resultTbody');
     resultTbody.empty();
-    let index=0;
-    for (let item of result){
-        resultTbody.append('<tr class="trItem" index='+index+'><td style="width: 40%">'+item.values_['case_position']+'</td><td>'+item.values_['case_description']+'</td></tr>');
-        index+=1;
+    let index = 0;
+    for (let item of result) {
+        resultTbody.append('<tr class="trItem" index=' + index + '><td style="width: 40%">' + item.values_['case_position'] + '</td><td>' + item.values_['case_description'] + '</td></tr>');
+        index += 1;
     }
     $(".trItem").click(function () {
-        let index=$(this).attr('index');
-        let view=map.getView();
-        var duration = 2000;//动画的持续时间（以毫秒为单位）
+        let index = $(this).attr('index');
+        let view = map.getView();
+        var duration = 2000; //动画的持续时间（以毫秒为单位）
         var zoom = view.getZoom();
         var parts = 2;
         var called = false;
@@ -1349,12 +1517,12 @@ updateConditionResult=function(result){
         }
         //第一个动画
         view.animate({
-            center: [conditionResult[index].values_['X'],conditionResult[index].values_['Y']],
+            center: [conditionResult[index].values_['X'], conditionResult[index].values_['Y']],
             duration: duration
         }, callback);
         //第二个动画
         view.animate({
-            zoom: zoom-0.5,
+            zoom: zoom - 0.5,
             duration: duration / 2
         }, {
             zoom: 20,
@@ -1373,7 +1541,7 @@ updateConditionResult=function(result){
  * @returns {{}}
  * @private
  */
-function _getMercator(poi) {//[114.32894, 30.585748]
+function _getMercator(poi) { //[114.32894, 30.585748]
     let mercator = {};
     let earthRad = 6378137.0;
     // console.log("mercator-poi",poi);
@@ -1389,17 +1557,17 @@ function _getMercator(poi) {//[114.32894, 30.585748]
  * @returns {{}}
  * @private
  */
-function _getLngLat(poi){
+function _getLngLat(poi) {
     let lnglat = {};
-    lnglat.lng = poi.x/20037508.34*180;
-    let mmy = poi.y/20037508.34*180;
-    lnglat.lat = 180/Math.PI*(2*Math.atan(Math.exp(mmy*Math.PI/180))-Math.PI/2);
+    lnglat.lng = poi.x / 20037508.34 * 180;
+    let mmy = poi.y / 20037508.34 * 180;
+    lnglat.lat = 180 / Math.PI * (2 * Math.atan(Math.exp(mmy * Math.PI / 180)) - Math.PI / 2);
     return lnglat;
 }
 
-contains=function (map,layer) {
-    for (item of map.getLayers().getArray()){
-        if (item===layer){
+contains = function (map, layer) {
+    for (item of map.getLayers().getArray()) {
+        if (item === layer) {
             return true;
         }
         // if (item.values_['id']===layer.values_['id']){
