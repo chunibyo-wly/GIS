@@ -1,6 +1,6 @@
 $().ready(function () {
     $.ajax({
-        url: "http://gis.hoxu.xyz:80/get_usrid_ajax",    //请求的url地址
+        url: "http://127.0.0.1:80/get_usrid_ajax",    //请求的url地址
         dataType: "json",   //返回格式为json
         async: true,//请求是否异步，默认为异步，这也是ajax重要特性
         data: {},

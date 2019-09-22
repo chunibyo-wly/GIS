@@ -573,7 +573,7 @@ getPath=function () {
     };
     // console.log(data);
     $.ajax({
-        url:"http://gis.hoxu.xyz:80/driving",
+        url:"http://127.0.0.1:80/driving",
         dataType:'json',
         async:true,
         data:data,

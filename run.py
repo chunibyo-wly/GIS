@@ -13,7 +13,7 @@ import tools.map as m
 app = Flask(__name__, static_url_path='')
 CORS(app, supports_credentials=True)
 
-dao = dao('49.234.3.188', 3306, 'root', '123456', 'gis')
+dao = dao('49.234.3.188', 3306, 'chunibyo', '123456', 'antu')
 
 
 @app.route('/')
@@ -380,40 +380,52 @@ def get_medical():
         response.append({
             "index": result[i][0],
             "ID": result[i][1],
-            'name':result[i][2],
-            'type':result[i][3],
+            'name': result[i][2],
+            'type': result[i][3],
             "address": result[i][4],
             "lng": float(result[i][5]),
             "lat": float(result[i][6]),
             "X": float(result[i][7]),
-            'Y':float(result[i][8]),
+            'Y': float(result[i][8]),
             "tel": result[i][9],
             "area": result[i][10],
         })
     return jsonify(response), 200
 
-@app.route('/get_police',methods=['GET'])
+
+@app.route('/get_police', methods=['GET'])
 def get_police():
-    result=dao.execute("select * from `police_station`;")
-    response=[]
-    random_list=list(range(900))
+    result = dao.execute("select * from `police_station`;")
+    response = []
+    random_list = list(range(900))
     random.shuffle(random_list)
     earth_rad = 6378137.0
     for i in random_list[:300]:
-        tmp=float(result[i][5])*math.pi/180
+        tmp = float(result[i][5]) * math.pi / 180
         response.append({
-            'police_station_id':result[i][0],
-            'id':result[i][1],
-            'name':result[i][2],
-            'address':result[i][3],
-            'lng':float(result[i][4]),
-            'lat':float(result[i][5]),
-            'photos':result[i][6],
-            'tel':result[i][7],
-            'X':float(result[i][4])*math.pi/180*earth_rad,
-            'Y':earth_rad/2*math.log((1.0+math.sin(tmp))/(1.0-math.sin(tmp)))
+            'police_station_id':
+            result[i][0],
+            'id':
+            result[i][1],
+            'name':
+            result[i][2],
+            'address':
+            result[i][3],
+            'lng':
+            float(result[i][4]),
+            'lat':
+            float(result[i][5]),
+            'photos':
+            result[i][6],
+            'tel':
+            result[i][7],
+            'X':
+            float(result[i][4]) * math.pi / 180 * earth_rad,
+            'Y':
+            earth_rad / 2 * math.log(
+                (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
         })
-    return jsonify(response),200
+    return jsonify(response), 200
 
 
 @app.route('/get_path', methods=['POST'])
@@ -515,7 +527,9 @@ def get_userByid():
 
 @app.route('/get_wuhan2', methods=['get'])
 def get_wuhan2():
-    result = dao.execute("SELECT * , DATE_FORMAT(time, '%Y-%m-%d %H:%i') as abcd FROM `wuhan_pois` ;")
+    result = dao.execute(
+        "SELECT * , DATE_FORMAT(time, '%Y-%m-%d %H:%i') as abcd FROM `wuhan_pois` ;"
+    )
     response = []
     for i in range(len(result)):
         response.append({
@@ -550,7 +564,8 @@ def insert_case_image():
 def get_case_all():
     case_id = request.form['case_id']
     result = dao.execute(
-        "SELECT *, DATE_FORMAT(inform_time,'%Y-%m-%dT%h:%m:%s') as time FROM `case` WHERE case_id = " + str(case_id))[0]
+        "SELECT *, DATE_FORMAT(inform_time,'%Y-%m-%dT%h:%m:%s') as time FROM `case` WHERE case_id = "
+        + str(case_id))[0]
     return jsonify({
         "case_name": result[1],
         "case_type": result[2],
@@ -574,11 +589,13 @@ def update_case():
     case_description = request.form['case_description']
     x, y = m.lonlat2Mercator(float(case_lon), float(case_lat))
     case_name = request.form['case_name']
-    dao.execute(
-        "UPDATE `case` SET case_name = '" + case_name + "', case_type = '" + case_type + "', inform_time = '" + inform_time + "', case_position = '" + case_position + "', case_lon = " + str(
-            case_lon) + ", case_lat = " + case_lat + " , case_description = '" + case_description + "', X = " + str(
-            x) + ", Y = " + str(y) + " WHERE case_id = " + str(
-            case_id) + ";")
+    dao.execute("UPDATE `case` SET case_name = '" + case_name +
+                "', case_type = '" + case_type + "', inform_time = '" +
+                inform_time + "', case_position = '" + case_position +
+                "', case_lon = " + str(case_lon) + ", case_lat = " + case_lat +
+                " , case_description = '" + case_description + "', X = " +
+                str(x) + ", Y = " + str(y) + " WHERE case_id = " +
+                str(case_id) + ";")
 
     base64_data = request.form['base64_data']
     getImg(base64_data, "./static/photo/" + case_id + ".png")
@@ -593,11 +610,9 @@ def update_case():
 def get_case_byID():
     id = request.form['id']
     result = dao.execute(
-        "SELECT case_id, DATE_FORMAT(inform_time,'%Y-%m-%d %h:%m:%s') as t, case_description,case_position FROM `case` WHERE ID = " + str(
-            id) + " ORDER BY t DESC")
-    response = {
-        "data": []
-    }
+        "SELECT case_id, DATE_FORMAT(inform_time,'%Y-%m-%d %h:%m:%s') as t, case_description,case_position FROM `case` WHERE ID = "
+        + str(id) + " ORDER BY t DESC")
+    response = {"data": []}
     for i in result:
         response['data'].append({
             "case_id": i[0],
@@ -612,8 +627,8 @@ def get_case_byID():
 def get_case_BYcaseid():
     case_id = request.form['case_id']
     result = dao.execute(
-        "SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case`  WHERE case_id = " + str(case_id) + ";"
-    )
+        "SELECT * , DATE_FORMAT(inform_time, '%Y-%m-%d') as time FROM `case`  WHERE case_id = "
+        + str(case_id) + ";")
     response = []
     for i in range(len(result)):
         response.append({
@@ -644,10 +659,11 @@ def get_filter_case():
     type = request.form["type"]
     key = request.form["key"]
     result = dao.execute(
-        "SELECT case_id, DATE_FORMAT(inform_time,'%Y-%m-%d %h:%m:%s') as t, case_description,case_position FROM `case` WHERE inform_time LIKE '%" + date + "%' AND case_type LIKE '%" + type + "%' AND (case_position LIKE '%" + key + "%' or case_description LIKE '%" + key + "%')")
-    response = {
-        "data": []
-    }
+        "SELECT case_id, DATE_FORMAT(inform_time,'%Y-%m-%d %h:%m:%s') as t, case_description,case_position FROM `case` WHERE inform_time LIKE '%"
+        + date + "%' AND case_type LIKE '%" + type +
+        "%' AND (case_position LIKE '%" + key +
+        "%' or case_description LIKE '%" + key + "%')")
+    response = {"data": []}
     for i in result:
         response['data'].append({
             "case_id": i[0],

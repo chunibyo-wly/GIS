@@ -240,7 +240,7 @@ let policeSource;
 let policeVector;
 init_case = function () {
     $.ajax({
-        url: 'http://gis.hoxu.xyz:80/get_wuhan2',
+        url: 'http://127.0.0.1:80/get_wuhan2',
         type: "GET",
         dataType: "json",
         async: false,
@@ -279,7 +279,7 @@ init_case = function () {
 };
 init_police = function () {
     $.ajax({
-        url: 'http://gis.hoxu.xyz:80/get_police',
+        url: 'http://127.0.0.1:80/get_police',
         type: "GET",
         dataType: "json",
         async: false,
@@ -982,7 +982,7 @@ getPath = function () {
     };
     // console.log(data);
     $.ajax({
-        url: "http://gis.hoxu.xyz:80/get_path",
+        url: "http://127.0.0.1:80/get_path",
         dataType: 'json',
         async: true,
         data: data,
