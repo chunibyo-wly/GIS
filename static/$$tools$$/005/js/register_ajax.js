@@ -15,7 +15,7 @@ $("#register_submit").click(function () {
     };
 
     $.ajax({
-        url: "http://127.0.0.1:80/register_ajax",    //请求的url地址
+        url: "http://gis.ylsislove.com:80/register_ajax",    //请求的url地址
         dataType: "json",   //返回格式为json
         async: true,//请求是否异步，默认为异步，这也是ajax重要特性
         data: data,
