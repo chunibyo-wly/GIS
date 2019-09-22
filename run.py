@@ -108,11 +108,13 @@ def get_messageRecords_ajax():
         "SELECT message_content, message_from from ( SELECT message_content, message_from, message_time FROM message_record WHERE (message_from = "
         + p1_id + " AND message_to = " + p2_id + ") OR (message_from = " +
         p2_id + " AND message_to = " + p1_id +
-        ") ORDER BY message_time DESC LIMIT 10) temp ORDER BY temp.message_time;"
+        ") ORDER BY message_time DESC LIMIT 20) temp ORDER BY temp.message_time;"
     )
+    print("DELETE FROM unread_message_record WHERE message_to = " +
+          p1_id + " and message_from = " + p2_id + ";")
 
     dao.execute("DELETE FROM unread_message_record WHERE message_to = " +
-                p1_id + ";")
+                p1_id + " and message_from = " + p2_id + ";")
 
     response = {"data": []}
     for i in range(len(result)):
@@ -128,8 +130,13 @@ def send_message():
     content = request.form['content']
     message_from = request.form['message_from']
     message_to = request.form['message_to']
-    dao.execute("CALL sp_insert_readmessage ( '" + content + "', " +
-                message_from + ", " + message_to + " )")
+    # dao.execute("CALL sp_insert_readmessage ( '" + content + "', " +
+    #             message_from + ", " + message_to + " )")
+
+    dao.execute(
+        "INSERT INTO message_record ( message_content, message_from, message_to ) VALUES (" + content + "," + message_from + "," + message_to + ")")
+    dao.execute(
+        "INSERT INTO unread_message_record ( message_from, message_to ) VALUES (" + message_from + "," + message_to + ")")
     return jsonify({"status": "Y"}), 200
 
 
@@ -209,8 +216,9 @@ def get_unread_message():
     # unread_preson_number = \
     #     dao.execute("SELECT count(DISTINCT message_from) FROM unread_message_record WHERE message_to = " + id + ";")[0][
     #         0]
+
     unread_content_result = dao.execute(
-        "SELECT message_record.message_from, message_record.message_content FROM message_record WHERE message_record.message_id in (SELECT DISTINCT unread_message_record.message_id FROM unread_message_record  ) and message_to = "
+        "SELECT message_record.message_from, message_record.message_content FROM message_record, unread_message_record WHERE message_record.message_to = unread_message_record.message_to and message_record.message_from = unread_message_record.message_from and message_record.message_to = "
         + id + " ORDER BY message_time DESC LIMIT 1")
     response = {
         "unread_number": unread_number,
@@ -404,26 +412,26 @@ def get_police():
         tmp = float(result[i][5]) * math.pi / 180
         response.append({
             'police_station_id':
-            result[i][0],
+                result[i][0],
             'id':
-            result[i][1],
+                result[i][1],
             'name':
-            result[i][2],
+                result[i][2],
             'address':
-            result[i][3],
+                result[i][3],
             'lng':
-            float(result[i][4]),
+                float(result[i][4]),
             'lat':
-            float(result[i][5]),
+                float(result[i][5]),
             'photos':
-            result[i][6],
+                result[i][6],
             'tel':
-            result[i][7],
+                result[i][7],
             'X':
-            float(result[i][4]) * math.pi / 180 * earth_rad,
+                float(result[i][4]) * math.pi / 180 * earth_rad,
             'Y':
-            earth_rad / 2 * math.log(
-                (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
+                earth_rad / 2 * math.log(
+                    (1.0 + math.sin(tmp)) / (1.0 - math.sin(tmp)))
         })
     return jsonify(response), 200
 

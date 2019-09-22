@@ -1195,7 +1195,8 @@ function addFeatrueInfo(info) {
     content.innerHTML = "";
 
     if (info.hasOwnProperty("police_station_id")) {
-        if (info.tel.toString() == "NULL") info.tel = "无";
+        // if (info.tel.toString() == "NULL") info.tel = "无";
+        if(info.tel === null) info.tel = "无";
         content.innerHTML =
             '<h4>公安机关</h4>' +
             '<div style="width: 500px; background-color: rgba(255,255,255,0.9)" class="table-responsive-md">\n' +
