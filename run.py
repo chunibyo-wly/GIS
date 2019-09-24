@@ -199,9 +199,9 @@ def get_information():
         "birthtime": result[0][3],
         "IDcard": result[0][4],
         "city": result[0][5],
-        "police_id": result[0][6],
-        "police_station": result[0][7],
-        "police_stationName": result[0][8],
+        "police_id": result[0][7],
+        "police_station": result[0][8],
+        "police_stationName": result[0][9],
         "role": result[0][11],
     }), 200
 
