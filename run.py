@@ -134,7 +134,7 @@ def send_message():
     #             message_from + ", " + message_to + " )")
 
     dao.execute(
-        "INSERT INTO message_record ( message_content, message_from, message_to ) VALUES (" + content + "," + message_from + "," + message_to + ")")
+        "INSERT INTO message_record ( message_content, message_from, message_to ) VALUES ('" + content + "'," + message_from + "," + message_to + ")")
     dao.execute(
         "INSERT INTO unread_message_record ( message_from, message_to ) VALUES (" + message_from + "," + message_to + ")")
     return jsonify({"status": "Y"}), 200
