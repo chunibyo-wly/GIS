@@ -262,7 +262,7 @@
             }
             //第一个动画
             view.animate({
-                center: [12764754, 3578934],
+                center: [12724754, 3578934],
                 duration: duration
             }, callback);
             //第二个动画
@@ -896,19 +896,44 @@
 				font-weight: bold;
 			}
 
-			#analyse{
+			#analyse1{
 				position: absolute;
 				z-index: 200;
-				top: 0px;
-				left: 50%;
+				top: 70px;
+				left: 11%;
 				transform: translate(-50%,0%);
 			}
+
+			#analyse2{
+				position: absolute;
+				z-index: 200;
+				top: 170px;
+				left: 11%;
+				transform: translate(-50%,0%);
+			}
+
+			#analyse3{
+				position: absolute;
+				z-index: 200;
+				top: 270px;
+				left: 11%;
+				transform: translate(-50%,0%);
+			}
+
+			#analyse4{
+				position: absolute;
+				z-index: 200;
+				top: 370px;
+				left: 11%;
+				transform: translate(-50%,0%);
+			}
+
 
 			#analyse_table{
 
 				position: absolute;
 				z-index: 200;
-				top: 80px;
+				top: 5px;
 				left: 39%;
 				transform: translate(-50%,0%);
 				background-color: #F3F7F9;
@@ -1019,11 +1044,17 @@
     </div>
 
     <div id="mapCon">
-    	<div class="btn-group" id="analyse" >
+    	<div class="btn-group" id="analyse1" >
         	<input type="button" class="btn" value="治安良好区域" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="safe_area()" />
-            <input type="button" class="btn" value="治安薄弱区域" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="strenghten_area()"/>
-            <input type="button" class="btn" value="案发概率预测" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="predict()" />
-            <input type="button" class="btn" value="清除结果" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="clearA()"/>
+        </div>
+       <div class="btn-group" id="analyse2" >
+        	<input type="button" class="btn" value="治安薄弱区域" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="strenghten_area()"/>
+        </div>
+       <div class="btn-group" id="analyse3" >
+        	<input type="button" class="btn" value="案发概率预测" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="predict()" />
+        </div>
+       <div class="btn-group" id="analyse4" >
+        	<input type="button" class="btn" value="清除结果" style="border-radius: 10px; font-family: '微软雅黑'; font-weight: bold; font-size: 20px;" onclick="clearA()"/>
        </div>
 
        <!--<div class="container"></div>-->
@@ -1112,13 +1143,13 @@
         <table class="table table-hover table-striped" id="analyse_table2" style="border-radius: 20px;">
             <thead style="font-family:'微软雅黑'; font-size: 20px;">
                 <tr>
-                    <th>区域类型</th>
+                    <th>类型</th>
                     <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 </tr>
             <tbody style="font-family: '微软雅黑'; font-size: 18px;">
             	<tr>
                     <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武昌区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;良好&nbsp;&nbsp;&nbsp;</td>
+                    <td>良好</td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<img src="images/317.png">&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;<img src="images/321.png">&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;<img src="images/325.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
 
@@ -1132,18 +1163,18 @@
         <table class="table table-hover table-striped" id="analyse_table2" style="border-radius: 20px;">
             <thead style="font-family:'微软雅黑'; font-size: 20px;">
                 <tr>
-                    <th>区域类型</td>
+                    <th>类型</td>
                     <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
             <tbody style="font-family: '微软雅黑'; font-size: 18px;">
             	<tr>
                     <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武昌区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;良好&nbsp;&nbsp;&nbsp;</td>
+                    <td>良好</td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<img src="images/317.png">&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;<img src="images/321.png">&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;<img src="images/325.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
                 <tr>
                     <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;江汉区&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;薄弱&nbsp;&nbsp;&nbsp;</td>
+                    <td>薄弱</td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;<img src="images/01.png">&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;<img src="images/03.png">&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;<img src="images/05.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 </tr>
             </tbody>
