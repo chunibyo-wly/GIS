@@ -72,6 +72,10 @@ if (resulet_sidebar.role.split('_')[1] === "police") {
 } else {
     $("#map_queryPath").hide();
     $("#TodayTask").hide();
+
+    $('#menu > li:nth-child(5) > ul > li:nth-child(2)').hide();
+    $('#menu > li:nth-child(5) > ul > li:nth-child(3)').hide();
+    $('#menu > li:nth-child(5) > ul > li:nth-child(4)').hide();
 }
 
 
