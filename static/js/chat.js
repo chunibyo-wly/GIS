@@ -126,7 +126,7 @@ right_ = function (news) {
     $('#dope').val('');
     var str = '';
     str += '<li>' +
-        '<div class="nesHead"><img src="img/6.jpg"/></div>' +
+        '<div class="nesHead"><img src="../images/admin1.jpg"/></div>' +
         '<div class="news">' + news + '</div>' +
         '</li>';
     $('.newsList').append(str);
@@ -137,7 +137,7 @@ right_ = function (news) {
 left_ = function (content) {
     var answer = '';
     answer += '<li>' +
-        '<div class="answerHead"><img src="img/tou.jpg"/></div>' +
+        '<div class="answerHead"><img src="../images/admin1.jpg"/></div>' +
         '<div class="answers">' + content + '</div>' +
         '</li>';
     $('.newsList').append(answer);
