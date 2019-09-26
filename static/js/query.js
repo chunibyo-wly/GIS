@@ -573,7 +573,7 @@ getPath=function () {
     };
     // console.log(data);
     $.ajax({
-        url:"http://gis.ylsislove.com:80/driving",
+        url:"http://gis.ylsislove.com:4999/driving",
         dataType:'json',
         async:true,
         data:data,
